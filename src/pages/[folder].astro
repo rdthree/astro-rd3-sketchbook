@@ -1,8 +1,6 @@
 ---
-// src/pages/[folder].astro
 import { getAllPosts } from '../utils/loadPosts.js';
 import Navigation from '../components/Navigation.astro';
-import Content from '@astrojs/mdx';
 
 export async function getStaticPaths() {
   const posts = getAllPosts();
@@ -20,11 +18,10 @@ if (!currentPost) {
 
 <Navigation />
 
-## {currentPost.folder}
+<h2>{currentPost.folder}</h2>
 
 <div>
   <article>
-    <Content>{currentPost.content}</Content>
+    <Fragment set:html={currentPost.content} />
   </article>
-</div>
 </div>
