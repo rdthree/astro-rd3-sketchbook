@@ -1,0 +1,17 @@
+---
+// src/components/Navigation.astro
+const links = [
+  { href: '/', text: 'Home' },
+  { href: '/about', text: 'About' },
+];
+---
+
+<nav>
+  <ul style="list-style: none; padding: 0;">
+    {links.map((link) => (
+      <li style="display: inline; margin-right: 10px;">
+        <a href={link.href} style="text-decoration: none;">{link.text}</a>
+      </li>
+    ))}
+  </ul>
+</nav>

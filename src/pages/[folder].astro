@@ -1,0 +1,30 @@
+---
+// src/pages/[folder].astro
+import { getAllPosts } from '../utils/loadPosts.js';
+import Navigation from '../components/Navigation.astro';
+import Content from '@astrojs/mdx';
+
+export async function getStaticPaths() {
+  const posts = getAllPosts();
+  return posts.map((post) => ({ params: { folder: post.folder } }));
+}
+
+const { folder } = Astro.params;
+const posts = getAllPosts();
+const currentPost = posts.find((post) => post.folder === folder);
+
+if (!currentPost) {
+  throw new Error(`Post not found for folder: ${folder}`);
+}
+---
+
+<Navigation />
+
+## {currentPost.folder}
+
+<div>
+  <article>
+    <Content>{currentPost.content}</Content>
+  </article>
+</div>
+</div>
