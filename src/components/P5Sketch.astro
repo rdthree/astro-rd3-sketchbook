@@ -8,4 +8,4 @@ const { src, id } = Astro.props;
 ---
 <div id={id}></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.min.js" crossorigin="anonymous"></script>
-<script src={src}></script>
+<script is:inline src={src}></script>

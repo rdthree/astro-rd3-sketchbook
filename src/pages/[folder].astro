@@ -1,4 +1,5 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import { getAllPosts } from '../utils/loadPosts.js';
 import Navigation from '../components/Navigation.astro';
 
@@ -15,13 +16,12 @@ if (!currentPost) {
   throw new Error(`Post not found for folder: ${folder}`);
 }
 ---
-
-<Navigation />
-
-<h2>{currentPost.folder}</h2>
-
-<div>
-  <article>
-    <Fragment set:html={currentPost.content} />
-  </article>
-</div>
+<Layout title={currentPost.folder}>
+  <Navigation />
+  <h2>{currentPost.folder}</h2>
+  <div class="markdown-content">
+    <article>
+      <Fragment set:html={currentPost.content} />
+    </article>
+  </div>
+</Layout>
