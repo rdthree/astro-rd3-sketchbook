@@ -1,18 +1,26 @@
 ---
+// File: src/pages/[folder].astro
+// This is a dynamic route file that generates pages for each folder in the content directory
+
 import Layout from '../layouts/Layout.astro';
 import { getAllPosts } from '../utils/loadPosts';
 
+// Generate static paths for each folder containing MDX files
 export async function getStaticPaths() {
   return getAllPosts().map(({ folder }) => ({
     params: { folder },
   }));
 }
 
+// Get the current folder from the URL parameters
 const { folder } = Astro.params;
+
+// Dynamically import the MDX content from the corresponding folder
 const { Content } = await import(`../../content/${folder}/sketch.mdx`);
 ---
 
 <Layout title={folder}>
   <h1>{folder}</h1>
+  <!-- Render the MDX content -->
   <Content />
 </Layout>

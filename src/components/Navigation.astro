@@ -1,5 +1,8 @@
 ---
-// src/components/Navigation.astro
+// Navigation.astro: Reusable navigation component for the site
+// This component generates a list of navigation links
+
+// Define the navigation links
 const links = [
   { href: '/', text: 'Home' },
   { href: '/about', text: 'About' },
@@ -8,6 +11,7 @@ const links = [
 
 <nav>
   <ul>
+    {/* Map through the links array to generate list items */}
     {links.map(link => (
       <li><a href={link.href}>{link.text}</a></li>
     ))}

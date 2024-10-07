@@ -1,7 +1,9 @@
-<!-- layout.astro -->
+<!-- Layout.astro: Main layout component for the site -->
+<!-- This component provides a consistent structure for all pages -->
 ---
 import '@picocss/pico/css/pico.min.css';
 
+// Destructure the title prop, providing a default value if not specified
 const { title = 'Default Title' } = Astro.props;
 ---
 <!DOCTYPE html>
@@ -16,6 +18,7 @@ const { title = 'Default Title' } = Astro.props;
       <h1>{title}</h1>
     </header>
     <main>
+      <!-- Slot for page-specific content -->
       <slot />
     </main>
   </body>

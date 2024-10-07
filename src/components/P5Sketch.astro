@@ -1,7 +1,10 @@
 ---
+// P5Sketch.astro: A component for embedding p5.js sketches
+// This component creates a container for a p5.js sketch and loads necessary scripts
+
 export interface Props {
-  src: string;
-  id: string;
+  src: string; // Source path for the p5.js sketch file
+  id: string;  // Unique identifier for the sketch container
 }
 
 const { src, id } = Astro.props;

@@ -1,17 +1,21 @@
 ---
-// src/pages/index.astro
+// index.astro: Home page component for the site
+// This component displays a welcome message and lists all available sketches
+
 import { getAllPosts } from '../utils/loadPosts.js';
 import Navigation from '../components/Navigation.astro';
 
+// Fetch all posts (sketches) from the content directory
 const posts = getAllPosts();
 ---
 
 <Navigation />
-
+<!-- markdown is possible in astro files -->
 ## Welcome to Your Digital Sketchbook
 Below are some sketches:
 
 <ul>
+  {/* Generate a list of links to individual sketch pages */}
   {posts.map(post => (
     <li><a href={`/${post.folder}`}>{post.folder}</a></li>
   ))}
