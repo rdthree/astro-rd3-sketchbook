@@ -12,9 +12,7 @@ const posts = getAllPosts();
 Below are some sketches:
 
 <ul>
-  {posts.map((post) => (
-    <li>
-      <a href={`/${post.folder}`}>{post.folder}</a>
-    </li>
+  {posts.map(post => (
+    <li><a href={`/${post.folder}`}>{post.folder}</a></li>
   ))}
 </ul>

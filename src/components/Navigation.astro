@@ -7,11 +7,9 @@ const links = [
 ---
 
 <nav>
-  <ul style="list-style: none; padding: 0;">
-    {links.map((link) => (
-      <li style="display: inline; margin-right: 10px;">
-        <a href={link.href} style="text-decoration: none;">{link.text}</a>
-      </li>
+  <ul>
+    {links.map(link => (
+      <li><a href={link.href}>{link.text}</a></li>
     ))}
   </ul>
 </nav>
