@@ -1,14 +1,16 @@
 ---
-// P5Sketch.astro: A component for embedding p5.js sketches
-// This component creates a container for a p5.js sketch and loads necessary scripts
-
 export interface Props {
-  src: string; // Source path for the p5.js sketch file
-  id: string;  // Unique identifier for the sketch container
+  src: string;
+  id: string;
 }
 
 const { src, id } = Astro.props;
+const scripts = import.meta.glob('/content/**/*.js', { query: '?raw', import: 'default' });
+const scriptPath = `/content/${src}`;
+const scriptContent = scripts[scriptPath] ? await scripts[scriptPath]() : '';
 ---
 <div id={id}></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.min.js" crossorigin="anonymous"></script>
-<script is:inline src={src}></script>
+<script define:vars={{ scriptContent }}>
+  eval(scriptContent);
+</script>
