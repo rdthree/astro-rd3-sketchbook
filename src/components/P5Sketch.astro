@@ -10,7 +10,11 @@ const scriptPath = `/content/${src}`;
 const scriptContent = scripts[scriptPath] ? await scripts[scriptPath]() : '';
 ---
 <div id={id}></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.min.js" crossorigin="anonymous"></script>
-<script define:vars={{ scriptContent }}>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.min.js" crossorigin="anonymous"></script> -->
+
+<!-- this allows p5.js to import as a modern es module, later i can try
+to get it to work with vite or somethhing like that -->
+<script type="module" define:vars={{ scriptContent }}>
+  import p5 from 'https://cdn.skypack.dev/p5';
   eval(scriptContent);
 </script>
