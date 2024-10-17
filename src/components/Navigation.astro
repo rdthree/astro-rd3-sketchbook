@@ -1,29 +1,33 @@
 ---
 // Navigation.astro: Reusable navigation component for the site
-// This component generates a list of navigation links
+// This component generates a list of navigation links dynamically
 
-// Define the navigation links
-const links = [
-  { href: '/', text: 'Home' },
-  { href: '/about', text: 'About' },
-];
+import { getAllPosts } from '../utils/loadPosts.js';
+const posts = getAllPosts();
 ---
 
 <nav class="vertical-nav">
   <button class="expand-button"></button>
   <ul>
-    {links.map(link => (
-      <li><a href={link.href}><i class="fas fa-link"></i><span class="entry-name">{link.text}</span></a></li>
+    <li><a href="/"><i class="fas fa-link"></i><span class="entry-name">Home</span></a></li>
+    {posts.map(post => (
+      <li><a href={`/${post.folder}`}><i class="fas fa-link"></i><span class="entry-name">{post.folder}</span></a></li>
     ))}
   </ul>
 </nav>
 
 <script>
-  const nav = document.querySelector('.vertical-nav');
-  const expandButton = document.querySelector('.expand-button');
-  if (nav && expandButton) {
-    expandButton.addEventListener('click', () => nav.classList.toggle('expanded'));
+  function setupNavigation() {
+    const nav = document.querySelector('.vertical-nav');
+    const expandButton = document.querySelector('.expand-button');
+    if (nav && expandButton) {
+      expandButton.addEventListener('click', () => nav.classList.toggle('expanded'));
+    }
   }
-</script>
-</script>
 
+  // Run on initial load
+  setupNavigation();
+
+  // Run on subsequent navigations
+  document.addEventListener('astro:after-swap', setupNavigation);
+</script>
