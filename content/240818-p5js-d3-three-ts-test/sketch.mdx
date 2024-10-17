@@ -4,20 +4,11 @@ date: "2024-09-21"
 ---
 
 import P5Sketch from '../../src/components/P5Sketch.astro';
-
-# My Sketch Page
-
-Here's an example of a P5.js sketch embedded below:
-
-<P5Sketch src="240818-p5js-d3-three-ts-test/p5jtest.js" id="p5jtest" />
-
-> This sketch demonstrates randomness in visuals.
-
+import D3Sketch from '../../src/components/D3Sketch.astro';
 
 # Testing p5.js, D3.js, and Three.js
 
 This document contains examples of three popular JavaScript libraries: **p5.js**, **D3.js**, and **Three.js**. Each section provides a brief explanation of the library followed by a test sketch that demonstrates basic functionality.
-
 
 ---
 
@@ -25,7 +16,9 @@ This document contains examples of three popular JavaScript libraries: **p5.js**
 
 **p5.js** is a JavaScript library that makes it easy to create visual and interactive experiences on the web. It was designed to be a friendly and accessible tool for artists, designers, educators, and beginners, with a focus on making coding more inclusive and approachable.
 
-{/* {% p5Container "p5jtest.js", "p5jtest" %} */}
+<P5Sketch src="240818-p5js-d3-three-ts-test/p5jtest.js" id="p5jtest" />
+
+> This sketch demonstrates randomness in visuals.
 
 ---
 
@@ -33,8 +26,7 @@ This document contains examples of three popular JavaScript libraries: **p5.js**
 
 **D3.js** (Data-Driven Documents) is a JavaScript library for producing dynamic, interactive data visualizations in web browsers. It allows you to bind arbitrary data to a Document Object Model (DOM), and then apply data-driven transformations to the document. This flexibility makes it a powerful tool for creating custom charts and graphs.
 
-{/* {% d3Container "d3test.js", "d3-chart-circle" %} */}
-
+<D3Sketch src="240818-p5js-d3-three-ts-test/d3test.js" id="d3-chart-circle" />
 
 ---
 
