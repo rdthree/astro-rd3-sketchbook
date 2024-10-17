@@ -10,7 +10,7 @@ const scripts = import.meta.glob('/content/**/*.js', { query: '?raw', import: 'd
 const scriptPath = `/content/${src}`;
 const scriptContent = scripts[scriptPath] ? await scripts[scriptPath]() : '';
 ---
-<div id={id}></div>
+<div class="d3-container" id={id}></div>
 
 <script type="module" define:vars={{ scriptContent }}>
   // aggregate all named exports under the d3 namespace

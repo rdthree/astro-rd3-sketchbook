@@ -14,7 +14,7 @@ const scriptPath = `/content/${src}`;
 const scriptContent = scripts[scriptPath] ? await scripts[scriptPath]() : "";
 ---
 
-<div id={id}></div>
+<div class="p5js-container" id={id}></div>
 
 <!-- this allows p5.js to import as a modern es module, later i can try
 to get it to work with vite or somethhing like that -->

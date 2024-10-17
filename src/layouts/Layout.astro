@@ -1,25 +1,54 @@
-<!-- Layout.astro: Main layout component for the site -->
-<!-- This component provides a consistent structure for all pages -->
 ---
-import '@picocss/pico/css/pico.min.css';
+// <!-- import '@picocss/pico/css/pico.min.css'; -->
+
+// other imports and frontmatter
+import Navigation from "../components/Navigation.astro";
+import "../styles/main.css";
 
 // Destructure the title prop, providing a default value if not specified
-const { title = 'Default Title' } = Astro.props;
+const { title = "Default Title" } = Astro.props;
 ---
-<!DOCTYPE html>
+
+<!-- Layout.astro: Main layout component for the site --><!-- This component provides a consistent structure for all pages --><!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Other meta tags -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Other head content -->
     <title>{title}</title>
   </head>
   <body>
     <header>
       <h1>{title}</h1>
     </header>
-    <main>
-      <!-- Slot for page-specific content -->
-      <slot />
-    </main>
+    <div class="layout-grid">
+      <Navigation />
+      <main class="main-content">
+        <!-- Slot for page-specific content -->
+        <slot />
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
+      </main>
+    </div>
   </body>
 </html>

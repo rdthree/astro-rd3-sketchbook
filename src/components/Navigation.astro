@@ -9,11 +9,21 @@ const links = [
 ];
 ---
 
-<nav>
+<nav class="vertical-nav">
+  <button class="expand-button"></button>
   <ul>
-    {/* Map through the links array to generate list items */}
     {links.map(link => (
-      <li><a href={link.href}>{link.text}</a></li>
+      <li><a href={link.href}><i class="fas fa-link"></i><span class="entry-name">{link.text}</span></a></li>
     ))}
   </ul>
 </nav>
+
+<script>
+  const nav = document.querySelector('.vertical-nav');
+  const expandButton = document.querySelector('.expand-button');
+  if (nav && expandButton) {
+    expandButton.addEventListener('click', () => nav.classList.toggle('expanded'));
+  }
+</script>
+</script>
+

@@ -1,17 +1,14 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import { getAllPosts } from '../utils/loadPosts.js';
-import Navigation from '../components/Navigation.astro';
-
 const posts = getAllPosts();
 ---
-
-<Navigation />
-
-<h2>Welcome to Your Digital Sketchbook</h2>
-<p>Below are some sketches:</p>
-
-<ul>
-  {posts.map(post => (
-    <li><a href={`/${post.folder}`}>{post.folder}</a></li>
-  ))}
-</ul>
+<Layout title="Home">
+  <h2>Welcome to Your Digital Sketchbook</h2>
+  <p>Below are some sketches:</p>
+  <ul>
+    {posts.map(post => (
+      <li><a href={`/${post.folder}`}>{post.folder}</a></li>
+    ))}
+  </ul>
+</Layout>
