@@ -6,16 +6,26 @@ export interface Props {
 }
 
 const { src, id } = Astro.props;
-const scripts = import.meta.glob('/content/**/*.js', { query: '?raw', import: 'default' });
+const scripts = import.meta.glob("/content/**/*.js", {
+  query: "?raw",
+  import: "default",
+});
 const scriptPath = `/content/${src}`;
-const scriptContent = scripts[scriptPath] ? await scripts[scriptPath]() : '';
+const scriptContent = scripts[scriptPath] ? await scripts[scriptPath]() : "";
 ---
+
 <div id={id}></div>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.min.js" crossorigin="anonymous"></script> -->
 
 <!-- this allows p5.js to import as a modern es module, later i can try
 to get it to work with vite or somethhing like that -->
 <script type="module" define:vars={{ scriptContent }}>
-  import p5 from 'https://cdn.skypack.dev/p5';
-  eval(scriptContent);
+  // directly import default p5 constructor
+  import p5 from "https://cdn.jsdelivr.net/npm/p5@1.11.0/+esm";
+
+  window.p5 = p5;
+  // wait for DOM to be ready and then inject script
+  setTimeout(() => {
+    // execute the p5 script
+    eval(scriptContent);
+  }, 0);
 </script>
