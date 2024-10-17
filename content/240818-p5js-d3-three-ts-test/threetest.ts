@@ -1,9 +1,4 @@
-// src/main.ts
-
-// ignore the following script reference, it causeses a type error, but is
-// necessary for the compiled javascript file to work
-// @ts-ignore
-import { THREE } from '../../scripts/threejs-shared-module.js'; // Adjust the path as needed
+// filepath content\240818-p5js-d3-three-ts-test\threetest.ts
 
 const threeId: string = 'threetest';
 
@@ -19,10 +14,10 @@ function createRotatingCube(containerId: string = threeId): void {
     }
 
     // Create the scene
-    const scene: THREE.Scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     // Create a camera
-    const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(
+    const camera = new THREE.PerspectiveCamera(
         75,
         container.clientWidth / container.clientHeight,
         0.1,
@@ -31,7 +26,7 @@ function createRotatingCube(containerId: string = threeId): void {
     camera.position.z = 5;
 
     // Create the renderer
-    const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement); // Append to the specified container
@@ -43,28 +38,28 @@ function createRotatingCube(containerId: string = threeId): void {
 
     // Handle window resize
     window.addEventListener('resize', () => {
-        const width: number = container.clientWidth;
-        const height: number = container.clientHeight;
+        const width = container.clientWidth;
+        const height = container.clientHeight;
         renderer.setSize(width, height);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
     });
 
     // Create a geometry and material
-    const geometry: THREE.BoxGeometry = new THREE.BoxGeometry();
-    const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const geometry = new THREE.BoxGeometry();
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 
     // Create a mesh and add it to the scene
-    const cube: THREE.Mesh = new THREE.Mesh(geometry, material);
+    const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
     // Animation loop
-    const animate = (): void => {
+    function animate() {
         requestAnimationFrame(animate);
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
         renderer.render(scene, camera);
-    };
+    }
     animate();
 }
 

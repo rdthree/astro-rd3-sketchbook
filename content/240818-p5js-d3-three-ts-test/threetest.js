@@ -1,8 +1,5 @@
-// src/main.ts
-// ignore the following script reference, it causeses a type error, but is
-// necessary for the compiled javascript file to work
-// @ts-ignore
-import { THREE } from '../../scripts/threejs-shared-module.js'; // Adjust the path as needed
+"use strict";
+// filepath content\240818-p5js-d3-three-ts-test\threetest.ts
 const threeId = 'threetest';
 /**
  * Creates a rotating cube inside the specified container.
@@ -43,12 +40,12 @@ function createRotatingCube(containerId = threeId) {
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
     // Animation loop
-    const animate = () => {
+    function animate() {
         requestAnimationFrame(animate);
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
         renderer.render(scene, camera);
-    };
+    }
     animate();
 }
 // Auto-execute when the script loads
