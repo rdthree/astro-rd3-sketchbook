@@ -1,0 +1,45 @@
+<!-- file: src/components/P5Sketch.astro -->
+---
+export interface Props {
+  src: string;
+  id: string;
+  type: 'p5' | 'd3' | 'three';
+}
+
+const { src, id, type } = Astro.props;
+const scripts = import.meta.glob('/content/**/*.{js,ts}', { query: '?raw', import: 'default' });
+const scriptPath = `/content/${src}`;
+const scriptContent = scripts[scriptPath] ? await scripts[scriptPath]() : '';
+
+const containerClass = `${type}-container`;
+---
+
+<div class={containerClass} id={id}></div>
+
+{type === 'p5' && (
+  <script type="module" define:vars={{ scriptContent }}>
+    import p5 from "https://cdn.jsdelivr.net/npm/p5@1.11.0/+esm";
+    window.p5 = p5;
+    setTimeout(() => {
+      eval(scriptContent);
+    }, 0);
+  </script>
+)}
+
+{type === 'd3' && (
+  <script type="module" define:vars={{ scriptContent }}>
+    import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+    window.d3 = d3;
+    setTimeout(() => {
+      eval(scriptContent);
+    }, 0);
+  </script>
+)}
+
+{type === 'three' && (
+  <script type="module" define:vars={{ scriptContent }}>
+    import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.169.0/+esm";
+    window.THREE = THREE;
+    {scriptContent}
+  </script>
+)}

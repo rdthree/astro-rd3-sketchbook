@@ -4,9 +4,7 @@ title: "My Sketch - P5.js Test"
 date: "2024-09-21"
 ---
 
-import P5Sketch from '../../src/components/P5Sketch.astro';
-import D3Sketch from '../../src/components/D3Sketch.astro';
-import THREESketch from '../../src/components/ThreeSketch.astro';
+import Sketch from '../../src/components/SketchWrapper.astro';
 
 # Testing p5.js, D3.js, and Three.js
 
@@ -18,7 +16,7 @@ This document contains examples of three popular JavaScript libraries: **p5.js**
 
 **p5.js** is a JavaScript library that makes it easy to create visual and interactive experiences on the web. It was designed to be a friendly and accessible tool for artists, designers, educators, and beginners, with a focus on making coding more inclusive and approachable.
 
-<P5Sketch src="240818-p5js-d3-three-ts-test/p5jtest.js" id="p5jtest" />
+<Sketch type="p5" src="240818-p5js-d3-three-ts-test/p5jtest.js" id="p5jtest" />
 
 > This sketch demonstrates randomness in visuals.
 
@@ -28,7 +26,7 @@ This document contains examples of three popular JavaScript libraries: **p5.js**
 
 **D3.js** (Data-Driven Documents) is a JavaScript library for producing dynamic, interactive data visualizations in web browsers. It allows you to bind arbitrary data to a Document Object Model (DOM), and then apply data-driven transformations to the document. This flexibility makes it a powerful tool for creating custom charts and graphs.
 
-<D3Sketch src="240818-p5js-d3-three-ts-test/d3test.js" id="d3-chart-circle" />
+<Sketch type="d3" src="240818-p5js-d3-three-ts-test/d3test.js" id="d3-chart-circle" />
 
 ---
 
@@ -36,5 +34,5 @@ This document contains examples of three popular JavaScript libraries: **p5.js**
 
 **Three.js** is a JavaScript library that makes it easy to create 3D graphics in the browser. It simplifies the WebGL API and provides many built-in functions for creating and manipulating 3D objects, lights, and cameras. It's widely used for creating 3D web applications, games, and interactive visualizations.
 
-<THREESketch src="240818-p5js-d3-three-ts-test/threetest.js" id="threetest" />
+<Sketch type="three" src="240818-p5js-d3-three-ts-test/threetest.js" id="threetest" />
 
