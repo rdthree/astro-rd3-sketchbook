@@ -1,55 +1,47 @@
 "use strict";
-// filepath content\240818-p5js-d3-three-ts-test\threetest.ts
+// filepath content\240818-p5js-d3-three-ts-test\threetest.js
 const threeId = 'threetest';
-/**
- * Creates a rotating cube inside the specified container.
- * @param containerId - The ID of the container where the cube will be rendered.
- */
-function createRotatingCube(containerId = threeId) {
+const createRotatingCube = ({ containerId = threeId, color = 0x00ff00, rotationSpeed = 0.01 } = {}) => {
     const container = document.getElementById(containerId);
-    if (!container) {
-        console.error(`Container with id "${containerId}" not found.`);
-        return;
-    }
-    // Create the scene
+    if (!container)
+        throw new Error(`Container with id "${containerId}" not found.`);
     const scene = new THREE.Scene();
-    // Create a camera
     const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.z = 5;
-    // Create the renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement); // Append to the specified container
-    // Ensure the canvas fills the container
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
-    renderer.domElement.style.display = 'block';
-    // Handle window resize
+    container.appendChild(renderer.domElement);
+    Object.assign(renderer.domElement.style, { width: '100%', height: '100%', display: 'block' });
     window.addEventListener('resize', () => {
-        const width = container.clientWidth;
-        const height = container.clientHeight;
+        const { clientWidth: width, clientHeight: height } = container;
         renderer.setSize(width, height);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
     });
-    // Create a geometry and material
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    // Create a mesh and add it to the scene
-    const cube = new THREE.Mesh(geometry, material);
+    const cube = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial({ color }));
     scene.add(cube);
-    // Animation loop
-    function animate() {
+    const animate = () => {
         requestAnimationFrame(animate);
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
+        cube.rotation.x += rotationSpeed;
+        cube.rotation.y += rotationSpeed;
         renderer.render(scene, camera);
-    }
+    };
     animate();
-}
-// Auto-execute when the script loads
-document.addEventListener('DOMContentLoaded', () => {
-    createRotatingCube('threetest'); // Ensure the ID matches the container
-});
+};
+const init = () => {
+    const checkContainer = () => {
+        const container = document.getElementById(threeId);
+        if (container) {
+            createRotatingCube();
+        }
+        else {
+            requestAnimationFrame(checkContainer);
+        }
+    };
+    checkContainer();
+};
+document.readyState === 'loading'
+    ? document.addEventListener('DOMContentLoaded', init)
+    : init();
 console.log("Three test script running");

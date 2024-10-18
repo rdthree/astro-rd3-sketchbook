@@ -38,8 +38,10 @@ const containerClass = `${type}-container`;
 
 {type === 'three' && (
   <script type="module" define:vars={{ scriptContent }}>
-    import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.169.0/+esm";
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.169.0/+esm';
     window.THREE = THREE;
-    {scriptContent}
+    setTimeout(() => {
+      eval(scriptContent);
+    }, 0);
   </script>
 )}

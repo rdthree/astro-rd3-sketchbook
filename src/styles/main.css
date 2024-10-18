@@ -158,14 +158,14 @@ nav.vertical-nav ul li a .entry-name,
 }
 
 /* Apply max-width: 80ch to all direct children except sketch containers */
-.main-content > :not(.p5js-container):not(.d3-container):not(.three-container) {
+.main-content > :not(.p5-container):not(.d3-container):not(.three-container) {
   max-width: 90ch;
   margin-left: 0;
   margin-right: 0;
 }
 
 /* Common styles for all Sketch Containers */
-.p5js-container,
+.p5-container,
 .d3-container,
 .three-container {
   width: 100%;
@@ -174,7 +174,7 @@ nav.vertical-nav ul li a .entry-name,
 }
 
 /* Ensure canvases within sketches fill their containers */
-.p5js-container canvas,
+.p5-container canvas,
 .d3-container canvas,
 .three-container canvas {
   width: 100%;
@@ -189,7 +189,7 @@ nav.vertical-nav ul li a .entry-name,
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  .p5js-container,
+  .p5-container,
   .d3-container,
   .three-container {
     width: 100%;
