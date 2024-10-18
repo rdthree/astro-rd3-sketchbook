@@ -2,8 +2,8 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "noEmit": false,                 // Allow emitting JS files
-    "emitDeclarationOnly": true,    // Emit JS and not only types
-    "declaration": true,            // Emit declaration files
+    "emitDeclarationOnly": false,    // Emit JS and not only types
+    "declaration": false,            // Emit declaration files
     "esModuleInterop": true,         // Enable ES module interop
     "allowSyntheticDefaultImports": true, // Allow synthetic imports for modules
     "allowImportingTsExtensions": false // if i don't do this, i can't transpile to js

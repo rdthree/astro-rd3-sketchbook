@@ -1,47 +1,40 @@
 "use strict";
 // filepath content\240818-p5js-d3-three-ts-test\threetest.js
-const threeId = 'threetest';
-const createRotatingCube = ({ containerId = threeId, color = 0x00ff00, rotationSpeed = 0.01 } = {}) => {
-    const container = document.getElementById(containerId);
-    if (!container)
-        throw new Error(`Container with id "${containerId}" not found.`);
+const DEFAULT_ID = 'threetest';
+// Destructuring assignment with default parameters
+// Allows flexible function calls with optional arguments
+// If no object is passed, defaults to an empty object
+// Enables preset values for each parameter if not provided
+const createRotatingCube = ({ containerId = DEFAULT_ID, color = 0x00ff00, rotationSpeed = 0.02 } = {}) => {
+    // setup container, scene, camera, renderer
+    const container = document.getElementById(containerId) ?? (() => { throw new Error(`Container not found: ${containerId}`); })();
+    const { clientWidth, clientHeight } = container;
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.z = 5;
+    const camera = new THREE.PerspectiveCamera(75, clientWidth / clientHeight, 0.1, 1000);
+    camera.position.set(0, 0, 5);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(clientWidth, clientHeight);
+    // add renderer to container
     container.appendChild(renderer.domElement);
     Object.assign(renderer.domElement.style, { width: '100%', height: '100%', display: 'block' });
+    // create cube and add to scene
+    scene.add(new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial({ color })));
+    // resize renderer and camera on window resize
     window.addEventListener('resize', () => {
-        const { clientWidth: width, clientHeight: height } = container;
-        renderer.setSize(width, height);
-        camera.aspect = width / height;
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        camera.aspect = container.clientWidth / container.clientHeight;
         camera.updateProjectionMatrix();
     });
-    const cube = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial({ color }));
-    scene.add(cube);
-    const animate = () => {
+    // animate cube, animation loop
+    (function animate() {
         requestAnimationFrame(animate);
-        cube.rotation.x += rotationSpeed;
-        cube.rotation.y += rotationSpeed;
+        scene.children[0].rotation.x += rotationSpeed;
+        scene.children[0].rotation.y += rotationSpeed;
         renderer.render(scene, camera);
-    };
-    animate();
+    })();
 };
-const init = () => {
-    const checkContainer = () => {
-        const container = document.getElementById(threeId);
-        if (container) {
-            createRotatingCube();
-        }
-        else {
-            requestAnimationFrame(checkContainer);
-        }
-    };
-    checkContainer();
-};
+// Run the function if the DOM is ready, otherwise wait for it to be ready
 document.readyState === 'loading'
-    ? document.addEventListener('DOMContentLoaded', init)
-    : init();
-console.log("Three test script running");
+    ? document.addEventListener('DOMContentLoaded', () => createRotatingCube())
+    : createRotatingCube();
+console.log("Three.js test script running");

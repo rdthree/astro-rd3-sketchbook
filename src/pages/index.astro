@@ -1,14 +1,23 @@
+<!-- file: src\pages\index.astro -->
 ---
-import Layout from '../layouts/Layout.astro';
-import { getAllPosts } from '../utils/loadPosts';
+import Layout from "../layouts/Layout.astro";
+import { getAllPosts } from "../utils/loadPosts";
+
+// Fetch all posts/sketches
 const posts = getAllPosts();
 ---
+
 <Layout title="Home">
   <h2>Welcome to Your Digital Sketchbook</h2>
   <p>Below are some sketches:</p>
   <ul>
-    {posts.map(post => (
-      <li><a href={`/${post.folder}`}>{post.folder}</a></li>
-    ))}
+    {/* Dynamically generate list items for each post/sketch */}
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/${post.folder}`}>{post.folder}</a>
+        </li>
+      ))
+    }
   </ul>
 </Layout>

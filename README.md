@@ -6,7 +6,7 @@ Astro RD3 Sketchbook is an interactive sketchbook built with [Astro](https://ast
 
 ## Project Structure
 
-```
+``` powershell
 astro-rd3-sketchbook/
 ├── README.md
 ├── content/
