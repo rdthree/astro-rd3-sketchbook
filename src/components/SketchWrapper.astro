@@ -3,7 +3,7 @@
 interface Props {
   src: string;
   id: string;
-  type: 'p5' | 'd3' | 'three';
+  type: 'p5' | 'd3' | 'three' | 'babylonjs';
 }
 
 const { src, id, type } = Astro.props;
@@ -15,9 +15,10 @@ const scriptContent = scriptPath in scripts ? await scripts[scriptPath]() : '';
 const containerClass = `${type}-container`;
 
 const libraryImports = {
-  p5: "https://cdn.jsdelivr.net/npm/p5@1.11.0/+esm",
-  d3: 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm',
-  three: 'https://cdn.jsdelivr.net/npm/three@0.169.0/+esm'
+  p5: "https://cdn.jsdelivr.net/npm/p5@1.11.0/+esm?name=p5",
+  d3: 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm?name=d3',
+  three: 'https://cdn.jsdelivr.net/npm/three@0.169.0/+esm?name=three',
+  babylonjs: 'https://cdn.jsdelivr.net/npm/babylonjs@7.30.0+esm?name=babylonjs',
 };
 ---
 
@@ -37,6 +38,10 @@ const libraryImports = {
       case 'three':
         const THREE = await import(libraryImports.three);
         window.THREE = THREE;
+        break;
+      case 'babylonjs':
+        const BABYLON = await import(libraryImports.babylonjs);
+        window.BABYLON = BABYLON;
         break;
     }
   };

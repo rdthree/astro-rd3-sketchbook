@@ -167,6 +167,7 @@ nav.vertical-nav ul li a .entry-name,
 /* Common styles for all Sketch Containers */
 .p5-container,
 .d3-container,
+.babylonjs-container,
 .three-container {
   width: 100%;
   max-width: none !important; /* Remove any max-width constraints */
@@ -176,9 +177,17 @@ nav.vertical-nav ul li a .entry-name,
 /* Ensure canvases within sketches fill their containers */
 .p5-container canvas,
 .d3-container canvas,
+.babylonjs-container canvas,
 .three-container canvas {
   width: 100%;
   height: auto; /* Maintain aspect ratio */
+  display: block;
+}
+
+/* Specific styles for babylonjs sketches */
+.babylonjs-container {
+  width: 100%; /* Ensure adequate height */
+  height: 400px;
   display: block;
 }
 
@@ -191,6 +200,7 @@ nav.vertical-nav ul li a .entry-name,
 @media (max-width: 768px) {
   .p5-container,
   .d3-container,
+  .babylonjs-container,
   .three-container {
     width: 100%;
     padding: 0 1rem; /* Add horizontal padding on smaller screens */

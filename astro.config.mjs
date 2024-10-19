@@ -6,7 +6,13 @@ export default defineConfig({
   integrations: [
     mdx(), // Enables MDX support for enhanced Markdown capabilities
   ],
-  vite: {}, // Vite-specific configurations can be added here
+  vite: {
+    // resolve: {
+    //   alias: {
+    //     "@components": "", // Sets an alias for the components directory
+    //   },
+    // }
+  }, // Vite-specific configurations can be added here
   outDir: "dist", // Specifies the output directory for the built site
   publicDir: "public", // Defines the directory for static assets
   srcDir: "src", // Sets the source directory for Astro components and pages

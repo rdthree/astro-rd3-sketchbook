@@ -6,7 +6,11 @@
     "declaration": false,            // Emit declaration files
     "esModuleInterop": true,         // Enable ES module interop
     "allowSyntheticDefaultImports": true, // Allow synthetic imports for modules
-    "allowImportingTsExtensions": false // if i don't do this, i can't transpile to js
+    "allowImportingTsExtensions": false, // if i don't do this, i can't transpile to js
+    "baseUrl": ".",
+    "paths": {
+      "@SketchWrapper": ["src/components/SketchWrapper.astro"],
+    }
   },
   "include": ["**/*.astro, src/**/*.ts", "content/**/*.ts", "src/types/*.d.ts"],
   "exclude": ["node_modules", "dist"]

@@ -30,12 +30,18 @@ importers:
         specifier: ^0.12.7
         version: 0.12.7
     devDependencies:
+      '@babylonjs/core':
+        specifier: ^7.30.0
+        version: 7.30.0
       '@types/node':
         specifier: ^22.7.6
         version: 22.7.6
       '@types/p5':
         specifier: ^1.7.6
         version: 1.7.6
+      babylonjs:
+        specifier: ^7.30.0
+        version: 7.30.0
       three:
         specifier: ^0.169.0
         version: 0.169.0
@@ -183,6 +189,9 @@ packages:
   '@babel/types@7.25.8':
     resolution: {integrity: sha512-JWtuCu8VQsMladxVz/P4HzHUGCAwpuqacmowgXFs5XjxIgKuNjnLokQzuVjlTvIzODaDmpjT3oxcC48vyk9EWg==}
     engines: {node: '>=6.9.0'}
+
+  '@babylonjs/core@7.30.0':
+    resolution: {integrity: sha512-MSEQ8WNGGwbKFA+qKNB8cr2xM61zg7GeQse2ZJVlULvyNbCR559sneeJFWLTgmDG4D2PtEYMWqunOIzUC5ndcQ==}
 
   '@emmetio/abbreviation@2.3.3':
     resolution: {integrity: sha512-mgv58UrU3rh4YgbE/TzgLQwJ3pFsHHhCLqY20aJq+9comytTXUDNGG/SMtSeMJdkpxgXSXunBGLD8Boka3JyVA==}
@@ -754,6 +763,9 @@ packages:
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
     engines: {node: '>= 0.4'}
+
+  babylonjs@7.30.0:
+    resolution: {integrity: sha512-6iaRM0Caa3pNXDo9pBay54zVAUW6jafsWlVDrxbTDtpEUjivteusV4jIexsoAOQ+lQH5EZPxT9k48lmNqWlflQ==}
 
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
@@ -2295,6 +2307,8 @@ snapshots:
       '@babel/helper-validator-identifier': 7.25.7
       to-fast-properties: 2.0.0
 
+  '@babylonjs/core@7.30.0': {}
+
   '@emmetio/abbreviation@2.3.3':
     dependencies:
       '@emmetio/scanner': 1.0.4
@@ -2866,6 +2880,8 @@ snapshots:
       - typescript
 
   axobject-query@4.1.0: {}
+
+  babylonjs@7.30.0: {}
 
   bail@2.0.2: {}
 
