@@ -20,6 +20,8 @@
   },
   "devDependencies": {
     "@babylonjs/core": "^7.30.0",
+    "@babylonjs/gui": "^7.30.0",
+    "@babylonjs/inspector": "^7.30.0",
     "@types/node": "^22.7.6",
     "@types/p5": "^1.7.6",
     "babylonjs": "^7.30.0",

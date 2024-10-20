@@ -18,7 +18,8 @@ const libraryImports = {
   p5: "https://cdn.jsdelivr.net/npm/p5@1.11.0/+esm?name=p5",
   d3: 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm?name=d3',
   three: 'https://cdn.jsdelivr.net/npm/three@0.169.0/+esm?name=three',
-  babylonjs: 'https://cdn.jsdelivr.net/npm/babylonjs@7.30.0+esm?name=babylonjs',
+  //babylonjs: '/node_modules/@babylonjs/core'
+  babylonjs: '@babylonjs/core'
 };
 ---
 
@@ -47,7 +48,14 @@ const libraryImports = {
   };
 
   await importLibrary();
-  setTimeout(() => {
-    eval(scriptContent);
-  }, 0);
+
+  // setTimeout(() => {
+  //   eval(scriptContent);
+  // }, 0);
+
+  const script = document.createElement('script');
+  script.type = 'module';
+  script.textContent = scriptContent;
+  document.body.appendChild(script);
+
 </script>

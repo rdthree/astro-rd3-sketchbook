@@ -1,62 +1,65 @@
-// TypeScript-specific imports for type information (Babylon.js types)
-import type { Engine, Scene, FreeCamera, HemisphericLight, Vector3, MeshBuilder } from '@babylonjs/core';
+console.log("babylonjs test");
 
-// Runtime Babylon.js library, loaded via the CDN.
-declare const BABYLON: {
-    Engine: typeof Engine;
-    Scene: typeof Scene;
-    FreeCamera: typeof FreeCamera;
-    HemisphericLight: typeof HemisphericLight;
-    Vector3: typeof Vector3;
-    MeshBuilder: typeof MeshBuilder;
-};
+import "@babylonjs/core/Debug/debugLayer";
+import "@babylonjs/inspector";
+import "@babylonjs/loaders/glTF";
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from "@babylonjs/core";
 
-console.log("Babylon.js script starting to execute...");
+function createBabylonScene() {
+    // Get the container element
+    const container = document.getElementById("babylon-test");
+    if (!container) {
+        console.error("Container with id 'babylon-test' not found");
+        return;
+    }
 
-// Select the canvas element
-const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
-if (!canvas) {
-    console.error("Canvas with ID 'renderCanvas' not found.");
-} else {
-    // Create Babylon engine
-    const engine = new BABYLON.Engine(canvas, true);
-    console.log("Babylon engine created:", engine);
+    // Create the canvas element and set its properties
+    const canvas = document.createElement("canvas");
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    container.appendChild(canvas);
 
-    // Create a scene function
-    const createScene = function (): Scene {
-        const scene = new BABYLON.Scene(engine);
+    // Initialize Babylon.js scene and engine
+    const engine = new Engine(canvas, true);
+    const scene = new Scene(engine);
 
-        // Create a camera and set up
-        const camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-        camera.setTarget(BABYLON.Vector3.Zero());
-        camera.attachControl(canvas, true);
+    // Create camera
+    const camera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), scene);
+    camera.attachControl(canvas, true);
 
-        // Create a hemispheric light
-        const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-        light.intensity = 0.7;
+    // Create light
+    const light = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
-        // Create a sphere
-        const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: 2, segments: 32 }, scene);
-        sphere.position.y = 1;
+    // Create sphere
+    const sphere = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
 
-        // Create a ground
-        BABYLON.MeshBuilder.CreateGround("ground", { width: 6, height: 6 }, scene);
+    // Hide/show the Inspector
+    window.addEventListener("keydown", (ev) => {
+        if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
+            if (scene.debugLayer.isVisible()) {
+                scene.debugLayer.hide();
+            } else {
+                scene.debugLayer.show();
+            }
+        }
+    });
 
-        return scene;
-    };
-
-    // Create the scene
-    const scene = createScene();
-
-    // Register a render loop to repeatedly render the scene
-    engine.runRenderLoop(function () {
+    // Run the render loop
+    engine.runRenderLoop(() => {
         scene.render();
     });
 
-    // Handle resizing of the window
-    window.addEventListener("resize", function () {
+    // Handle window resize
+    window.addEventListener("resize", () => {
         engine.resize();
     });
-
-    console.log("Babylon.js script finished executing");
 }
+
+// Run the function when the DOM is ready
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", createBabylonScene);
+} else {
+    createBabylonScene();
+}
+
+console.log("Babylon.js test script running");

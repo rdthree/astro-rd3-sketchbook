@@ -3,6 +3,7 @@
   "compilerOptions": {
     "noEmit": false,                 // Allow emitting JS files
     "emitDeclarationOnly": false,    // Emit JS and not only types
+    "moduleResolution": "node",    // Use Node.js module resolution
     "declaration": false,            // Emit declaration files
     "esModuleInterop": true,         // Enable ES module interop
     "allowSyntheticDefaultImports": true, // Allow synthetic imports for modules
@@ -10,7 +11,12 @@
     "baseUrl": ".",
     "paths": {
       "@SketchWrapper": ["src/components/SketchWrapper.astro"],
-    }
+      //"@babylonjs/*": ["node_modules/@babylonjs/*"],
+    },
+    "lib": [
+      "dom",
+      "ESNEXT"
+    ]
   },
   "include": ["**/*.astro, src/**/*.ts", "content/**/*.ts", "src/types/*.d.ts"],
   "exclude": ["node_modules", "dist"]

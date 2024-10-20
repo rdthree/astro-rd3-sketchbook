@@ -7,11 +7,19 @@ export default defineConfig({
     mdx(), // Enables MDX support for enhanced Markdown capabilities
   ],
   vite: {
-    // resolve: {
-    //   alias: {
-    //     "@components": "", // Sets an alias for the components directory
-    //   },
-    // }
+    optimizeDeps: {
+      //include: ["@babylonjs/core"], // Excludes the "three" package from optimization
+    },
+    ssr: {
+        //noExternal: ["@babylonjs/core"], // Excludes the "three" package from SSR
+      },
+    resolve: {
+      alias: {
+        //"@components": "/src/components", // Sets an alias for the components directory
+        //"@babylonjs/core": "/node_modules/@babylonjs/core", // Sets an alias for the Babylon.js core package
+      },
+      
+    }
   }, // Vite-specific configurations can be added here
   outDir: "dist", // Specifies the output directory for the built site
   publicDir: "public", // Defines the directory for static assets
