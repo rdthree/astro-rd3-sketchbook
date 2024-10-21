@@ -27,7 +27,8 @@ export default defineConfig({
   // Markdown configuration
   markdown: {
     shikiConfig: {
-      theme: "nord", // Sets the syntax highlighting theme for code blocks
+      theme: "snazzy-light", // Sets the syntax highlighting theme for code blocks
+      defaultColor: "false",
     },
   },
 });

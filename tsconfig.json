@@ -11,6 +11,7 @@
     "baseUrl": ".",
     "paths": {
       "@SketchWrapper": ["src/components/SketchWrapper.astro"],
+      "@CodeSnippet": ["src/components/CodeSnippet.astro"],
       //"@babylonjs/*": ["node_modules/@babylonjs/*"],
     },
     "lib": [

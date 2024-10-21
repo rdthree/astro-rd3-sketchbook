@@ -1,0 +1,26 @@
+---
+import { Code } from 'astro:components';
+interface Props {
+  src: string;
+  lang: string;
+}
+
+const { src, lang = "javascript" } = Astro.props;
+
+const files = import.meta.glob<string>("/content/**/*.*", {
+  query: "?raw",
+  import: "default",
+});
+
+// Find the correct file path by matching the filename
+const filePath = Object.keys(files).find((path) => path.endsWith(`/${src}`));
+const fileContent = filePath ? await files[filePath]() : "";
+---
+
+<!-- <pre><code class={`language-${lang}`} data-lang={lang}>{fileContent}</code></pre> -->
+
+<Code 
+  code={fileContent} 
+  lang={lang as any} 
+  theme="snazzy-light"
+/>

@@ -229,30 +229,7 @@ nav.vertical-nav ul li a .entry-name,
 }
 
 /* PrismJS Formatting */
-code[class*="language-"],
-pre[class*="language-"] {
-  max-width: 90ch; /* Optional: Remove or adjust as needed */
-  max-height: 35em; /* Equivalent to 15 lines of code */
-  margin: 1em 0; /* Top and bottom margins only */
-  overflow-x: auto;
-  white-space: pre;
-  word-wrap: normal;
-  text-shadow: none;
-  font-family: "FiraCode Nerd Font", monospace;
-  font-size: 0.82rem;
-  background: #f8f8f8;
-  width: 100%; /* Ensures full width */
-}
 
-pre[class*="language-"] {
-  overflow: auto;
-}
-
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] code {
-  white-space: pre;
-  overflow: visible;
-}
 
 /* Override styles from other libraries */
 body .layout-grid nav.vertical-nav,

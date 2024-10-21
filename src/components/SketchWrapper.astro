@@ -9,8 +9,10 @@ interface Props {
 const { src, id, type } = Astro.props;
 
 const scripts = import.meta.glob<string>('/content/**/*.{js,ts}', { query: '?raw', import: 'default' });
-const scriptPath = `/content/${src}`;
-const scriptContent = scriptPath in scripts ? await scripts[scriptPath]() : '';
+
+// Find the correct script path by matching the filename
+const scriptPath = Object.keys(scripts).find(path => path.endsWith(`/${src}`));
+const scriptContent = scriptPath ? await scripts[scriptPath]() : '';
 
 const containerClass = `${type}-container`;
 
