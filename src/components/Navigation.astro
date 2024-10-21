@@ -6,15 +6,19 @@ import { getAllPosts } from '../utils/loadPosts.js';
 const posts = getAllPosts();
 ---
 
-<nav class="vertical-nav">
-  <button class="expand-button"></button>
-  <ul>
-    <li><a href="/"><i class="fas fa-link"></i><span class="entry-name">Home</span></a></li>
-    {posts.map(post => (
-      <li><a href={`/${post.folder}`}><i class="fas fa-link"></i><span class="entry-name">{post.folder}</span></a></li>
-    ))}
-  </ul>
-</nav>
+<body class="line-numbers">
+<div class="layout-grid">
+  <nav class="vertical-nav">
+    <button class="expand-button" aria-label="Toggle-Sidebar" aria-expanded="false"></button>
+    <ul>
+      <li><a href="/"><i></i><span class="entry-name">Home</span></a></li>
+      {posts.map(post => (
+        <li><a href={`/${post.folder}`}><i></i><span class="entry-name">{post.folder}</span></a></li>
+      ))}
+    </ul>
+  </nav>
+</div>
+</body>
 
 <script>
   function setupNavigation() {

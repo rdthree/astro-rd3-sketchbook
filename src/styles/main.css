@@ -46,7 +46,7 @@ nav.vertical-nav {
   flex-direction: column;
   align-items: flex-start; /* Align items to the start (left) */
   position: relative;
-  width: 6ch; /* Collapsed width: enough for icons */
+  width: 7ch; /* Collapsed width: enough for icons */
   transition: width 0.3s ease;
   padding: 0.65rem;
   background-color: white;
@@ -123,7 +123,7 @@ nav.vertical-nav ul li a .entry-name,
 /* Expand Button */
 .expand-button {
   align-self: flex-start; /* Aligns the button to the left */
-  margin: 2px 0 17.5px -9px; /* Corrected margin-left from -09px to -9px */
+  margin: 2px 0 17.5px 0px; /* Corrected margin-left from -09px to -9px */
   width: 12px; /* Diameter of the circle */
   height: 12px;
   background-color: black; /* Black circle background */
