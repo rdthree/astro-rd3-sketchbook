@@ -15,6 +15,11 @@ export default defineConfig({
     ssr: {
         //noExternal: ["@babylonjs/core"], // Excludes the "three" package from SSR
       },
+    build: {
+      rollupOptions: {
+        external: ['fs', 'path'], // Excludes the "fs" and "path" packages from the build
+          },
+        },
     resolve: {
       alias: {
         //"@components": "/src/components", // Sets an alias for the components directory
