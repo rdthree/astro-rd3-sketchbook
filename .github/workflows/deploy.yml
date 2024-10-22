@@ -28,12 +28,12 @@ jobs:
           node-version: '20'                       # Specify the Node.js version
           cache: 'pnpm'                            # Enable pnpm caching
           cache-dependency-path: 'pnpm-lock.yaml'  # Path to pnpm lock file
+          package-manager: 'pnpm@latest'            # Install the latest version of pnpm
 
-      # 3. Install pnpm using the pnpm/action-setup@v4 action
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        #with:
-        #  version: 7 # Specify the desired pnpm version
+      # 3. Verify pnpm Installation (Debugging)
+      - name: Verify pnpm Installation
+        run: |
+          pnpm --version
 
       # 4. Install dependencies using pnpm
       - name: Install Dependencies
@@ -48,14 +48,12 @@ jobs:
           # node-version: 20                     # Ensure consistency with setup-node
           # package-manager: pnpm@latest         # Specify pnpm if needed
 
-  deploy:
-    needs: build-and-deploy
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      # 6. Deploy to GitHub Pages
+      # 6. (Optional) List Build Directory for Verification
+      - name: List Build Directory
+        run: ls -la ./dist   # Replace './dist' with your actual build output directory
+
+      # 7. Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
+        #with:
+        #  path: ./dist          # Replace with your build output directory
