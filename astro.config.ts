@@ -1,4 +1,3 @@
-// @ts-check
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 
@@ -28,6 +27,7 @@ export default defineConfig({
       
     }
   }, // Vite-specific configurations can be added here
+  output: "static", // Specifies the output format for the built site
   outDir: "dist", // Specifies the output directory for the built site
   publicDir: "public", // Defines the directory for static assets
   srcDir: "src", // Sets the source directory for Astro components and pages
