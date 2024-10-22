@@ -73,6 +73,9 @@ jobs:
           echo "Astro check version:"
           pnpm list @astrojs/check
           
+          # Verify TypeScript installation
+          pnpm exec tsc --version
+          
           # Commit the new lock file
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
@@ -82,15 +85,17 @@ jobs:
 
       - name: Build Project
         run: |
-          # Ensure TypeScript is in the path
-          export PATH="$PATH:./node_modules/.bin"
+          # Ensure pnpm and node_modules/.bin are in the PATH
+          export PATH="$PNPM_HOME:$PATH:./node_modules/.bin"
           
-          # Run astro build directly without type checking
-          pnpm exec astro build
+          # Verify TypeScript is accessible
+          pnpm exec tsc --version
+          
+          # Run astro build with verbose logging
+          pnpm exec astro build --verbose
         env:
           NODE_ENV: production
           VITE_NODE_ENV: production
-          # Add skipLibCheck to avoid TS errors
           TS_NODE_COMPILER_OPTIONS: '{"skipLibCheck":true}'
 
       - name: Setup Pages
