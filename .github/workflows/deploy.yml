@@ -46,7 +46,7 @@ jobs:
       # 6. Build the project using withastro/action@v3
       - name: Build and Upload Site
         uses: withastro/action@v3
-        with:
+        #with:
           # Uncomment and set these if your project is in a subdirectory or requires specific configurations
           # path: ./frontend                     # Example: if your project is in a 'frontend' folder
           # node-version: 20                     # Ensure consistency with setup-node
