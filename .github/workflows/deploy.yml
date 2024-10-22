@@ -1,56 +1,70 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Trigger the workflow on pushes to the 'master' branch
   push:
     branches: [ master ]
-  # Allow manual triggering from the Actions tab
   workflow_dispatch:
 
+# These permissions are needed for GitHub Pages deployment
 permissions:
-  contents: read                # Required to clone the repository
-  pages: write                  # Required to deploy to GitHub Pages
-  id-token: write               # Required for authentication
+  contents: read
+  pages: write
+  id-token: write
+
+# Specify environment
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '8.15.1'  # Specify a stable version
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      # 1. Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js with caching
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'                       # Specify the Node.js version
-          cache: 'pnpm'                            # Enable pnpm caching
-          cache-dependency-path: 'pnpm-lock.yaml'  # Path to pnpm lock file
+          node-version: ${{ env.NODE_VERSION }}
 
-      # 3. Install pnpm globally using npm
-      - name: Install pnpm
-        run: npm install -g pnpm@latest
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
 
-      # 4. Verify pnpm Installation (Optional but Recommended)
-      - name: Verify pnpm Installation
-        run: pnpm --version
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      # 5. Install dependencies using pnpm
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      # 6. Build the project
       - name: Build Project
         run: pnpm run build
 
-      # 7. (Optional) List Build Directory Contents for Verification
-      - name: List Build Directory
-        run: ls -la ./dist   # Replace './dist' with your actual build output directory
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-      # 8. Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist              # Replace './dist' with your actual build output directory
+          path: ./dist  # Replace with your build output directory
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
