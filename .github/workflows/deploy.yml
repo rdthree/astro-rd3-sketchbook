@@ -21,7 +21,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js with pnpm and caching
+      # 2. Setup Node.js with caching
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -29,13 +29,11 @@ jobs:
           cache: 'pnpm'                            # Enable pnpm caching
           cache-dependency-path: 'pnpm-lock.yaml'  # Path to pnpm lock file
 
-      # 3. Install pnpm using the pnpm/action-setup@v4 action
+      # 3. Install pnpm globally using npm
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 7 # Specify the desired pnpm version
+        run: npm install -g pnpm@latest
 
-      # 4. Verify pnpm Installation (Optional)
+      # 4. Verify pnpm Installation (Optional but Recommended)
       - name: Verify pnpm Installation
         run: pnpm --version
 
@@ -43,7 +41,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      # 6. Build the project using pnpm
+      # 6. Build the project
       - name: Build Project
         run: pnpm run build
 
