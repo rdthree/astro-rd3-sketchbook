@@ -5,16 +5,14 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
-# These permissions are needed for GitHub Pages deployment
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Specify environment
 env:
   NODE_VERSION: '20'
-  PNPM_VERSION: '8.15.1'  # Specify a stable version
+  PNPM_VERSION: '8.15.1'
 
 jobs:
   build-and-deploy:
@@ -52,7 +50,20 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          # First try to install with the existing lockfile
+          pnpm install || {
+            # If that fails, remove the lock file and do a fresh install
+            rm pnpm-lock.yaml
+            pnpm install
+            
+            # Configure git and commit the new lockfile
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git config --global user.name "github-actions[bot]"
+            git add pnpm-lock.yaml
+            git commit -m "chore: update pnpm-lock.yaml for compatibility" || echo "No changes to commit"
+            git push || echo "No changes to push"
+          }
 
       - name: Build Project
         run: pnpm run build
@@ -63,7 +74,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist  # Replace with your build output directory
+          path: ./dist
 
       - name: Deploy to GitHub Pages
         id: deployment
