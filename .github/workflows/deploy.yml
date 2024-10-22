@@ -2,63 +2,45 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ master ]
-  workflow_dispatch:
+    branches: [ master ]          # Trigger on pushes to the 'master' branch
+  workflow_dispatch:               # Allow manual triggering from the Actions tab
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read                   # Required to clone the repository
+  pages: write                     # Required to deploy to GitHub Pages
+  id-token: write                  # Required for authentication
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout your repository using git
+      # 1. Checkout the repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: Setup Node
+      # 2. Setup Node.js with pnpm and caching
+      - name: Setup Node.js with pnpm
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'pnpm'
+          node-version: '20'                       # Specify the Node.js version
+          cache: 'pnpm'                            # Enable pnpm caching
+          cache-dependency-path: 'pnpm-lock.yaml'  # Path to your pnpm lock file
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      # 3. Install pnpm globally (optional but recommended for latest version)
+      - name: Install pnpm
+        run: npm install -g pnpm@latest
 
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
+      # 4. Install dependencies using pnpm
+      - name: Install Dependencies
         run: pnpm install
 
-      - name: Build site
+      # 5. Build the project
+      - name: Build Project
         run: pnpm run build
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: ./dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
+      # 6. Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          path: ./dist              # Replace './dist' with your actual build output directory
