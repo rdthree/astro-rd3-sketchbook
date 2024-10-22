@@ -1,82 +1,39 @@
 name: Deploy to GitHub Pages
 
 on:
+  # Trigger the workflow every time you push to the `main` branch
+  # Using a different branch name? Replace `main` with your branch’s name
   push:
     branches: [ master ]
+  # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
+# Allow this job to clone the repo and create a page deployment
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
-env:
-  NODE_VERSION: '20'
-  PNPM_VERSION: '8.15.1'
-  NODE_ENV: 'production'
-
 jobs:
-  build-and-deploy:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repository using git
+        uses: actions/checkout@v4
+      - name: Install, build, and upload your site
+        uses: withastro/action@v3
+        # with:
+          # path: . # The root location of your Astro project inside the repository. (optional)
+          # node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 20. (optional)
+          # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
+
+  deploy:
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: ${{ env.PNPM_VERSION }}
-          run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Clean Install
-        run: |
-          rm -rf node_modules
-          rm -f pnpm-lock.yaml
-          pnpm install --no-frozen-lockfile
-          pnpm add -D typescript@5.6.3 @astrojs/check@latest @types/node@latest
-          pnpm list typescript
-          pnpm exec tsc --version
-
-      - name: Build Project
-        run: |
-          export PATH="$PNPM_HOME:$PATH:./node_modules/.bin"
-          pnpm exec tsc --version
-          pnpm exec astro build --verbose
-        env:
-          NODE_ENV: production
-          VITE_NODE_ENV: production
-          TS_NODE_COMPILER_OPTIONS: '{"skipLibCheck":true}'
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
