@@ -35,7 +35,7 @@ jobs:
         with:
           version: 7 # Specify the desired pnpm version
 
-      # 4. Verify pnpm Installation (Optional but Recommended)
+      # 4. Verify pnpm Installation (Optional)
       - name: Verify pnpm Installation
         run: pnpm --version
 
