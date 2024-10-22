@@ -52,46 +52,17 @@ jobs:
 
       - name: Clean Install
         run: |
-          # Remove existing node_modules and lock file
           rm -rf node_modules
           rm -f pnpm-lock.yaml
-          
-          # Install TypeScript globally first
-          pnpm add -g typescript
-          
-          # Install TypeScript and other core dependencies
-          pnpm add -D typescript@5.6.3 @astrojs/check@latest
-          pnpm add -D @types/node@latest
-          
-          # Install all dependencies
           pnpm install --no-frozen-lockfile
-          
-          # Display installed versions for debugging
-          echo "Node version: $(node -v)"
-          echo "TypeScript version:"
+          pnpm add -D typescript@5.6.3 @astrojs/check@latest @types/node@latest
           pnpm list typescript
-          echo "Astro check version:"
-          pnpm list @astrojs/check
-          
-          # Verify TypeScript installation
           pnpm exec tsc --version
-          
-          # Commit the new lock file
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add pnpm-lock.yaml
-          git commit -m "chore: update pnpm-lock.yaml" || echo "No changes to commit"
-          git push || echo "No changes to push"
 
       - name: Build Project
         run: |
-          # Ensure pnpm and node_modules/.bin are in the PATH
           export PATH="$PNPM_HOME:$PATH:./node_modules/.bin"
-          
-          # Verify TypeScript is accessible
           pnpm exec tsc --version
-          
-          # Run astro build with verbose logging
           pnpm exec astro build --verbose
         env:
           NODE_ENV: production
