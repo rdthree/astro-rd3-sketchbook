@@ -3,7 +3,7 @@ import mdx from "@astrojs/mdx";
 
 export default defineConfig({
   site: 'https://rdthree.github.io',
-  base: '/astro-rd3-sketchbook',
+  //base: 'astro-rd3-sketchbook',
   integrations: [
     mdx(), // Enables MDX support for enhanced Markdown capabilities
   ],
