@@ -35,7 +35,7 @@ jobs:
         with:
           version: 7 # Specify the desired pnpm version
 
-      # 4. Verify pnpm Installation (Optional but recommended for debugging)
+      # 4. Verify pnpm Installation (Optional)
       - name: Verify pnpm Installation
         run: pnpm --version
 
@@ -44,22 +44,20 @@ jobs:
         run: pnpm install
 
       # 6. Build the project using withastro/action@v3
-      - name: Install, build, and upload your site
+      - name: Build and Upload Site
         uses: withastro/action@v3
-        # with:
+        with:
           # Uncomment and set these if your project is in a subdirectory or requires specific configurations
           # path: ./frontend                     # Example: if your project is in a 'frontend' folder
           # node-version: 20                     # Ensure consistency with setup-node
           # package-manager: pnpm@latest         # Specify pnpm if needed
 
-  deploy:
-    needs: build-and-deploy
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      # 7. Deploy to GitHub Pages
+      # 7. List Build Directory Contents (Optional)
+      - name: List Build Directory
+        run: ls -la ./dist   # Replace './dist' with your actual build output directory
+
+      # 8. Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          path: ./dist              # Replace './dist' with your actual build output directory
