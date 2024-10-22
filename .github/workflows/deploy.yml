@@ -22,38 +22,44 @@ jobs:
         uses: actions/checkout@v4
 
       # 2. Setup Node.js with pnpm and caching
-      - name: Setup Node.js with pnpm
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'                       # Specify the Node.js version
           cache: 'pnpm'                            # Enable pnpm caching
           cache-dependency-path: 'pnpm-lock.yaml'  # Path to pnpm lock file
-          package-manager: 'pnpm@latest'            # Install the latest version of pnpm
 
-      # 3. Verify pnpm Installation (Debugging)
+      # 3. Install pnpm using the pnpm/action-setup@v4 action
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 7 # Specify the desired pnpm version
+
+      # 4. Verify pnpm Installation (Optional but recommended for debugging)
       - name: Verify pnpm Installation
-        run: |
-          pnpm --version
+        run: pnpm --version
 
-      # 4. Install dependencies using pnpm
+      # 5. Install dependencies using pnpm
       - name: Install Dependencies
         run: pnpm install
 
-      # 5. Build the project using withastro/action@v3
+      # 6. Build the project using withastro/action@v3
       - name: Install, build, and upload your site
         uses: withastro/action@v3
-        #with:
+        # with:
           # Uncomment and set these if your project is in a subdirectory or requires specific configurations
           # path: ./frontend                     # Example: if your project is in a 'frontend' folder
           # node-version: 20                     # Ensure consistency with setup-node
           # package-manager: pnpm@latest         # Specify pnpm if needed
 
-      # 6. (Optional) List Build Directory for Verification
-      - name: List Build Directory
-        run: ls -la ./dist   # Replace './dist' with your actual build output directory
-
+  deploy:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       # 7. Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
-        #with:
-        #  path: ./dist          # Replace with your build output directory
