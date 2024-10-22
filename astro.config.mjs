@@ -17,7 +17,7 @@ export default defineConfig({
       },
     build: {
       rollupOptions: {
-        external: ['fs', 'path'], // Excludes the "fs" and "path" packages from the build
+        external: ['fs', 'path'], // Excludes the "fs" and "path" packages from the build so it can deploy to github pages
           },
         },
     resolve: {
