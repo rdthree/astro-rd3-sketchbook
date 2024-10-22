@@ -35,7 +35,7 @@ jobs:
         with:
           version: 7 # Specify the desired pnpm version
 
-      # 4. Verify pnpm Installation (Optional)
+      # 4. Verify pnpm Installation (Optional but Recommended)
       - name: Verify pnpm Installation
         run: pnpm --version
 
@@ -43,16 +43,11 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      # 6. Build the project using withastro/action@v3
-      - name: Build and Upload Site
-        uses: withastro/action@v3
-        #with:
-          # Uncomment and set these if your project is in a subdirectory or requires specific configurations
-          # path: ./frontend                     # Example: if your project is in a 'frontend' folder
-          # node-version: 20                     # Ensure consistency with setup-node
-          # package-manager: pnpm@latest         # Specify pnpm if needed
+      # 6. Build the project using pnpm
+      - name: Build Project
+        run: pnpm run build
 
-      # 7. List Build Directory Contents (Optional)
+      # 7. (Optional) List Build Directory Contents for Verification
       - name: List Build Directory
         run: ls -la ./dist   # Replace './dist' with your actual build output directory
 
