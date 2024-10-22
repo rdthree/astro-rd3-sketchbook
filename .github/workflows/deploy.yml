@@ -82,6 +82,9 @@ jobs:
 
       - name: Build Project
         run: |
+          # Ensure TypeScript is in the path
+          export PATH="$PATH:./node_modules/.bin"
+          
           # Run astro build directly without type checking
           pnpm exec astro build
         env:
