@@ -38,38 +38,35 @@ jobs:
           run_install: false
 
       - name: Get pnpm store directory
+        id: pnpm-cache
         shell: bash
         run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
 
       - name: Setup pnpm cache
         uses: actions/cache@v4
         with:
-          path: ${{ env.STORE_PATH }}
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
       - name: Install Dependencies
         run: |
-          # Install required dev dependencies first
-          pnpm add -D typescript @astrojs/check
+          # First install TypeScript and Astro check
+          pnpm add -D typescript@latest @astrojs/check@latest
           
-          # Then install all project dependencies
-          pnpm install || {
-            rm pnpm-lock.yaml
-            pnpm install
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git config --global user.name "github-actions[bot]"
-            git add pnpm-lock.yaml
-            git commit -m "chore: update pnpm-lock.yaml for compatibility" || echo "No changes to commit"
-            git push || echo "No changes to push"
-          }
+          # Then install the rest of the dependencies
+          pnpm install
+          
+          # Display installed versions for debugging
+          echo "TypeScript version:"
+          pnpm list typescript
+          echo "Astro check version:"
+          pnpm list @astrojs/check
 
       - name: Build Project
-        run: |
-          # Skip type checking for now to get the build working
-          pnpm run build --no-check
+        run: pnpm run build-only
         env:
           NODE_ENV: production
           VITE_NODE_ENV: production
