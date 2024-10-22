@@ -1,46 +1,41 @@
 name: Deploy to GitHub Pages
 
 on:
+  # Trigger the workflow every time you push to the `main` branch
+  # Using a different branch name? Replace `main` with your branch’s name
   push:
-    branches: [ master ]          # Trigger on pushes to the 'master' branch
-  workflow_dispatch:               # Allow manual triggering from the Actions tab
+    branches: [ master ]
+  # Allows you to run this workflow manually from the Actions tab on GitHub.
+  workflow_dispatch:
 
+# Allow this job to clone the repo and create a page deployment
 permissions:
-  contents: read                   # Required to clone the repository
-  pages: write                     # Required to deploy to GitHub Pages
-  id-token: write                  # Required for authentication
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. Checkout the repository
-      - name: Checkout Repository
+      - name: Checkout your repository using git
         uses: actions/checkout@v4
-
-      # 2. Setup Node.js with pnpm and caching
-      - name: Setup Node.js with pnpm
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'                       # Specify the Node.js version
-          cache: 'pnpm'                            # Enable pnpm caching
-          cache-dependency-path: 'pnpm-lock.yaml'  # Path to your pnpm lock file
-
-      # 3. Install pnpm globally (optional but recommended for latest version)
-      - name: Install pnpm
-        run: npm install -g pnpm@latest
-
-      # 4. Install dependencies using pnpm
-      - name: Install Dependencies
+      - name: Install dependencies
         run: pnpm install
+      - name: Install, build, and upload your site
+        uses: withastro/action@v3
+        # with:
+          # path: . # The root location of your Astro project inside the repository. (optional)
+          # node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 20. (optional)
+          # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
 
-      # 5. Build the project
-      - name: Build Project
-        run: pnpm run build
-
-      # 6. Deploy to GitHub Pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          path: ./dist              # Replace './dist' with your actual build output directory
