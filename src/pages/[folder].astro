@@ -3,44 +3,39 @@
 and rendering all `.mdx` files within the specified folder. -->
 ---
 import Layout from '../layouts/Layout.astro';
-import { getAllPosts } from '../utils/loadPosts';
+import { getCollection } from 'astro:content';
 
-// Generate static paths for each folder containing MDX files
 export async function getStaticPaths() {
-  const posts = await getAllPosts();
-  return posts.map(({ folder }) => ({
-    params: { folder },
-  }));
+  const sketches = await getCollection('sketches');
+  
+  // Get unique folder names
+  const folders = [...new Set(sketches.map(sketch => {
+    const parts = sketch.slug.split('/');
+    return parts[0];
+  }))];
+
+  return folders.map(folder => {
+    const folderSketches = sketches.filter(sketch => 
+      sketch.slug.startsWith(folder + '/')
+    );
+    
+    return {
+      params: { folder },
+      props: { sketches: folderSketches }
+    };
+  });
 }
 
-// Get the current folder from the URL parameters
-const { folder } = Astro.params;
+const { sketches } = Astro.props;
 
-// Dynamically import all MDX files in the content directory and its subfolders
-const modules = import.meta.glob<{ default: any }>('../../content/**/*.mdx', { eager: true });
-
-// Convert the modules object to an array of [path, module] pairs
-const moduleEntries = Object.entries(modules);
-
-// Filter modules that are in the current folder
-const filteredModules = moduleEntries.filter(([path, module]) => {
-  // Extract the folder name from the path
-  // Assuming the path format is '../../content/{folder}/{file}.mdx'
-  const pathParts = path.split('/');
-  const folderName = pathParts[pathParts.length - 2];
-  return folderName === folder;
-});
-
-// Extract the default exports (Content components) from the filtered modules
-const contents = filteredModules.map(([path, module]) => module.default);
+// Render all MDX content for this folder
+const renderedContent = await Promise.all(
+  sketches.map(sketch => sketch.render())
+);
 ---
-<Layout title={folder}>
-  {contents.length > 0 ? (
-    // Render each MDX Content component
-    contents.map((Content, index) => (
-      <Content key={index} />
-    ))
-  ) : (
-    <p>No content available in this folder.</p>
-  )}
+
+<Layout title={Astro.params.folder}>
+  {renderedContent.map(({ Content }) => (
+    <Content />
+  ))}
 </Layout>

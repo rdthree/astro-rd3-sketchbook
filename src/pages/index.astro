@@ -1,25 +1,25 @@
 <!-- file: src\pages\index.astro -->
 ---
 import Layout from "../layouts/Layout.astro";
-import { getAllPosts } from "../utils/loadPosts";
+import { getCollection } from 'astro:content';
 
-// Fetch all posts/sketches
-const posts = getAllPosts();
+const sketches = await getCollection('sketches');
+const folders = [...new Set(sketches.map(sketch => {
+  const parts = sketch.slug.split('/');
+  return parts[0];
+}))];
 ---
 
 <Layout title="">
   <div class="body">
-  <h2>digital sketchbook</h2>
-  <p>sketches:</p>
-  <ul>
-    {/* Dynamically generate list items for each post/sketch */}
-    {
-      posts.map((post) => (
+    <h2>digital sketchbook</h2>
+    <p>sketches:</p>
+    <ul>
+      {folders.map((folder) => (
         <li>
-          <a href={`/${post.folder}`}>{post.folder}</a>
+          <a href={`./${folder}`}>{folder}</a>
         </li>
-      ))
-    }
-  </ul>
+      ))}
+    </ul>
   </div>
 </Layout>

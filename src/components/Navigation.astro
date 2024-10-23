@@ -1,24 +1,31 @@
 ---
-// Navigation.astro: Reusable navigation component for the site
-// This component generates a list of navigation links dynamically
+// src/components/Navigation.astro
+import { getCollection } from 'astro:content';
+const sketches = await getCollection('sketches');
 
-import { getAllPosts } from '../utils/loadPosts.js';
-const posts = getAllPosts();
+// Get unique folder names
+const folders = [...new Set(sketches.map(sketch => {
+  const parts = sketch.slug.split('/');
+  return parts[0];
+}))];
 ---
 
-<body class="line-numbers">
 <div class="layout-grid">
   <nav class="vertical-nav">
     <button class="expand-button" aria-label="Toggle-Sidebar" aria-expanded="false"></button>
     <ul>
-      <li><a href="/"><i></i><span class="entry-name">Home</span></a></li>
-      {posts.map(post => (
-        <li><a href={`/${post.folder}`}><i></i><span class="entry-name">{post.folder}</span></a></li>
+      <li><a href="./"><i></i><span class="entry-name">Home</span></a></li>
+      {folders.map(folder => (
+        <li>
+          <a href={`./${folder}`}>
+            <i></i>
+            <span class="entry-name">{folder}</span>
+          </a>
+        </li>
       ))}
     </ul>
   </nav>
 </div>
-</body>
 
 <script>
   function setupNavigation() {

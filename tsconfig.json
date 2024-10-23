@@ -17,8 +17,9 @@
     "lib": [
       "dom",
       "ESNEXT"
-    ]
+    ],
+    "types": ["astro/client"]
   },
-  "include": ["**/*.astro, src/**/*.ts", "content/**/*.ts", "src/types/*.d.ts"],
+  "include": ["**/*.astro, src/**/*.ts", "content/**/*.ts", "src/types/*.d.ts", "src/content/config.ts"],
   "exclude": ["node_modules", "dist"]
 }
