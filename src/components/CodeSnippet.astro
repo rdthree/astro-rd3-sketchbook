@@ -7,7 +7,7 @@ interface Props {
 
 const { src, lang = "javascript" } = Astro.props;
 
-const files = import.meta.glob<string>("/content/**/*.*", {
+const files = import.meta.glob<string>("/src/content/**/*.*", {
   query: "?raw",
   import: "default",
 });

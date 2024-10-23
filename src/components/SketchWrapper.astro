@@ -8,7 +8,7 @@ interface Props {
 
 const { src, id, type } = Astro.props;
 
-const scripts = import.meta.glob<string>('/content/**/*.{js,ts}', { query: '?raw', import: 'default' });
+const scripts = import.meta.glob<string>('/src/content/**/*.{js,ts}', { query: '?raw', import: 'default' });
 
 // Find the correct script path by matching the filename
 const scriptPath = Object.keys(scripts).find(path => path.endsWith(`/${src}`));
