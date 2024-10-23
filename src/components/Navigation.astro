@@ -1,10 +1,13 @@
 ---
 // src/components/Navigation.astro
+
 import { getCollection } from 'astro:content';
+
+// Get all sketches
 const sketches = await getCollection('sketches');
 
 // Get unique folder names
-const folders = [...new Set(sketches.map(sketch => {
+const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
   const parts = sketch.slug.split('/');
   return parts[0];
 }))];
@@ -17,7 +20,7 @@ const folders = [...new Set(sketches.map(sketch => {
       <li><a href="./"><i></i><span class="entry-name">Home</span></a></li>
       {folders.map(folder => (
         <li>
-          <a href={`/${folder}`}>
+          <a href={`./${folder}`}>
             <i></i>
             <span class="entry-name">{folder}</span>
           </a>

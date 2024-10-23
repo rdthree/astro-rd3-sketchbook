@@ -1,10 +1,14 @@
-<!-- file: src\pages\index.astro -->
 ---
+// file: src/pages/index.astro
+
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from 'astro:content';
 
+// Get all sketches
 const sketches = await getCollection('sketches');
-const folders = [...new Set(sketches.map(sketch => {
+
+// Get unique folder names
+const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
   const parts = sketch.slug.split('/');
   return parts[0];
 }))];
