@@ -9,16 +9,20 @@ const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
   const parts = sketch.slug.split('/');
   return parts[0];
 }))];
+
+// Check if we're in production (GitHub Pages)
+const isProd = import.meta.env.PROD;
+const prefix = isProd ? '/astro-rd3-sketchbook' : '';
 ---
 
 <div class="layout-grid">
   <nav class="vertical-nav">
     <button class="expand-button" aria-label="Toggle-Sidebar" aria-expanded="false"></button>
     <ul>
-      <li><a href="/"><i></i><span class="entry-name">Home</span></a></li>
+      <li><a href={`${prefix}/`}><i></i><span class="entry-name">Home</span></a></li>
       {folders.map(folder => (
         <li>
-          <a href={`/${folder}`}>
+          <a href={`${prefix}/${folder}`}>
             <i></i>
             <span class="entry-name">{folder}</span>
           </a>
