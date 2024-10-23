@@ -1,5 +1,7 @@
 <!-- filename: src\components\SketchWrapper.astro -->
 ---
+import { getCollection } from 'astro:content';
+
 interface Props {
   src: string;
   id: string;
@@ -8,9 +10,16 @@ interface Props {
 
 const { src, id, type } = Astro.props;
 
-const scripts = import.meta.glob<string>('/src/content/**/*.{js,ts}', { query: '?raw', import: 'default' });
+const sketches = await getCollection('sketches');
+const scripts = import.meta.glob<string>('/src/content/sketches/**/*.{js,ts}', { 
+  query: '?raw', 
+  import: 'default' 
+});
 
-// Find the correct script path by matching the filename
+// Find the sketch entry from collection
+const sketch = sketches.find(sketch => sketch.id.endsWith(`/${src}`));
+
+// Get the raw file content using the full path
 const scriptPath = Object.keys(scripts).find(path => path.endsWith(`/${src}`));
 const scriptContent = scriptPath ? await scripts[scriptPath]() : '';
 

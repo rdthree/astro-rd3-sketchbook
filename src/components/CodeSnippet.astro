@@ -1,5 +1,7 @@
 ---
 import { Code } from 'astro:components';
+import { getCollection } from 'astro:content';
+
 interface Props {
   src: string;
   lang: string;
@@ -7,17 +9,19 @@ interface Props {
 
 const { src, lang = "javascript" } = Astro.props;
 
-const files = import.meta.glob<string>("/src/content/**/*.*", {
+const sketches = await getCollection('sketches');
+const files = import.meta.glob<string>("/src/content/sketches/**/*.*", {
   query: "?raw",
   import: "default",
 });
 
-// Find the correct file path by matching the filename
-const filePath = Object.keys(files).find((path) => path.endsWith(`/${src}`));
+// Find the sketch entry from collection
+const sketch = sketches.find(sketch => sketch.id.endsWith(`/${src}`));
+
+// Get the raw file content using the full path
+const filePath = Object.keys(files).find(path => path.endsWith(`/${src}`));
 const fileContent = filePath ? await files[filePath]() : "";
 ---
-
-<!-- <pre><code class={`language-${lang}`} data-lang={lang}>{fileContent}</code></pre> -->
 
 <Code 
   code={fileContent} 
