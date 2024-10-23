@@ -1,6 +1,4 @@
 ---
-// src/components/Navigation.astro
-
 import { getCollection } from 'astro:content';
 
 // Get all sketches
@@ -17,10 +15,10 @@ const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
   <nav class="vertical-nav">
     <button class="expand-button" aria-label="Toggle-Sidebar" aria-expanded="false"></button>
     <ul>
-      <li><a href="./"><i></i><span class="entry-name">Home</span></a></li>
+      <li><a href="/"><i></i><span class="entry-name">Home</span></a></li>
       {folders.map(folder => (
         <li>
-          <a href={`./${folder}`}>
+          <a href={`/${folder}`}>
             <i></i>
             <span class="entry-name">{folder}</span>
           </a>
