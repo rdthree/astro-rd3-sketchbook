@@ -17,7 +17,7 @@ const folders = [...new Set(sketches.map(sketch => {
       <li><a href="./"><i></i><span class="entry-name">Home</span></a></li>
       {folders.map(folder => (
         <li>
-          <a href={`./${folder}`}>
+          <a href={`/${folder}`}>
             <i></i>
             <span class="entry-name">{folder}</span>
           </a>
