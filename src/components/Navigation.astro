@@ -12,7 +12,7 @@ const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
 
 // Environment detection
 const isProd = import.meta.env.PROD;
-const isPreview = isProd && import.meta.env.DEV_SERVER_URL?.includes('localhost');
+const isPreview = typeof window !== 'undefined' && window.location.port === '4322';
 const prefix = isProd && !isPreview ? '/astro-rd3-sketchbook' : '';
 ---
 
