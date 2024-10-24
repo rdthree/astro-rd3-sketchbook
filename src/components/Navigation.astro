@@ -10,20 +10,17 @@ const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
   return parts[0];
 }))];
 
-// Environment detection
-const isProd = import.meta.env.PROD;
-const isPreview = typeof window !== 'undefined' && window.location.port === '4322';
-const prefix = isProd && !isPreview ? '/astro-rd3-sketchbook' : '';
+// Environment detection using client-side script
 ---
 
 <div class="layout-grid">
   <nav class="vertical-nav">
     <button class="expand-button" aria-label="Toggle-Sidebar" aria-expanded="false"></button>
     <ul>
-      <li><a href={`${prefix}/`}><i></i><span class="entry-name">Home</span></a></li>
+      <li><a href="/" data-nav-link><i></i><span class="entry-name">Home</span></a></li>
       {folders.map(folder => (
         <li>
-          <a href={`${prefix}/${folder}`}>
+          <a href={`/${folder}`} data-nav-link>
             <i></i>
             <span class="entry-name">{folder}</span>
           </a>
@@ -40,6 +37,18 @@ const prefix = isProd && !isPreview ? '/astro-rd3-sketchbook' : '';
     if (nav && expandButton) {
       expandButton.addEventListener('click', () => nav.classList.toggle('expanded'));
     }
+
+    // Handle paths based on environment
+    const isPreview = window.location.href.includes('localhost:4322');
+    const isProd = !window.location.href.includes('localhost');
+    
+    const links = document.querySelectorAll('[data-nav-link]');
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      if (isProd && !isPreview) {
+        link.setAttribute('href', `/astro-rd3-sketchbook${href}`);
+      }
+    });
   }
 
   // Run on initial load
