@@ -10,9 +10,10 @@ const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
   return parts[0];
 }))];
 
-// Check if we're in production (GitHub Pages)
+// Environment detection
 const isProd = import.meta.env.PROD;
-const prefix = isProd ? '/astro-rd3-sketchbook' : '';
+const isPreview = isProd && import.meta.env.DEV_SERVER_URL?.includes('localhost');
+const prefix = isProd && !isPreview ? '/astro-rd3-sketchbook' : '';
 ---
 
 <div class="layout-grid">
