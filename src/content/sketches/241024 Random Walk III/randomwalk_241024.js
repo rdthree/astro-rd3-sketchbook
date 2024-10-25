@@ -29,7 +29,7 @@ function randomwalk_241024(p) {
             for (let i = this.circles.length - 1; i >= 0; i--) {
                 const circle = this.circles[i];
                 // Decrease alpha
-                circle.alpha -= 5;
+                circle.alpha -= 25;
                 if (circle.alpha <= 0) {
                     this.circles.splice(i, 1);
                     continue;
@@ -39,7 +39,7 @@ function randomwalk_241024(p) {
                 const c = p.color(0);
                 c.setAlpha(circle.alpha);
                 p.stroke(c);
-                p.strokeWeight(1);
+                p.strokeWeight(0.25);
                 p.ellipse(circle.x, circle.y, circle.size);
                 p.pop();
             }
@@ -52,13 +52,14 @@ function randomwalk_241024(p) {
             this.maxDistance = Math.max(this.maxDistance, dist);
         }
         showUI() {
-            const padding = 20;
+            const padding = 10;
             p.push();
             p.noStroke();
-            p.fill(251, 64);
+            p.fill(251, 4);
             p.rect(p.width - 250 - padding, padding, 250, 160);
-            p.fill(0);
+            p.fill(0, 30);
             p.textAlign(p.LEFT);
+            p.textFont('Consolas');
             p.textSize(12);
             const runTime = Math.floor((Date.now() - this.startTime) / 1000);
             const speed = Math.round(this.stepCount / runTime * 10) / 10;

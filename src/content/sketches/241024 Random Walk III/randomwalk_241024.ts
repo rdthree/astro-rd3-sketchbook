@@ -38,7 +38,7 @@ function randomwalk_241024(p: typeof p5) {
                 const circle = this.circles[i];
 
                 // Decrease alpha
-                circle.alpha -= 5;
+                circle.alpha -= 25;
 
                 if (circle.alpha <= 0) {
                     this.circles.splice(i, 1);
@@ -50,7 +50,7 @@ function randomwalk_241024(p: typeof p5) {
                 const c = p.color(0);
                 c.setAlpha(circle.alpha);
                 p.stroke(c);
-                p.strokeWeight(1);
+                p.strokeWeight(0.25);
                 p.ellipse(circle.x, circle.y, circle.size);
                 p.pop();
             }
@@ -66,14 +66,15 @@ function randomwalk_241024(p: typeof p5) {
         }
 
         showUI() {
-            const padding = 20;
+            const padding = 10;
             p.push();
             p.noStroke();
-            p.fill(251, 64);
+            p.fill(251, 4);
             p.rect(p.width - 250 - padding, padding, 250, 160);
 
-            p.fill(0);
+            p.fill(0, 30);
             p.textAlign(p.LEFT);
+            p.textFont('Consolas');
             p.textSize(12);
             const runTime = Math.floor((Date.now() - this.startTime) / 1000);
             const speed = Math.round(this.stepCount / runTime * 10) / 10;
@@ -86,10 +87,7 @@ function randomwalk_241024(p: typeof p5) {
             p.text(`Distance from Center: ${Math.round(p.dist(p.width/2, p.height/2, this.x, this.y))}`, p.width - 240, padding + 125);
             p.text(`Max Distance: ${Math.round(this.maxDistance)}`, p.width - 240, padding + 145);
             p.pop();
-        }
-
-        step() {
-            const [dx, dy] = Walker.dirs[Math.floor(Math.random() * 4)];
+        }        step() {            const [dx, dy] = Walker.dirs[Math.floor(Math.random() * 4)];
             this.x = p.constrain(this.x + dx, 0, p.width);
             this.y = p.constrain(this.y + dy, 0, p.height);
         }
