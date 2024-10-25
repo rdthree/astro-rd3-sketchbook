@@ -16,27 +16,33 @@ function randomwalk_241024(p) {
             p.stroke(20, 127);
             p.strokeWeight(1);
             p.point(this.x, this.y);
-            // Fading pulsing circles
-            this.circles.forEach(circle => {
-                circle.phase += 0.02;
-                circle.currentSize = circle.baseSize + Math.sin(circle.phase) * 5;
-                circle.opacity *= 0.99; // Control fade rate here
-                p.noFill();
-                p.stroke(0, circle.opacity * 127); // This will fade from 127 to 0
-                p.strokeWeight(1);
-                p.ellipse(circle.x, circle.y, circle.currentSize);
-            });
-            if (Math.random() < 0.005) {
+            // Add new circles occasionally
+            if (Math.random() < 0.001) {
                 this.circles.push({
                     x: this.x,
                     y: this.y,
-                    baseSize: p.random(10, 50),
-                    currentSize: 0,
-                    phase: 0,
-                    opacity: 1.0
+                    size: p.random(5, 100),
+                    alpha: p.random(10, 155),
                 });
             }
-            this.circles = this.circles.filter(circle => circle.opacity > 0.1);
+            // Update and render circles
+            for (let i = this.circles.length - 1; i >= 0; i--) {
+                const circle = this.circles[i];
+                // Decrease alpha
+                circle.alpha -= 5;
+                if (circle.alpha <= 0) {
+                    this.circles.splice(i, 1);
+                    continue;
+                }
+                p.push();
+                p.noFill();
+                const c = p.color(0);
+                c.setAlpha(circle.alpha);
+                p.stroke(c);
+                p.strokeWeight(1);
+                p.ellipse(circle.x, circle.y, circle.size);
+                p.pop();
+            }
             this.updateStats();
             this.showUI();
         }
@@ -78,7 +84,6 @@ function randomwalk_241024(p) {
         walker = new Walker();
     };
     p.draw = () => {
-        // Only fade the background for circles, not the trail
         p.push();
         p.blendMode(p.MULTIPLY);
         p.background(251, 2);
