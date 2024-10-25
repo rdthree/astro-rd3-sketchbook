@@ -18,8 +18,8 @@ typescript docs:
 https://www.typescriptlang.org/docs/handbook/2/classes.html#arrow-functions
 https://www.typescriptlang.org/docs/handbook/2/functions.html
 
-{/* {% p5Container "randomwalk_240924.js", "randomwalk_240924" %} */}
-<Sketch type="p5" src="randomwalk_240924.js" id="randomwalk_240924" />
+{/* {% p5Container "randomwalk_241024.js", "randomwalk_241024" %} */}
+<Sketch type="p5" src="randomwalk_241024.js" id="randomwalk_241024" />
 
 ### Traditional method (like C#): `step() { ... }`
 
@@ -28,7 +28,7 @@ https://www.typescriptlang.org/docs/handbook/2/functions.html
 ### Main sketch function: 
 This is a regular function declaration. It's used as the main container for our p5.js sketch.
 ```typescript
-function randomwalk_240924(p: typeof p5) { ... }
+function randomwalk_241024(p: typeof p5) { ... }
 ```
 
 ### Class methods:
@@ -53,9 +53,9 @@ p.draw = () => { ... };
 ```
 
 ### Example of p5.js instance mode:
-Here, `randomwalk_240924` is a function that takes a `p5` instance as an argument. Inside this function, `p.setup` and `p.draw` are assigned arrow functions. This assignment is crucial for the p5.js instance mode to work correctly.
+Here, `randomwalk_241024` is a function that takes a `p5` instance as an argument. Inside this function, `p.setup` and `p.draw` are assigned arrow functions. This assignment is crucial for the p5.js instance mode to work correctly.
 
-The last line creates a new `p5` instance, passing the `randomwalk_240924` function as the sketch setup. This is **where the p5 library will call the assigned setup and draw functions, **using the correct context thanks to the arrow function syntax.
+The last line creates a new `p5` instance, passing the `randomwalk_241024` function as the sketch setup. This is **where the p5 library will call the assigned setup and draw functions, **using the correct context thanks to the arrow function syntax.
 
 Arrow functions do not having their own bindings to `this` and that is precisely what gives them tight control over `this` in certain contexts. In the case of p5.js instance mode, this behavior is advantageous.
 
@@ -63,4 +63,4 @@ When arrow functions are used for `p.setup` and `p.draw`, they inherit `this` fr
 
 This behavior prevents issues that could arise with traditional function expressions, **where `this` can change based on how the function is invoked**. By using arrow functions, the code guarantees that p5 methods and properties are always accessible within setup and draw, maintaining the correct context for the sketch's execution.
 
-<CodeSnippet src="randomwalk_240924.ts" lang="typescript" />
+<CodeSnippet src="randomwalk_241024.ts" lang="typescript" />

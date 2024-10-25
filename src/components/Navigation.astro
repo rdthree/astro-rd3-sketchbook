@@ -38,14 +38,14 @@ const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
       expandButton.addEventListener('click', () => nav.classList.toggle('expanded'));
     }
 
-    // Handle paths based on environment
+    // Handle paths based on environment (there has to be a better way)
     const isPreview = window.location.href.includes('localhost:4322');
-    const isProd = !window.location.href.includes('localhost');
+    const isDev = !window.location.href.includes('localhost');
     
     const links = document.querySelectorAll('[data-nav-link]');
     links.forEach(link => {
       const href = link.getAttribute('href');
-      if (isProd && !isPreview) {
+      if (isDev && !isPreview) {
         link.setAttribute('href', `/astro-rd3-sketchbook${href}`);
       }
     });

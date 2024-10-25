@@ -16,7 +16,7 @@ const files = import.meta.glob<string>("/src/content/sketches/**/*.*", {
 });
 
 // Find the sketch entry from collection
-const sketch = sketches.find(sketch => sketch.id.endsWith(`/${src}`));
+const sketch = sketches.find((sketch: { id: string; }) => sketch.id.endsWith(`/${src}`));
 
 // Get the raw file content using the full path
 const filePath = Object.keys(files).find(path => path.endsWith(`/${src}`));

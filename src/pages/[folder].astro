@@ -9,13 +9,13 @@ export async function getStaticPaths() {
   const sketches = await getCollection('sketches');
   
   // Get unique folder names
-  const folders = [...new Set(sketches.map(sketch => {
+  const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
     const parts = sketch.slug.split('/');
     return parts[0];
   }))];
 
   return folders.map(folder => {
-    const folderSketches = sketches.filter(sketch => 
+    const folderSketches = sketches.filter((sketch: { slug: string; }) => 
       sketch.slug.startsWith(folder + '/')
     );
     
@@ -30,7 +30,7 @@ const { sketches } = Astro.props;
 
 // Render all MDX content for this folder
 const renderedContent = await Promise.all(
-  sketches.map(sketch => sketch.render())
+  sketches.map((sketch: { render: () => any; }) => sketch.render())
 );
 ---
 
