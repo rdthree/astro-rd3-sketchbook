@@ -12,13 +12,17 @@
     "paths": {
       "@SketchWrapper": ["src/components/SketchWrapper.astro"],
       "@CodeSnippet": ["src/components/CodeSnippet.astro"],
+      //"@babylonjs/*": ["@babylonjs/*"],
       //"@babylonjs/*": ["node_modules/@babylonjs/*"],
+      //"@babylonjs/core": ["@babylonjs/core"],
+      //"@babylonjs/core": ["node_modules/@babylonjs/core"]
     },
     "lib": [
       "dom",
       "ESNEXT"
     ],
-    "types": ["astro/client"]
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "types": ["astro/client", "node"]
   },
   "include": ["**/*.astro", "src/content/**/*.ts", "src/types/*.d.ts", "src/content/config.ts"],
   "exclude": ["node_modules", "dist"],

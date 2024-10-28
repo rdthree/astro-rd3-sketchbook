@@ -9,10 +9,10 @@ export default defineConfig({
   ],
   vite: {
     optimizeDeps: {
-      //include: ["@babylonjs/core"], // Excludes the "three" package from optimization
+      //include: ["@babylonjs/core", "@babylonjs/loaders"], // Excludes the "three" package from optimization
     },
     ssr: {
-        //noExternal: ["@babylonjs/core"], // Excludes the "three" package from SSR
+        //noExternal: ["@babylonjs/core", "babylonjs/loaders"], // Excludes the "three" package from SSR
       },
     build: {
       rollupOptions: {
@@ -23,8 +23,10 @@ export default defineConfig({
       alias: {
         //"@components": "/src/components", // Sets an alias for the components directory
         //"@babylonjs/core": "/node_modules/@babylonjs/core", // Sets an alias for the Babylon.js core package
+        //"@babylonjs/core": "@babylonjs/core", // Sets an alias for the Babylon.js core package
+        //"@babylonjs/loaders": "/node_modules/@babylonjs/loaders", // Sets an alias for the Babylon.js core package
+        //"@babylonjs/loaders": "@babylonjs/loaders", // Sets an alias for the Babylon.js core package
       },
-      
     }
   }, // Vite-specific configurations can be added here
   output: "static", // Specifies the output format for the built site
