@@ -8,9 +8,12 @@ export default function SketchLoader({ sketchPath, containerId }) {
         const isDev = import.meta.env.DEV;
         const isProd = import.meta.env.PROD;
 
-        // Adjust path based on environment
-        const basePath = isProd ? '/astro-rd3-sketchbook' : '';
-        const adjustedPath = `/src/content/sketches/${sketchPath}`;
+        // Detect if we are running in GitHub Pages
+        const isGithubPages = window.location.hostname === 'rdthree.github.io';
+        const basePath = isGithubPages ? '/astro-rd3-sketchbook' : '';
+
+        // Adjust path accordingly
+        const adjustedPath = `${basePath}/src/content/sketches/${sketchPath}`;
 
         const fullPath = Object.keys(sketches).find(path => path.endsWith(sketchPath));
 

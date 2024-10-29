@@ -23,6 +23,12 @@ export default defineConfig({
             d3: ['d3'],
             p5: ['p5'],
           },
+          assetFileNames: (assetInfo) => {
+              if (assetInfo.name === 'SketchLoader.js') {
+                  return 'assets/[hash].[extname]';
+              }
+              return 'assets/[name][extname]';
+          },
         },
       },
     },
