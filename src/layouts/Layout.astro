@@ -5,6 +5,18 @@ import '../styles/main.css';
 
 // Destructure the title prop, providing a default value if not specified
 const { title = "Default Title" } = Astro.props;
+
+// Favicon handling for GitHub Pages
+const isGithubPages = window.location.hostname === 'rdthree.github.io';
+const faviconPath = isGithubPages ? '/astro-rd3-sketchbook/favicon.ico' : '/favicon.ico';
+
+// Execute JavaScript after DOM loads
+export function setFavicon() {
+  const faviconLink = document.querySelector('link[rel="icon"]');
+  if (faviconLink) {
+    faviconLink.setAttribute("href", faviconPath);
+  }
+}
 ---
 
 <!-- Layout.astro: Main layout component for the site --><!-- This component provides a consistent structure for all pages --><!doctype html>
@@ -14,7 +26,8 @@ const { title = "Default Title" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Favicon handling -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <!--<link rel="icon" type="image/x-icon" href="/favicon.ico" />-->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" client:load />
 
     <!-- Other meta tags -->
     <!-- stylesheets -->
@@ -45,5 +58,6 @@ const { title = "Default Title" } = Astro.props;
         <slot />
       </main>
     </div>
+    <script type="module" onload="setFavicon();"></script> 
   </body>
 </html>
