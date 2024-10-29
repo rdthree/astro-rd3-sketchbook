@@ -16,10 +16,20 @@ export default defineConfig({
     build: {
       rollupOptions: {
         external: ['fs', 'path'], // Excludes the "fs" and "path" packages from the build so it can deploy to github pages
+        output: {
+          manualChunks: {
+            babylonjs: ['@babylonjs/core', '@babylonjs/loaders', '@babylonjs/gui', '@babylonjs/inspector'],
+            threejs: ['three'],
+            d3: ['d3'],
+            p5: ['p5'],
           },
         },
+      },
+    },
     resolve: {
       alias: {
+        '@': 'src',
+        '@SketchLoader': 'src/components/SketchLoader.jsx',
       },
     }
   }, // Vite-specific configurations can be added here

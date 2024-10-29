@@ -1,20 +1,21 @@
 ﻿import { useEffect } from 'react';
 
 // Get all sketches using Vite's glob import
-const sketches = import.meta.glob('/src/content/sketches/**/*.js');
+const sketches = import.meta.glob('/src/content/sketches/**/*.js', { eager: false });
 
 export default function SketchLoader({ sketchPath, containerId }) {
     useEffect(() => {
-        // Check environment in a more robust way
         const isDev = import.meta.env.DEV;
         const isProd = import.meta.env.PROD;
 
-        console.log('Environment:', { isDev, isProd });
+        // Adjust path based on environment
+        const basePath = isProd ? '/astro-rd3-sketchbook' : '';
+        const adjustedPath = `/src/content/sketches/${sketchPath}`;
 
         const fullPath = Object.keys(sketches).find(path => path.endsWith(sketchPath));
 
         if (fullPath) {
-            console.log('Found sketch at:', fullPath);
+            console.log('Loading sketch from:', fullPath);
 
             sketches[fullPath]()
                 .then(module => {
@@ -25,7 +26,8 @@ export default function SketchLoader({ sketchPath, containerId }) {
                         isDev,
                         isProd,
                         fullPath,
-                        sketchPath
+                        sketchPath,
+                        availablePaths: Object.keys(sketches)
                     });
                 });
         } else {
@@ -35,5 +37,5 @@ export default function SketchLoader({ sketchPath, containerId }) {
         }
     }, [sketchPath]);
 
-    return <div id={containerId} style={{ width: '100%', height: '400px' }}></div>;
+    return <div id={containerId}></div>;
 }
