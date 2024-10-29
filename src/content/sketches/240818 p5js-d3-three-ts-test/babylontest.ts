@@ -1,11 +1,11 @@
 
-import "/node_modules/@babylonjs/core/Debug/debugLayer";
-// import "/node_modules/@babylonjs/inspector"; this doesn't work without customizing the window
-import "/node_modules/@babylonjs/loaders/glTF";
-//import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from "@babylonjs/core";
+import "@babylonjs/core/Debug/debugLayer";
+// import "@babylonjs/inspector"; // this doesn't work without customizing the window
+import "@babylonjs/loaders/glTF";
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from "@babylonjs/core";
 
 // @ts-ignore
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from '/node_modules/@babylonjs/core';
+//import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from '/node_modules/@babylonjs/core';
 
 
 console.log("babylonjs test");
@@ -18,7 +18,6 @@ function createBabylonScene() {
         return;
     }
 
-    // Create the canvas element and set its properties
     const canvas = document.createElement("canvas");
     canvas.style.width = "100%";
     canvas.style.height = "100%";

@@ -6,8 +6,9 @@ const DEFAULT_ID = 'threetest';
 // If no object is passed, defaults to an empty object
 // Enables preset values for each parameter if not provided
 const createRotatingCube = ({ containerId = DEFAULT_ID, color = 0x00ff00, rotationSpeed = 0.02 } = {}) => {
+    var _a;
     // setup container, scene, camera, renderer
-    const container = document.getElementById(containerId) ?? (() => { throw new Error(`Container not found: ${containerId}`); })();
+    const container = (_a = document.getElementById(containerId)) !== null && _a !== void 0 ? _a : (() => { throw new Error(`Container not found: ${containerId}`); })();
     const { clientWidth, clientHeight } = container;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, clientWidth / clientHeight, 0.1, 1000);

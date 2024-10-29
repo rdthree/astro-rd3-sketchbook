@@ -1,14 +1,11 @@
 "use strict";
 function randomwalk_241024(p) {
     class Walker {
-        x;
-        y;
-        static dirs = [[4, 0], [-4, 0], [0, 4], [0, -4]];
-        circles = [];
-        stepCount = 0;
-        startTime = Date.now();
-        maxDistance = 0;
         constructor() {
+            this.circles = [];
+            this.stepCount = 0;
+            this.startTime = Date.now();
+            this.maxDistance = 0;
             [this.x, this.y] = [p.width / 2, p.height / 2];
         }
         show() {
@@ -78,6 +75,7 @@ function randomwalk_241024(p) {
             this.y = p.constrain(this.y + dy, 0, p.height);
         }
     }
+    Walker.dirs = [[4, 0], [-4, 0], [0, 4], [0, -4]];
     let walker;
     p.setup = () => {
         p.createCanvas(800, 800);

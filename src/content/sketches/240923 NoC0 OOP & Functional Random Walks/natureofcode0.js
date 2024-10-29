@@ -3,10 +3,6 @@
 function natureofcode0(p) {
     // Walker class to represent the moving point
     class Walker {
-        x;
-        y;
-        // Possible movement directions: right, left, down, up
-        static dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
         constructor() {
             // Initialize walker at the center of the canvas
             this.x = p.width / 2;
@@ -24,6 +20,8 @@ function natureofcode0(p) {
             this.y += dy;
         }
     }
+    // Possible movement directions: right, left, down, up
+    Walker.dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
     let walker;
     // p5.js setup function: called once at the start
     p.setup = () => {

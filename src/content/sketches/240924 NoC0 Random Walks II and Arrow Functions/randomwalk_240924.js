@@ -3,17 +3,15 @@
 function randomwalk_240924(p) {
     // Walker class to represent the moving point
     class Walker {
-        x;
-        y;
-        // Possible movement directions: right, left, down, up
-        static dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
         constructor() {
+            // Draw the walker at its current position
+            this.show = () => p.point(this.x, this.y);
+            // Generate a random shade value between 0 and 255
+            this.alpha = () => Math.floor(Math.random() * 256);
             // Initialize walker at the center of the canvas, start random shade value
             [this.x, this.y] = [p.width / 2, p.height / 2];
             this.alpha();
         }
-        // Draw the walker at its current position
-        show = () => p.point(this.x, this.y);
         // Move the walker in a random direction by selecting one of
         // 4 array positions 0 right, 1 left, 2 down, 3 up
         step() {
@@ -21,9 +19,9 @@ function randomwalk_240924(p) {
             const [dx, dy] = Walker.dirs[Math.floor(Math.random() * 4)];
             [this.x, this.y] = [this.x + dx, this.y + dy];
         }
-        // Generate a random shade value between 0 and 255
-        alpha = () => Math.floor(Math.random() * 256);
     }
+    // Possible movement directions: right, left, down, up
+    Walker.dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
     let walker;
     // p5.js setup function: called once at the start
     p.setup = () => {

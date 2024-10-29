@@ -3,8 +3,6 @@
 function natureofcode0_orig(p) {
     //walker class
     class Walker {
-        x;
-        y;
         constructor() {
             // initialize walker at center of canvas
             this.x = p.width / 2;

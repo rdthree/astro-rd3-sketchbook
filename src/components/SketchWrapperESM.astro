@@ -1,0 +1,18 @@
+﻿---
+// src/components/SketchWrapperESM.astro
+
+interface Props {
+    src: string;
+    id: string;
+    }
+
+const { src, id } = Astro.props;
+
+// Remove type since it's not needed anymore
+const modules = await import.meta.glob('/src/content/sketches/**/*.{js,ts}');
+const scriptPath = Object.keys(modules).find(path => path.endsWith(`/${src}`));
+---
+
+<!-- Completely separate elements -->
+<div id={id}></div>
+<script type="module" src={scriptPath} />

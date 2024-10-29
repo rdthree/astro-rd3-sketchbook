@@ -1,17 +1,26 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "noEmit": false,                 // Allow emitting JS files
-    "emitDeclarationOnly": false,    // Emit JS and not only types
-    "moduleResolution": "node",    // Use Node.js module resolution
-    "declaration": false,            // Emit declaration files
-    "esModuleInterop": true,         // Enable ES module interop
+    "target": "es6",
+    "noEmit": false,                // Allow emitting JS files
+    "module": "esnext",             // Use ES modules
+    "moduleResolution": "node",     // Use Node.js module resolution
+    "noResolve": false,             // Don't resolve modules, less helpful than you'd think
+    "emitDeclarationOnly": false,   // Emit JS and not only types
+    "declaration": false,           // Emit declaration files
+    "isolatedModules": true,
+    "esModuleInterop": true,        // Enable ES module interop
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true, // Allow synthetic imports for modules
     "allowImportingTsExtensions": false, // if i don't do this, i can't transpile to js
     "baseUrl": ".",
     "paths": {
       "@SketchWrapper": ["src/components/SketchWrapper.astro"],
-      "@CodeSnippet": ["src/components/CodeSnippet.astro"],
+      "@SketchWrapperESM": ["src/components/SketchWrapperESM.astro"],
+      "@CodeSnippet": ["src/components/CodeSnippet.astro"]
       //"@babylonjs/*": ["@babylonjs/*"],
       //"@babylonjs/*": ["node_modules/@babylonjs/*"],
       //"@babylonjs/core": ["@babylonjs/core"],
@@ -19,11 +28,11 @@
     },
     "lib": [
       "dom",
-      "ESNEXT"
+      "es6"
     ],
     "typeRoots": ["node_modules/@types", "src/types"],
     "types": ["astro/client", "node"]
   },
   "include": ["**/*.astro", "src/content/**/*.ts", "src/types/*.d.ts", "src/content/config.ts"],
-  "exclude": ["node_modules", "dist"],
+  //"exclude": ["node_modules", "dist"],
 }
