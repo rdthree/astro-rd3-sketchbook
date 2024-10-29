@@ -2,8 +2,6 @@ import "@babylonjs/core/Debug/debugLayer";
 // import "@babylonjs/inspector"; // this doesn't work without customizing the window
 import "@babylonjs/loaders/glTF";
 import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from "@babylonjs/core";
-// @ts-ignore
-//import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from '/node_modules/@babylonjs/core';
 console.log("babylonjs test");
 function createBabylonScene() {
     // Get the container element
