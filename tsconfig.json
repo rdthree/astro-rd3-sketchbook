@@ -12,7 +12,7 @@
     "esModuleInterop": true,        // Enable ES module interop
     "noImplicitAny": false,
     "noUnusedLocals": false,
-    //"noUnusedParameters": true,
+    "noUnusedParameters":false,
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true, // Allow synthetic imports for modules
     "allowImportingTsExtensions": false, // if i don't do this, i can't transpile to js
