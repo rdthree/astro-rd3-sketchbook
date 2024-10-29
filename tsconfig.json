@@ -2,37 +2,54 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "target": "es6",
-    "noEmit": false,                // Allow emitting JS files
-    "module": "esnext",             // Use ES modules
-    "moduleResolution": "node",     // Use Node.js module resolution
-    "noResolve": false,             // Don't resolve modules, less helpful than you'd think
-    "emitDeclarationOnly": false,   // Emit JS and not only types
-    "declaration": false,           // Emit declaration files
+    "noEmit": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noResolve": false,
+    "emitDeclarationOnly": false,
+    "declaration": false,
     "isolatedModules": true,
-    "esModuleInterop": true,        // Enable ES module interop
+    "esModuleInterop": true,
     "noImplicitAny": false,
     "noUnusedLocals": false,
-    "noUnusedParameters":false,
+    "noUnusedParameters": false,
     "noImplicitReturns": true,
-    "allowSyntheticDefaultImports": true, // Allow synthetic imports for modules
-    "allowImportingTsExtensions": false, // if i don't do this, i can't transpile to js
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": false,
     "baseUrl": ".",
     "paths": {
-      "@SketchWrapper": ["src/components/SketchWrapper.astro"],
-      "@SketchWrapperESM": ["src/components/SketchWrapperESM.astro"],
-      "@CodeSnippet": ["src/components/CodeSnippet.astro"]
-      //"@babylonjs/*": ["@babylonjs/*"],
-      //"@babylonjs/*": ["node_modules/@babylonjs/*"],
-      //"@babylonjs/core": ["@babylonjs/core"],
-      //"@babylonjs/core": ["node_modules/@babylonjs/core"]
+      "@SketchWrapper": [
+        "src/components/SketchWrapper.astro"
+      ],
+      "@SketchWrapperESM": [
+        "src/components/SketchWrapperESM.astro"
+      ],
+      "@SketchLoader": [
+        "src/components/SketchLoader.jsx"
+        ],
+      "@CodeSnippet": [
+        "src/components/CodeSnippet.astro"
+      ]
     },
     "lib": [
       "dom",
       "es6"
     ],
-    "typeRoots": ["node_modules/@types", "src/types"],
-    "types": ["astro/client", "node"]
+    "typeRoots": [
+      "node_modules/@types",
+      "src/types"
+    ],
+    "types": [
+      "astro/client",
+      "node"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   },
-  "include": ["**/*.astro", "src/content/**/*.ts", "src/types/*.d.ts", "src/content/config.ts"],
-  //"exclude": ["node_modules", "dist"],
+  "include": [
+    "**/*.astro",
+    "src/content/**/*.ts",
+    "src/types/*.d.ts",
+    "src/content/config.ts"
+  ]
 }

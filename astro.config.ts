@@ -1,18 +1,17 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 
+import react from "@astrojs/react";
+
 export default defineConfig({
   site: 'https://rdthree.github.io',
   //base: '/astro-rd3-sketchbook',
-  integrations: [
-    mdx(), // Enables MDX support for enhanced Markdown capabilities
-  ],
+  integrations: [// Enables MDX support for enhanced Markdown capabilities
+  mdx(), react()],
   vite: {
     optimizeDeps: {
-      //include: ["@babylonjs/core", "@babylonjs/loaders"], // Excludes the "three" package from optimization
     },
     ssr: {
-        //noExternal: ["@babylonjs/core", "babylonjs/loaders"], // Excludes the "three" package from SSR
       },
     build: {
       rollupOptions: {
@@ -21,11 +20,6 @@ export default defineConfig({
         },
     resolve: {
       alias: {
-        //"@components": "/src/components", // Sets an alias for the components directory
-        //"@babylonjs/core": "/node_modules/@babylonjs/core", // Sets an alias for the Babylon.js core package
-        //"@babylonjs/core": "@babylonjs/core", // Sets an alias for the Babylon.js core package
-        //"@babylonjs/loaders": "/node_modules/@babylonjs/loaders", // Sets an alias for the Babylon.js core package
-        //"@babylonjs/loaders": "@babylonjs/loaders", // Sets an alias for the Babylon.js core package
       },
     }
   }, // Vite-specific configurations can be added here
