@@ -21,7 +21,7 @@ const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
     <ul>
       {folders.map((folder) => (
         <li>
-          <a href={`./${folder}`}>{folder}</a>
+          <a href={`/astro-rd3-sketchbook/${folder}`}>{folder}</a>
         </li>
       ))}
     </ul>

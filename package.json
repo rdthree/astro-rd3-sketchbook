@@ -15,6 +15,7 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/mdx": "^3.1.8",
     "@astrojs/react": "^3.6.2",
+    "@astrojs/ts-plugin": "^1.10.4",
     "@picocss/pico": "^2.0.6",
     "@types/d3": "^7.4.3",
     "@types/react": "^18.3.12",

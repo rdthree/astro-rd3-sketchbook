@@ -1,6 +1,8 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "allowJs": true,
+    "strictNullChecks": true,
     "target": "es6",
     "noEmit": false,
     "module": "esnext",
@@ -16,6 +18,7 @@
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": false,
+    "plugins": [{"name": "@astrojs/ts-plugin"}],
     "baseUrl": ".",
     "paths": {
       "@SketchWrapper": [
@@ -34,11 +37,10 @@
     ],
     "typeRoots": [
       "node_modules/@types",
-      "src/types"
+      "src/types",
     ],
     "types": [
       "astro/client",
-      "node"
     ],
     "jsx": "react-jsx",
     "jsxImportSource": "react"

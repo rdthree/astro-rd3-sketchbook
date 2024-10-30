@@ -1,5 +1,5 @@
 // src/content/config.ts
-import { defineCollection } from 'astro:content';
+import { z, defineCollection } from 'astro:content';
 
 export const collections = {
   sketches: defineCollection({

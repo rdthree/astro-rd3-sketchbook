@@ -1,26 +1,22 @@
 ---
 import { getCollection } from 'astro:content';
 
-// Get all sketches
 const sketches = await getCollection('sketches');
 
-// Get unique folder names
 const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
   const parts = sketch.slug.split('/');
   return parts[0];
 }))];
-
-// Environment detection using client-side script
 ---
 
 <div class="layout-grid">
   <nav class="vertical-nav">
     <button class="expand-button" aria-label="Toggle-Sidebar" aria-expanded="false"></button>
     <ul>
-      <li><a href="/" data-nav-link><i></i><span class="entry-name">Home</span></a></li>
+      <li><a href="/astro-rd3-sketchbook/" data-nav-link><i></i><span class="entry-name">Home</span></a></li>
       {folders.map(folder => (
         <li>
-          <a href={`/${folder}`} data-nav-link>
+          <a href={`/astro-rd3-sketchbook/${folder}`} data-nav-link>
             <i></i>
             <span class="entry-name">{folder}</span>
           </a>
@@ -37,18 +33,6 @@ const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
     if (nav && expandButton) {
       expandButton.addEventListener('click', () => nav.classList.toggle('expanded'));
     }
-
-    // Handle paths based on environment (there has to be a better way)
-    const isPreview = window.location.href.includes('localhost:4322');
-    const isDev = !window.location.href.includes('localhost');
-    
-    const links = document.querySelectorAll('[data-nav-link]');
-    links.forEach(link => {
-      const href = link.getAttribute('href');
-      if (isDev && !isPreview) {
-        link.setAttribute('href', `/astro-rd3-sketchbook${href}`);
-      }
-    });
   }
 
   // Run on initial load
