@@ -2,42 +2,36 @@
 
 import { useEffect } from 'react';
 
-// Get all sketches using Vite's glob import
-const sketches = import.meta.glob('/src/content/sketches/**/*.js', { eager: false });
+// Use relative paths for glob imports
+const sketches = import.meta.glob('../content/sketches/**/*.js', { eager: false });
 
 export default function SketchLoader({ sketchPath, containerId }) {
     useEffect(() => {
-        const baseURL = import.meta.env.BASE_URL;
+        const baseURL = import.meta.env.BASE_URL; // Automatically set by Astro based on `base` config
 
-        // Adjust the path accordingly
-        const adjustedSketches = {};
-        for (const [key, value] of Object.entries(sketches)) {
-            const adjustedKey = baseURL + key.slice(1); // Remove leading '/' and prepend baseURL
-            adjustedSketches[adjustedKey] = value;
-        }
-
-        const fullPath = Object.keys(adjustedSketches).find((path) =>
+        // Find the full path of the sketch
+        const fullPath = Object.keys(sketches).find((path) =>
             path.endsWith(sketchPath)
         );
 
         if (fullPath) {
             console.log('Loading sketch from:', fullPath);
 
-            adjustedSketches[fullPath]()
+            sketches[fullPath]()
                 .then((module) => {
                     console.log('Sketch loaded successfully');
-                    // You can initialize your sketch here using the loaded module
+                    // Initialize your sketch here using the loaded module
                 })
                 .catch((error) => {
                     console.error('Failed to load sketch:', error, {
                         fullPath,
                         sketchPath,
-                        availablePaths: Object.keys(adjustedSketches),
+                        availablePaths: Object.keys(sketches),
                     });
                 });
         } else {
             console.error(`Couldn't find sketch: ${sketchPath}`, {
-                availablePaths: Object.keys(adjustedSketches),
+                availablePaths: Object.keys(sketches),
             });
         }
     }, [sketchPath]);
