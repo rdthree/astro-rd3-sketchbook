@@ -34,6 +34,7 @@
     "@types/p5": "^1.7.6",
     "babylonjs": "^7.30.0",
     "pnpm": "^9.12.2",
+    "rollup-plugin-visualizer": "^5.12.0",
     "three": "^0.169.0",
     "typescript": "^5.6.3"
   }

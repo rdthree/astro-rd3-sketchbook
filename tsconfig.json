@@ -22,11 +22,8 @@
         "src/components/SketchWrapper.astro"
       ],
       "@SketchWrapperESM": [
-        "src/components/SketchWrapperESM.astro"
+        "src/components/SketchWrapperESM.jsx"
       ],
-      "@SketchLoader": [
-        "src/components/SketchLoader.jsx"
-        ],
       "@CodeSnippet": [
         "src/components/CodeSnippet.astro"
       ]

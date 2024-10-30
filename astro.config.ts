@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
-
 import react from "@astrojs/react";
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   site: 'https://rdthree.github.io',
@@ -9,7 +9,10 @@ export default defineConfig({
   integrations: [// Enables MDX support for enhanced Markdown capabilities
   mdx(), react()],
   vite: {
+    plugins: [visualizer()],
     optimizeDeps: {
+      //include: ['babylonjs', 'babylonjs-loaders', '@babylonjs/gui', 'three', 'd3', 'p5'],
+      //exclude: ['@babylonjs/core', '@babylonjs/inspector'],
     },
     ssr: {
       },
@@ -18,7 +21,11 @@ export default defineConfig({
         external: ['fs', 'path'], // Excludes the "fs" and "path" packages from the build so it can deploy to github pages
         output: {
           manualChunks: {
-            babylonjs: ['@babylonjs/core', '@babylonjs/loaders', '@babylonjs/gui', '@babylonjs/inspector'],
+            // Split Babylon.js into smaller chunks
+            'babylon-core': ['@babylonjs/core'],
+            'babylon-loaders': ['@babylonjs/loaders'],
+            'babylon-gui': ['@babylonjs/gui'],
+            'babylon-inspector': ['@babylonjs/inspector'],
             threejs: ['three'],
             d3: ['d3'],
             p5: ['p5'],

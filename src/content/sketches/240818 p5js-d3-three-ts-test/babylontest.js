@@ -1,9 +1,15 @@
-import "@babylonjs/core/Debug/debugLayer";
-// import "@babylonjs/inspector"; // this doesn't work without customizing the window
-import "@babylonjs/loaders/glTF";
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from "@babylonjs/core";
-console.log("babylonjs test");
-function createBabylonScene() {
+"use strict";
+// src\content\sketches\240818%20p5js-d3-three-ts-test\babylontest.ts
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+(() => __awaiter(void 0, void 0, void 0, function* () {
     // Get the container element
     const container = document.getElementById("babylon-test");
     if (!container) {
@@ -14,6 +20,16 @@ function createBabylonScene() {
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     container.appendChild(canvas);
+    // Dynamically import Babylon.js modules
+    const [{ Engine }, { Scene }, { ArcRotateCamera }, { Vector3 }, { HemisphericLight }, { MeshBuilder },] = yield Promise.all([
+        import("@babylonjs/core/Engines/engine"),
+        import("@babylonjs/core/scene"),
+        import("@babylonjs/core/Cameras/arcRotateCamera"),
+        import("@babylonjs/core/Maths/math.vector"),
+        import("@babylonjs/core/Lights/hemisphericLight"),
+        import("@babylonjs/core/Meshes/meshBuilder"),
+        import("@babylonjs/core/Materials/standardMaterial"),
+    ]);
     // Initialize Babylon.js scene and engine
     const engine = new Engine(canvas, true);
     const scene = new Scene(engine);
@@ -24,17 +40,20 @@ function createBabylonScene() {
     const light = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
     // Create sphere
     const sphere = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
+    // SLOW BUILDS
     // Hide/show the Inspector
-    window.addEventListener("keydown", (ev) => {
-        if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
-            if (scene.debugLayer.isVisible()) {
-                scene.debugLayer.hide();
-            }
-            else {
-                scene.debugLayer.show();
-            }
-        }
-    });
+    // window.addEventListener("keydown", async (ev) => {
+    //     if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.key === "I") {
+    //         if (scene.debugLayer.isVisible()) {
+    //             scene.debugLayer.hide();
+    //         } else {
+    //             // Dynamically import the debug layer and inspector
+    //             await import("@babylonjs/core/Debug/debugLayer");
+    //             await import("@babylonjs/inspector");
+    //             scene.debugLayer.show();
+    //         }
+    //     }
+    // });
     // Run the render loop
     engine.runRenderLoop(() => {
         scene.render();
@@ -43,12 +62,4 @@ function createBabylonScene() {
     window.addEventListener("resize", () => {
         engine.resize();
     });
-}
-// Run the function when the DOM is ready
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", createBabylonScene);
-}
-else {
-    createBabylonScene();
-}
-console.log("Babylon.js test script running");
+}))();
