@@ -14,7 +14,8 @@ const { title = "Default Title" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Favicon handling -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href={`${import.meta.env.BASE_URL}/favicon.ico`} />
+
 
     <!-- Other meta tags -->
     <!-- stylesheets -->
@@ -45,17 +46,5 @@ const { title = "Default Title" } = Astro.props;
         <slot />
       </main>
     </div>
-    <!-- Client-side script for favicon handling -->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const isGithubPages = window.location.hostname === 'rdthree.github.io';
-        const faviconPath = isGithubPages ? '/astro-rd3-sketchbook/favicon.ico' : '/favicon.ico';
-
-        const faviconLink = document.querySelector('link[rel="icon"]');
-        if (faviconLink) {
-          faviconLink.setAttribute("href", faviconPath);
-        }
-      });
-    </script>
   </body>
 </html>

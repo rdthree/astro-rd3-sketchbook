@@ -5,7 +5,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   site: 'https://rdthree.github.io',
-  //base: '/astro-rd3-sketchbook',
+  base: '/astro-rd3-sketchbook',
   integrations: [// Enables MDX support for enhanced Markdown capabilities
   mdx(), react()],
   vite: {
