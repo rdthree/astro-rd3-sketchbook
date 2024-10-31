@@ -2,10 +2,10 @@
 function natureofcode0(p: typeof p5) {
     // Walker class to represent the moving point
     class Walker {
-        private x: number;
-        private y: number;
         // Possible movement directions: right, left, down, up
         private static dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+        private x: number;
+        private y: number;
 
         constructor() {
             // Initialize walker at the center of the canvas

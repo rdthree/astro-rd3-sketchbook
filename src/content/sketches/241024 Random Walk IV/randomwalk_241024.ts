@@ -1,8 +1,8 @@
 function randomwalk_241024(p: typeof p5) {
     class Walker {
+        private static dirs = [[4, 0], [-4, 0], [0, 4], [0, -4]];
         private x: number;
         private y: number;
-        private static dirs = [[4, 0], [-4, 0], [0, 4], [0, -4]];
         private circles: Array<{
             x: number,
             y: number,
@@ -61,7 +61,7 @@ function randomwalk_241024(p: typeof p5) {
 
         updateStats() {
             this.stepCount++;
-            const dist = p.dist(p.width/2, p.height/2, this.x, this.y);
+            const dist = p.dist(p.width / 2, p.height / 2, this.x, this.y);
             this.maxDistance = Math.max(this.maxDistance, dist);
         }
 
@@ -84,10 +84,13 @@ function randomwalk_241024(p: typeof p5) {
             p.text(`Steps Taken: ${this.stepCount}`, p.width - 240, padding + 65);
             p.text(`Runtime: ${runTime}s`, p.width - 240, padding + 85);
             p.text(`Steps/Second: ${speed}`, p.width - 240, padding + 105);
-            p.text(`Distance from Center: ${Math.round(p.dist(p.width/2, p.height/2, this.x, this.y))}`, p.width - 240, padding + 125);
+            p.text(`Distance from Center: ${Math.round(p.dist(p.width / 2, p.height / 2, this.x, this.y))}`, p.width - 240, padding + 125);
             p.text(`Max Distance: ${Math.round(this.maxDistance)}`, p.width - 240, padding + 145);
             p.pop();
-        }        step() {            const [dx, dy] = Walker.dirs[Math.floor(Math.random() * 4)];
+        }
+
+        step() {
+            const [dx, dy] = Walker.dirs[Math.floor(Math.random() * 4)];
             this.x = p.constrain(this.x + dx, 0, p.width);
             this.y = p.constrain(this.y + dy, 0, p.height);
         }

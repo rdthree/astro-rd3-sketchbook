@@ -1,4 +1,5 @@
 "use strict";
+
 function randomwalk_241024(p) {
     class Walker {
         constructor() {
@@ -8,6 +9,7 @@ function randomwalk_241024(p) {
             this.maxDistance = 0;
             [this.x, this.y] = [p.width / 2, p.height / 2];
         }
+
         show() {
             // Permanent trail pixel
             p.stroke(20, 127);
@@ -43,11 +45,13 @@ function randomwalk_241024(p) {
             this.updateStats();
             this.showUI();
         }
+
         updateStats() {
             this.stepCount++;
             const dist = p.dist(p.width / 2, p.height / 2, this.x, this.y);
             this.maxDistance = Math.max(this.maxDistance, dist);
         }
+
         showUI() {
             const padding = 10;
             p.push();
@@ -69,12 +73,14 @@ function randomwalk_241024(p) {
             p.text(`Max Distance: ${Math.round(this.maxDistance)}`, p.width - 240, padding + 145);
             p.pop();
         }
+
         step() {
             const [dx, dy] = Walker.dirs[Math.floor(Math.random() * 4)];
             this.x = p.constrain(this.x + dx, 0, p.width);
             this.y = p.constrain(this.y + dy, 0, p.height);
         }
     }
+
     Walker.dirs = [[4, 0], [-4, 0], [0, 4], [0, -4]];
     let walker;
     p.setup = () => {
@@ -93,4 +99,5 @@ function randomwalk_241024(p) {
         }
     };
 }
+
 const randomwalk_241024_instance = new p5(randomwalk_241024, 'randomwalk_241024');

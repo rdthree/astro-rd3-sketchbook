@@ -1,42 +1,42 @@
 ---
-import { getCollection } from 'astro:content';
+import {getCollection} from 'astro:content';
 
 const sketches = await getCollection('sketches');
 
 const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
-  const parts = sketch.slug.split('/');
-  return parts[0];
+    const parts = sketch.slug.split('/');
+    return parts[0];
 }))];
 ---
 
 <div class="layout-grid">
-  <nav class="vertical-nav">
-    <button class="expand-button" aria-label="Toggle-Sidebar" aria-expanded="false"></button>
-    <ul>
-      <li><a href={import.meta.env.BASE_URL} data-nav-link><i></i><span class="entry-name">Home</span></a></li>
-      {folders.map(folder => (
-        <li>
-          <a href={`${import.meta.env.BASE_URL}/${folder}`} data-nav-link>
-            <i></i>
-            <span class="entry-name">{folder}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </nav>
+    <nav class="vertical-nav">
+        <button class="expand-button" aria-label="Toggle-Sidebar" aria-expanded="false"></button>
+        <ul>
+            <li><a href={import.meta.env.BASE_URL} data-nav-link><i></i><span class="entry-name">Home</span></a></li>
+            {folders.map(folder => (
+                    <li>
+                        <a href={`${import.meta.env.BASE_URL}/${folder}`} data-nav-link>
+                            <i></i>
+                            <span class="entry-name">{folder}</span>
+                        </a>
+                    </li>
+            ))}
+        </ul>
+    </nav>
 </div>
 <script>
-  function setupNavigation() {
-    const nav = document.querySelector('.vertical-nav');
-    const expandButton = document.querySelector('.expand-button');
-    if (nav && expandButton) {
-      expandButton.addEventListener('click', () => nav.classList.toggle('expanded'));
+    function setupNavigation() {
+        const nav = document.querySelector('.vertical-nav');
+        const expandButton = document.querySelector('.expand-button');
+        if (nav && expandButton) {
+            expandButton.addEventListener('click', () => nav.classList.toggle('expanded'));
+        }
     }
-  }
 
-  // Run on initial load
-  setupNavigation();
+    // Run on initial load
+    setupNavigation();
 
-  // Run on subsequent navigations
-  document.addEventListener('astro:after-swap', setupNavigation);
+    // Run on subsequent navigations
+    document.addEventListener('astro:after-swap', setupNavigation);
 </script>

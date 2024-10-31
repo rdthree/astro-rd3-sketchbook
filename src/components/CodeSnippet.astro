@@ -1,13 +1,13 @@
 ---
-import { Code } from 'astro:components';
-import type { BundledLanguage } from 'shiki'  // This is what Astro's Code uses internally
+import {Code} from 'astro:components';
+import type {BundledLanguage} from 'shiki'  // This is what Astro's Code uses internally
 
 interface Props {
     src: string;
     lang?: string;
 }
 
-const { src, lang = "javascript" } = Astro.props;
+const {src, lang = "javascript"} = Astro.props;
 
 const files = import.meta.glob<string>("/src/content/sketches/**/*.*", {
     query: "?raw",

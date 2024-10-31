@@ -1,4 +1,3 @@
-
 import SketchCDN from '@SketchWrapperCDN';
 import CodeSnippet from '@CodeSnippet';
 
@@ -19,13 +18,13 @@ https://www.typescriptlang.org/docs/handbook/2/classes.html#arrow-functions
 https://www.typescriptlang.org/docs/handbook/2/functions.html
 
 {/* {% p5Container "randomwalk_240924.js", "randomwalk_240924" %} */}
-<SketchCDN type="p5" src="randomwalk_240924.js" id="randomwalk_240924" />
+<SketchCDN type="p5" src="randomwalk_240924.js" id="randomwalk_240924"/>
 
 ### Traditional method (like C#): `step() { ... }`
 
 ### Arrow function as a property: `step = () => { ... }`
 
-### Main sketch function: 
+### Main sketch function:
 This is a regular function declaration. It's used as the main container for our p5.js sketch.
 ```typescript
 function randomwalk_240924(p: typeof p5) { ... }
@@ -63,4 +62,4 @@ When arrow functions are used for `p.setup` and `p.draw`, they inherit `this` fr
 
 This behavior prevents issues that could arise with traditional function expressions, **where `this` can change based on how the function is invoked**. By using arrow functions, the code guarantees that p5 methods and properties are always accessible within setup and draw, maintaining the correct context for the sketch's execution.
 
-<CodeSnippet src="randomwalk_240924.ts" lang="typescript" />
+<CodeSnippet src="randomwalk_240924.ts" lang="typescript"/>

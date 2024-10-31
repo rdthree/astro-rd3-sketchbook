@@ -13,10 +13,10 @@ function randomwalk_240925(p: typeof p5): void {
     const DIRS: [number, number][] = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 
     // Generate a random alpha value for stroke opacity
-    const getRandomAlpha = (): number => 
+    const getRandomAlpha = (): number =>
         Math.floor(Math.random() * (ALPHA_MAX - ALPHA_MIN + 1)) + ALPHA_MIN;
     // Select a random direction from DIRS array
-    const getRandomDir = (): [number, number] => 
+    const getRandomDir = (): [number, number] =>
         DIRS[Math.floor(Math.random() * DIRS.length)];
 
     // Starting position at the center of the canvas
@@ -33,7 +33,8 @@ function randomwalk_240925(p: typeof p5): void {
     p.draw = (): void => {
         for (let i = 0; i < STEPS; i++) {
             const [dx, dy] = getRandomDir();
-            x += dx; y += dy;  // Update position
+            x += dx;
+            y += dy;  // Update position
             p.point(x, y);     // Draw point at new position
         }
         // Set a new random alpha value for the next frame

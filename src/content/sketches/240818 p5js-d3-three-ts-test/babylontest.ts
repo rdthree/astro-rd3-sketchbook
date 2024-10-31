@@ -15,12 +15,12 @@
 
     // Dynamically import Babylon.js modules
     const [
-        { Engine },
-        { Scene },
-        { ArcRotateCamera },
-        { Vector3 },
-        { HemisphericLight },
-        { MeshBuilder },
+        {Engine},
+        {Scene},
+        {ArcRotateCamera},
+        {Vector3},
+        {HemisphericLight},
+        {MeshBuilder},
     ] = await Promise.all([
         import("@babylonjs/core/Engines/engine"),
         import("@babylonjs/core/scene"),
@@ -50,7 +50,7 @@
     const light = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
     // Create sphere
-    const sphere = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
+    const sphere = MeshBuilder.CreateSphere("sphere", {diameter: 1}, scene);
 
     // SLOW BUILDS
     // Hide/show the Inspector

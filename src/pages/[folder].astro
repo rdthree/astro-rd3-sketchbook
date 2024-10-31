@@ -6,36 +6,36 @@ import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const sketches = await getCollection('sketches');
-  
-  // Get unique folder names
+    const sketches = await getCollection('sketches');
+
+    // Get unique folder names
   const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
     const parts = sketch.slug.split('/');
     return parts[0];
-  }))];
+    }))];
 
-  return folders.map(folder => {
-    const folderSketches = sketches.filter((sketch: { slug: string; }) => 
-      sketch.slug.startsWith(folder + '/')
-    );
-    
+    return folders.map(folder => {
+    const folderSketches = sketches.filter((sketch: { slug: string; }) =>
+        sketch.slug.startsWith(folder + '/')
+        );
+
     return {
-      params: { folder },
-      props: { sketches: folderSketches }
-    };
-  });
-}
+        params: { folder },
+        props: { sketches: folderSketches }
+        };
+    });
+    }
 
 const { sketches } = Astro.props;
 
 // Render all MDX content for this folder
 const renderedContent = await Promise.all(
-  sketches.map((sketch: { render: () => any; }) => sketch.render())
+sketches.map((sketch: { render: () => any; }) => sketch.render())
 );
 ---
 
 <Layout title={Astro.params.folder}>
-  {renderedContent.map(({ Content }) => (
-    <Content />
-  ))}
+    {renderedContent.map(({Content}) => (
+            <Content/>
+    ))}
 </Layout>

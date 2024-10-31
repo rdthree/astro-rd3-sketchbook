@@ -1,11 +1,11 @@
 ﻿// src/components/SketchWrapperESM.jsx
 
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 
 // Use relative paths for glob imports
-const sketches = import.meta.glob('../content/sketches/**/*.js', { eager: false });
+const sketches = import.meta.glob('../content/sketches/**/*.js', {eager: false});
 
-export default function SketchLoader({ sketchPath, containerId }) {
+export default function SketchLoader({sketchPath, containerId}) {
     useEffect(() => {
         const baseURL = import.meta.env.BASE_URL; // Automatically set by Astro based on `base` config
 

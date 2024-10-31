@@ -2,10 +2,10 @@
 function randomwalk_240924(p: typeof p5) {
     // Walker class to represent the moving point
     class Walker {
-        private x: number;
-        private y: number;
         // Possible movement directions: right, left, down, up
         private static dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+        private x: number;
+        private y: number;
 
         constructor() {
             // Initialize walker at the center of the canvas, start random shade value
@@ -48,5 +48,6 @@ function randomwalk_240924(p: typeof p5) {
         p.stroke(0, walker.alpha());
     };
 }
+
 // Create a new p5 instance using sketch
 const randomwalk_240924_instance = new p5(randomwalk_240924, 'randomwalk_240924');

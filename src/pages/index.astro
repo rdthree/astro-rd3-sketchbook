@@ -2,27 +2,28 @@
 // file: src/pages/index.astro
 
 import Layout from "../layouts/Layout.astro";
-import { getCollection } from 'astro:content';
+import {getCollection} from 'astro:content';
 
 // Get all sketches
 const sketches = await getCollection('sketches');
 
 // Get unique folder names
 const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
-  const parts = sketch.slug.split('/');
-  return parts[0];
+    const parts = sketch.slug.split('/');
+    return parts[0];
 }))];
 ---
 
 <Layout title="">
-  <div class="body">
-    <h2>digital sketchbook</h2>
-    <p>sketches:</p>
-    <ul>
-      {folders.map((folder) => (
-        <li>
-          <a href={`${import.meta.env.BASE_URL}/${folder}`}>{folder}</a>
-        </li>
-      ))}
-    </ul>  </div>
+    <div class="body">
+        <h2>digital sketchbook</h2>
+        <p>sketches:</p>
+        <ul>
+            {folders.map((folder) => (
+                    <li>
+                        <a href={`${import.meta.env.BASE_URL}/${folder}`}>{folder}</a>
+                    </li>
+            ))}
+        </ul>
+    </div>
 </Layout>

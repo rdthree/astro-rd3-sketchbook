@@ -2,7 +2,10 @@
 
 ## Overview
 
-Astro RD3 Sketchbook is an interactive sketchbook built with [Astro](https://astro.build/), leveraging the power of [p5.js](https://p5js.org/), [D3.js](https://d3js.org/), and [Three.js](https://threejs.org/) to create dynamic and engaging visualizations. This project serves as a playground for experimenting with various JavaScript libraries and TypeScript in a web environment.
+Astro RD3 Sketchbook is an interactive sketchbook built with [Astro](https://astro.build/), leveraging the power
+of [p5.js](https://p5js.org/), [D3.js](https://d3js.org/), and [Three.js](https://threejs.org/) to create dynamic and
+engaging visualizations. This project serves as a playground for experimenting with various JavaScript libraries and
+TypeScript in a web environment.
 
 ## Project Structure
 
@@ -33,7 +36,9 @@ astro-rd3-sketchbook/
 
 ### p5.js Test
 
-Located in `content/240818-p5js-d3-three-ts-test/p5jtest.ts` and `p5jtest.js`, these files demonstrate the integration of p5.js within the Astro framework. They create a new p5 instance and link it to a specific HTML element with the ID `p5jtest`.
+Located in `content/240818-p5js-d3-three-ts-test/p5jtest.ts` and `p5jtest.js`, these files demonstrate the integration
+of p5.js within the Astro framework. They create a new p5 instance and link it to a specific HTML element with the ID
+`p5jtest`.
 
 ```typescript
 let p5test = new p5(p5jtest, document.getElementById('p5jtest'));
@@ -41,7 +46,8 @@ let p5test = new p5(p5jtest, document.getElementById('p5jtest'));
 
 ### p5.js Sketch
 
-Found in `content/240813-p5.js-test/sketch_p5.js`, this file contains a p5.js sketch that creates an interactive circle following the mouse cursor. Key features include:
+Found in `content/240813-p5.js-test/sketch_p5.js`, this file contains a p5.js sketch that creates an interactive circle
+following the mouse cursor. Key features include:
 
 - **Canvas Creation**: Initializes a 400x400 pixel canvas.
 - **Background Color**: Sets the background color of the canvas.
@@ -100,7 +106,8 @@ To add new sketches or visualizations:
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a [Pull Request](https://github.com/your-username/astro-rd3-sketchbook/pulls).
+Contributions are welcome! Please feel free to submit
+a [Pull Request](https://github.com/your-username/astro-rd3-sketchbook/pulls).
 
 ## License
 
@@ -108,7 +115,8 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Contact
 
-For any questions or feedback, please open an [issue](https://github.com/your-username/astro-rd3-sketchbook/issues) in the GitHub repository.
+For any questions or feedback, please open an [issue](https://github.com/your-username/astro-rd3-sketchbook/issues) in
+the GitHub repository.
 
 ---
 
@@ -139,9 +147,11 @@ Inside of your Astro project, you'll see the following folders and files:
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file
+name.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact
+components.
 
 Any static assets, like images, can be placed in the `public/` directory.
 
@@ -150,7 +160,7 @@ Any static assets, like images, can be placed in the `public/` directory.
 All commands are run from the root of the project, from a terminal:
 
 | Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
+|:--------------------------|:-------------------------------------------------|
 | `npm install`             | Installs dependencies                            |
 | `npm run dev`             | Starts local dev server at `localhost:4321`      |
 | `npm run build`           | Build your production site to `./dist/`          |
@@ -160,4 +170,5 @@ All commands are run from the root of the project, from a terminal:
 
 ## 👀 Want to learn more?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Feel free to check [our documentation](https://docs.astro.build) or jump into
+our [Discord server](https://astro.build/chat).

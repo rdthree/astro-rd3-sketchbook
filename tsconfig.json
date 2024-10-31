@@ -18,7 +18,11 @@
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": false,
-    "plugins": [{"name": "@astrojs/ts-plugin"}],
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ],
     "baseUrl": ".",
     "paths": {
       "@SketchWrapperCDN": [
@@ -37,10 +41,10 @@
     ],
     "typeRoots": [
       "node_modules/@types",
-      "src/types",
+      "src/types"
     ],
     "types": [
-      "astro/client",
+      "astro/client"
     ],
     "jsx": "react-jsx",
     "jsxImportSource": "react"

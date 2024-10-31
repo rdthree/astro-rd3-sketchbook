@@ -5,7 +5,7 @@ interface Props {
     type: 'p5' | 'd3' | 'three' | 'babylonjs';
 }
 
-const { src, id, type } = Astro.props;
+const {src, id, type} = Astro.props;
 
 const scripts = import.meta.glob<string>('/src/content/sketches/**/*.{js,ts}', {
     query: '?raw',
@@ -24,7 +24,7 @@ const libraryImports = {
 
 <div class={`${type}-container`} id={id}></div>
 
-<script type="module" define:vars={{ scriptContent, type, libraryImports }}>
+<script type="module" define:vars={{scriptContent, type, libraryImports}}>
     const lib = await import(libraryImports[type]);
     window[type === 'p5' ? 'p5' : type === 'three' ? 'THREE' : 'd3'] = type === 'p5' ? lib.default : lib;
 

@@ -2,166 +2,180 @@
 
 /* Custom Variables */
 :root {
-  --font-family: 'Helvetica Neue', Arial, sans-serif;
-  --color: #333;
-  --primary: #007bff;
+    --font-family: 'Helvetica Neue', Arial, sans-serif;
+    --color: #333;
+    --primary: #007bff;
 }
 
 /* Base Styles */
 body {
-  font-family: var(--font-family);
-  font-size: 0.8rem;
-  line-height: 1.6;
-  color: var(--color);
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  text-align: left; /* Ensure body text is left-aligned */
+    font-family: var(--font-family);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--color);
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    text-align: left; /* Ensure body text is left-aligned */
 }
 
 /* Headings Styles */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 500;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  color: var(--color);
-  line-height: 1.2;
+    font-weight: 500;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--color);
+    line-height: 1.2;
 }
 
-h1 { font-size: 0.88rem; }
-h2 { font-size: 0.87rem; }
-h3 { font-size: 0.86rem; }
-h4 { font-size: 0.85rem; }
-h5, h6 { font-size: 0.80rem; }
+h1 {
+    font-size: 0.88rem;
+}
+
+h2 {
+    font-size: 0.87rem;
+}
+
+h3 {
+    font-size: 0.86rem;
+}
+
+h4 {
+    font-size: 0.85rem;
+}
+
+h5, h6 {
+    font-size: 0.80rem;
+}
 
 /* Layout */
 .layout-grid {
-  display: flex;
-  flex-direction: row;
-  min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
 }
 
 /* Navigation Styles */
 nav.vertical-nav {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* Align items to the start (left) */
-  position: relative;
-  width: 7ch; /* Collapsed width: enough for icons */
-  transition: width 0.3s ease;
-  padding: 0.65rem;
-  background-color: white;
-  /* optional right border */
-  /* border-right: 1px solid #ddd; */
-  overflow: hidden; /* Hide overflow when collapsed */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start (left) */
+    position: relative;
+    width: 7ch; /* Collapsed width: enough for icons */
+    transition: width 0.3s ease;
+    padding: 0.65rem;
+    background-color: white;
+    /* optional right border */
+    /* border-right: 1px solid #ddd; */
+    overflow: hidden; /* Hide overflow when collapsed */
 }
 
 nav.vertical-nav.expanded {
-  width: 450px; /* Expanded width: enough for icons and text */
+    width: 450px; /* Expanded width: enough for icons and text */
 }
 
 nav.vertical-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1; /* Allows the <ul> to take up remaining space */
-  width: 100%; /* Ensure ul takes full width */
-  text-align: left; /* Ensure list items are left-aligned */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allows the <ul> to take up remaining space */
+    width: 100%; /* Ensure ul takes full width */
+    text-align: left; /* Ensure list items are left-aligned */
 }
 
 nav.vertical-nav ul li {
-  display: block;
-  margin: 0;
-  padding: 0;
+    display: block;
+    margin: 0;
+    padding: 0;
 }
 
 nav.vertical-nav ul li a {
-  display: flex;
-  align-items: center; /* Centers items vertically */
-  justify-content: flex-start; /* Aligns items to the left horizontally */
-  padding: 0.5rem 0;
-  font-size: 0.70rem; /* Increased for better visibility */
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: var(--color);
-  text-decoration: none;
-  transition: color 0.3s ease, padding 0.3s ease;
-  text-align: left; /* Ensure text is left-aligned */
-  width: 100%; /* Make links take full width */
+    display: flex;
+    align-items: center; /* Centers items vertically */
+    justify-content: flex-start; /* Aligns items to the left horizontally */
+    padding: 0.5rem 0;
+    font-size: 0.70rem; /* Increased for better visibility */
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--color);
+    text-decoration: none;
+    transition: color 0.3s ease, padding 0.3s ease;
+    text-align: left; /* Ensure text is left-aligned */
+    width: 100%; /* Make links take full width */
 }
 
 nav.vertical-nav ul li a:hover,
 nav.vertical-nav ul li a:hover i {
-  color: var(--primary);
+    color: var(--primary);
 }
 
 nav.vertical-nav ul li a i {
-  margin-right: 0.5rem; /* Space between icon and text */
-  font-size: 1rem; /* Adjust icon size as needed */
-  color: var(--color);
-  flex-shrink: 0; /* Prevent icon from shrinking */
+    margin-right: 0.5rem; /* Space between icon and text */
+    font-size: 1rem; /* Adjust icon size as needed */
+    color: var(--color);
+    flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
 /* Ensure the entry-name spans are left-aligned and handle clipping */
 nav.vertical-nav ul li a .entry-name,
 .vertical-nav .entry-name {
-  text-align: left;
-  width: 100%;
-  display: inline-block; /* Changed from inline */
-  white-space: nowrap; /* Prevent text from wrapping */
-  /*overflow: hidden; /* Hide overflow */
-  /*text-overflow: ellipsis; /* Add ellipsis (...) when text is too long */
-  max-width: 0; /* Set for collapsed state */
-  transition: max-width 0.3s ease; /* Smooth transition */
+    text-align: left;
+    width: 100%;
+    display: inline-block; /* Changed from inline */
+    white-space: nowrap; /* Prevent text from wrapping */
+    /*overflow: hidden; /* Hide overflow */
+    /*text-overflow: ellipsis; /* Add ellipsis (...) when text is too long */
+    max-width: 0; /* Set for collapsed state */
+    transition: max-width 0.3s ease; /* Smooth transition */
 }
 
 .vertical-nav.expanded .entry-name {
-  max-width: 400px; /* Adjust based on expanded sidebar width */
+    max-width: 400px; /* Adjust based on expanded sidebar width */
 }
 
 /* Expand Button */
 .expand-button {
-  align-self: flex-start; /* Aligns the button to the left */
-  margin: 2px 0 17.5px 0px; /* Corrected margin-left from -09px to -9px */
-  width: 12px; /* Diameter of the circle */
-  height: 12px;
-  background-color: black; /* Black circle background */
-  border: none; /* Remove border */
-  border-radius: 50%; /* Makes it a circle */
-  cursor: pointer;
-  display: flex;
-  align-items: center; /* Centers the icon vertically */
-  justify-content: center; /* Centers the icon horizontally */
-  padding: 0; /* Remove padding */
-  transition: background-color 0.3s ease, transform 0.3s ease;
+    align-self: flex-start; /* Aligns the button to the left */
+    margin: 2px 0 17.5px 0px; /* Corrected margin-left from -09px to -9px */
+    width: 12px; /* Diameter of the circle */
+    height: 12px;
+    background-color: black; /* Black circle background */
+    border: none; /* Remove border */
+    border-radius: 50%; /* Makes it a circle */
+    cursor: pointer;
+    display: flex;
+    align-items: center; /* Centers the icon vertically */
+    justify-content: center; /* Centers the icon horizontally */
+    padding: 0; /* Remove padding */
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .expand-button::before {
-  /*content: "≡"; /* Ensure the hamburger icon is displayed */
-  color: white; /* Icon color */
-  font-size: 14px; /* Adjust icon size */
+    /*content: "≡"; /* Ensure the hamburger icon is displayed */
+    color: white; /* Icon color */
+    font-size: 14px; /* Adjust icon size */
 }
 
 .expand-button:hover {
-  background-color: #555; /* Darker shade on hover */
-  transform: rotate(90deg); /* Example rotation on hover */
+    background-color: #555; /* Darker shade on hover */
+    transform: rotate(90deg); /* Example rotation on hover */
 }
 
 /* Regular Text Container */
 .main-content {
-  flex: 1;
-  padding: 1rem;
-  overflow-x: hidden; /* Keeps regular text constrained */
-  margin: 0; /* Remove auto margins to prevent centering */
-  /* Removed max-width: 80ch; */
+    flex: 1;
+    padding: 1rem;
+    overflow-x: hidden; /* Keeps regular text constrained */
+    margin: 0; /* Remove auto margins to prevent centering */
+    /* Removed max-width: 80ch; */
 }
 
 /* Apply max-width: 80ch to all direct children except sketch containers */
 .main-content > :not(.p5-container):not(.d3-container):not(.three-container) {
-  max-width: 90ch;
-  margin-left: 0;
-  margin-right: 0;
+    max-width: 90ch;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 /* Common styles for all Sketch Containers */
@@ -169,9 +183,9 @@ nav.vertical-nav ul li a .entry-name,
 .d3-container,
 .babylonjs-container,
 .three-container {
-  width: 100%;
-  max-width: none !important; /* Remove any max-width constraints */
-  margin: 2rem 0; /* Add spacing around sketches */
+    width: 100%;
+    max-width: none !important; /* Remove any max-width constraints */
+    margin: 2rem 0; /* Add spacing around sketches */
 }
 
 /* Ensure canvases within sketches fill their containers */
@@ -179,53 +193,53 @@ nav.vertical-nav ul li a .entry-name,
 .d3-container canvas,
 .babylonjs-container canvas,
 .three-container canvas {
-  width: 100%;
-  height: auto; /* Maintain aspect ratio */
-  display: block;
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    display: block;
 }
 
 /* Specific styles for babylonjs sketches */
 .babylonjs-container {
-  width: 100%; /* Ensure adequate height */
-  height: 400px;
-  display: block;
+    width: 100%; /* Ensure adequate height */
+    height: 400px;
+    display: block;
 }
 
 /* Specific styles for Three.js sketches */
 .three-container {
-  min-height: 50vh; /* Ensure adequate height */
+    min-height: 50vh; /* Ensure adequate height */
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  .p5-container,
-  .d3-container,
-  .babylonjs-container,
-  .three-container {
-    width: 100%;
-    padding: 0 1rem; /* Add horizontal padding on smaller screens */
-  }
+    .p5-container,
+    .d3-container,
+    .babylonjs-container,
+    .three-container {
+        width: 100%;
+        padding: 0 1rem; /* Add horizontal padding on smaller screens */
+    }
 
-  .layout-grid {
-    flex-direction: column;
-  }
+    .layout-grid {
+        flex-direction: column;
+    }
 
-  .vertical-nav {
-    width: 60px; /* Collapsed width for mobile */
-  }
+    .vertical-nav {
+        width: 60px; /* Collapsed width for mobile */
+    }
 
-  .vertical-nav.expanded {
-    width: 100%; /* Expanded width: full width on mobile */
-  }
+    .vertical-nav.expanded {
+        width: 100%; /* Expanded width: full width on mobile */
+    }
 
-  /* Adjust .entry-name max-width for mobile */
-  .vertical-nav .entry-name {
-    max-width: 0; /* Collapsed */
-  }
+    /* Adjust .entry-name max-width for mobile */
+    .vertical-nav .entry-name {
+        max-width: 0; /* Collapsed */
+    }
 
-  .vertical-nav.expanded .entry-name {
-    max-width: 100%; /* Expanded: full width */
-  }
+    .vertical-nav.expanded .entry-name {
+        max-width: 100%; /* Expanded: full width */
+    }
 }
 
 /* PrismJS Formatting */
@@ -237,17 +251,17 @@ body .layout-grid nav.vertical-nav ul,
 body .layout-grid nav.vertical-nav ul li,
 body .layout-grid nav.vertical-nav ul li a,
 body .layout-grid nav.vertical-nav ul li a .entry-name {
-  text-align: left !important;
-  justify-content: flex-start !important;
-  align-items: flex-start !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
 }
 
 body .layout-grid nav.vertical-nav ul li a {
-  flex-direction: row !important;
+    flex-direction: row !important;
 }
 
 body .layout-grid nav.vertical-nav ul li a .entry-name {
-  text-align: left !important;
-  width: auto !important;
-  max-width: none !important;
+    text-align: left !important;
+    width: auto !important;
+    max-width: none !important;
 }

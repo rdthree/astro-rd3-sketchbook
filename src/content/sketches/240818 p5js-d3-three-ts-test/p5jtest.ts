@@ -1,6 +1,6 @@
 // filename: p5jtest.ts
 const p5jtest = (p: typeof p5) => {
-  
+
     // The setup function to initialize the sketch
     p.setup = () => {
         p.createCanvas(1000, 400);

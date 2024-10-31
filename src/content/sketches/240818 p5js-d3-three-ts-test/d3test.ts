@@ -23,7 +23,7 @@ function createBarChart(containerId = d3testId) {
         .attr("x", (d: number, i: number) => i * 70)
         .attr("y", (d: number) => 300 - d)
         .attr("width", 65)
-        .attr("height", (d: number) => d)        .attr("fill", "teal");
+        .attr("height", (d: number) => d).attr("fill", "teal");
 }
 
 function createSimpleCircle(containerId = d3testId) {

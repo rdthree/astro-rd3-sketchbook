@@ -22,10 +22,18 @@ function natureofcode0_orig(p: typeof p5) {
         step(): void {
             const choice = p.floor(p.random(4));
             switch (choice) {
-                case 0: this.x++; break; //move right
-                case 1: this.x--; break; //move left
-                case 2: this.y++; break; //move down
-                case 3: this.y--; break; //move up
+                case 0:
+                    this.x++;
+                    break; //move right
+                case 1:
+                    this.x--;
+                    break; //move left
+                case 2:
+                    this.y++;
+                    break; //move down
+                case 3:
+                    this.y--;
+                    break; //move up
             }
         }
     }
