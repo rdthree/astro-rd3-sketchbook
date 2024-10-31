@@ -13,10 +13,10 @@ const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
   <nav class="vertical-nav">
     <button class="expand-button" aria-label="Toggle-Sidebar" aria-expanded="false"></button>
     <ul>
-      <li><a href="/astro-rd3-sketchbook/" data-nav-link><i></i><span class="entry-name">Home</span></a></li>
+      <li><a href={import.meta.env.BASE_URL} data-nav-link><i></i><span class="entry-name">Home</span></a></li>
       {folders.map(folder => (
         <li>
-          <a href={`/astro-rd3-sketchbook/${folder}`} data-nav-link>
+          <a href={`${import.meta.env.BASE_URL}/${folder}`} data-nav-link>
             <i></i>
             <span class="entry-name">{folder}</span>
           </a>
@@ -25,7 +25,6 @@ const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
     </ul>
   </nav>
 </div>
-
 <script>
   function setupNavigation() {
     const nav = document.querySelector('.vertical-nav');
