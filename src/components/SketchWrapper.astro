@@ -1,66 +1,35 @@
-<!-- filename: src\components\SketchWrapper.astro -->
 ---
-import { getCollection } from 'astro:content';
-
 interface Props {
-  src: string;
-  id: string;
-  type: 'p5' | 'd3' | 'three' | 'babylonjs';
+    src: string;
+    id: string;
+    type: 'p5' | 'd3' | 'three' | 'babylonjs';
 }
 
 const { src, id, type } = Astro.props;
 
-const sketches = await getCollection('sketches');
-const scripts = import.meta.glob<string>('/src/content/sketches/**/*.{js,ts}', { 
-  query: '?raw', 
-  import: 'default' 
+const scripts = import.meta.glob<string>('/src/content/sketches/**/*.{js,ts}', {
+    query: '?raw',
+    import: 'default'
 });
 
-// Find the sketch entry from collection
-const sketch = sketches.find((sketch: { id: string; }) => sketch.id.endsWith(`/${src}`));
-
-// Get the raw file content using the full path
 const scriptPath = Object.keys(scripts).find(path => path.endsWith(`/${src}`));
 const scriptContent = scriptPath ? await scripts[scriptPath]() : '';
 
-const containerClass = `${type}-container`;
-
 const libraryImports = {
-  p5: "https://cdn.jsdelivr.net/npm/p5@1.11.0/+esm?name=p5",
-  d3: 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm?name=d3',
-  three: 'https://cdn.jsdelivr.net/npm/three@0.169.0/+esm?name=three',
+    p5: "https://cdn.jsdelivr.net/npm/p5@1.11.0/+esm?name=p5",
+    d3: 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm?name=d3',
+    three: 'https://cdn.jsdelivr.net/npm/three@0.169.0/+esm?name=three',
 };
 ---
 
-<div class={containerClass} id={id}></div>
+<div class={`${type}-container`} id={id}></div>
 
 <script type="module" define:vars={{ scriptContent, type, libraryImports }}>
-  const importLibrary = async () => {
-    switch (type) {
-      case 'p5':
-        const p5 = await import(libraryImports.p5);
-        window.p5 = p5.default;
-        break;
-      case 'd3':
-        const d3 = await import(libraryImports.d3);
-        window.d3 = d3;
-        break;
-      case 'three':
-        const THREE = await import(libraryImports.three);
-        window.THREE = THREE;
-        break;
-    }
-  };
+    const lib = await import(libraryImports[type]);
+    window[type === 'p5' ? 'p5' : type === 'three' ? 'THREE' : 'd3'] = type === 'p5' ? lib.default : lib;
 
-  await importLibrary();
-
-  // setTimeout(() => {
-  //   eval(scriptContent);
-  // }, 0);
-
-  const script = document.createElement('script');
-  script.type = 'module';
-  script.textContent = scriptContent;
-  document.body.appendChild(script);
-
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.textContent = scriptContent;
+    document.body.appendChild(script);
 </script>

@@ -1,30 +1,25 @@
 ---
 import { Code } from 'astro:components';
-import { getCollection } from 'astro:content';
+import type { BundledLanguage } from 'shiki'  // This is what Astro's Code uses internally
 
 interface Props {
-  src: string;
-  lang: string;
+    src: string;
+    lang?: string;
 }
 
 const { src, lang = "javascript" } = Astro.props;
 
-const sketches = await getCollection('sketches');
 const files = import.meta.glob<string>("/src/content/sketches/**/*.*", {
-  query: "?raw",
-  import: "default",
+    query: "?raw",
+    import: "default",
 });
 
-// Find the sketch entry from collection
-const sketch = sketches.find((sketch: { id: string; }) => sketch.id.endsWith(`/${src}`));
-
-// Get the raw file content using the full path
 const filePath = Object.keys(files).find(path => path.endsWith(`/${src}`));
 const fileContent = filePath ? await files[filePath]() : "";
 ---
 
-<Code 
-  code={fileContent} 
-  lang={lang as any} 
-  theme="snazzy-light"
+<Code
+        code={fileContent}
+        lang={lang as BundledLanguage}
+        theme="snazzy-light"
 />
