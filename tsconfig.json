@@ -21,11 +21,11 @@
     "plugins": [{"name": "@astrojs/ts-plugin"}],
     "baseUrl": ".",
     "paths": {
-      "@SketchWrapper": [
-        "src/components/SketchWrapper.astro"
+      "@SketchWrapperCDN": [
+        "src/components/SketchWrapperCDN.astro"
       ],
-      "@SketchWrapperESM": [
-        "src/components/SketchWrapperESM.jsx"
+      "@SketchWrapperBundled": [
+        "src/components/SketchWrapperBundled.jsx"
       ],
       "@CodeSnippet": [
         "src/components/CodeSnippet.astro"

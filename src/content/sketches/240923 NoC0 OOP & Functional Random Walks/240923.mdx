@@ -1,6 +1,6 @@
 {/* file: 240923.mdx */}
 
-import Sketch from '@SketchWrapper';
+import SketchCDN from '@SketchWrapperCDN';
 import CodeSnippet from '@CodeSnippet';
 
 ## nature of code 0
@@ -11,20 +11,20 @@ These three implementations of a random walk algorithm illustrate different prog
 This version uses a classic object-oriented structure. It defines a Walker class that encapsulates the walker's position and behavior. The class has separate methods for moving (step) and displaying (show). Random movement is implemented using a switch statement based on a random number. The draw function calls step and show once per frame.
 
 
-<Sketch type="p5" src="natureofcode0_orig.js" id="natureofcode0_orig" />
+<SketchCDN type="p5" src="natureofcode0_orig.js" id="natureofcode0_orig" />
 <CodeSnippet src="natureofcode0_orig.ts" lang="typescript" />
 
 ### Functional-Style Random Walk:
 This implementation takes a more functional approach. It does not use a class structure, instead relying on functions and a single position variable. The step function combines both movement and drawing operations. It uses an array of direction vectors for movement choices. 
 
 
-<Sketch type="p5" src="natureofcode0_func.js" id="natureofcode0_func" />
+<SketchCDN type="p5" src="natureofcode0_func.js" id="natureofcode0_func" />
 <CodeSnippet src="natureofcode0_func.ts" lang="typescript" />
 
 ### Refined OOP Random Walk:
 This version maintains an object-oriented structure but incorporates some elements seen in the functional approach. The Walker class now includes a static array of direction vectors. The step method uses this array for movement, simplifying the code. It also moves the stroke color setting to the setup function. */}
 
 
-<Sketch type="p5" src="natureofcode0.js" id="natureofcode0" /> */}
+<SketchCDN type="p5" src="natureofcode0.js" id="natureofcode0" /> */}
 
 <CodeSnippet src="natureofcode0.ts" lang="typescript" />
