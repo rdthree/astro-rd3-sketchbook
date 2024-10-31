@@ -9,7 +9,7 @@
 
 /* Base Styles */
 body {
-    font-family: var(--font-family);
+    font-family: var(--font-family), sans-serif;
     font-size: 0.8rem;
     line-height: 1.6;
     color: var(--color);
@@ -137,7 +137,7 @@ nav.vertical-nav ul li a .entry-name,
 /* Expand Button */
 .expand-button {
     align-self: flex-start; /* Aligns the button to the left */
-    margin: 2px 0 17.5px 0px; /* Corrected margin-left from -09px to -9px */
+    margin: 2px 0 18px 0; /* Corrected margin-left from -09px to -9px */
     width: 12px; /* Diameter of the circle */
     height: 12px;
     background-color: black; /* Black circle background */

@@ -17,7 +17,7 @@ export default defineConfig({
         ssr: {},
         build: {
             rollupOptions: {
-                external: ['fs', 'path'], // Excludes the "fs" and "path" packages from the build so it can deploy to github pages
+                external: [], // Excludes the "fs" and "path" packages from the build so it can deploy to GitHub pages
                 output: {
                     manualChunks: {
                         // Split Babylon.js into smaller chunks
@@ -40,8 +40,6 @@ export default defineConfig({
         },
         resolve: {
             alias: {
-                '@': 'src',
-                '@SketchLoader': 'src/components/SketchLoader.jsx',
             },
         }
     }, // Vite-specific configurations can be added here
