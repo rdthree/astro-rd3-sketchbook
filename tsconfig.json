@@ -50,9 +50,11 @@
     "jsxImportSource": "react"
   },
   "include": [
+    ".astro/types.d.ts", 
     "**/*.astro",
     "src/content/**/*.ts",
     "src/types/*.d.ts",
     "src/content/config.ts"
-  ]
+  ],
+  "exclude": ["dist"]
 }

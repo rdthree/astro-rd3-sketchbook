@@ -1,3 +1,4 @@
+// @ts-ignore // hopefully this is fixed later by Rider
 import {defineConfig} from "astro/config";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
@@ -29,10 +30,7 @@ export default defineConfig({
                         d3: ['d3'],
                         p5: ['p5'],
                     },
-                    assetFileNames: (assetInfo) => {
-                        if (assetInfo.name === 'SketchLoader.js') {
-                            return 'assets/[hash].[extname]';
-                        }
+                    assetFileNames: () => {
                         return 'assets/[name][extname]';
                     },
                 },
