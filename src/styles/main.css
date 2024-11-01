@@ -137,7 +137,7 @@ nav.vertical-nav ul li a .entry-name,
 /* Expand Button */
 .expand-button {
     align-self: flex-start; /* Aligns the button to the left */
-    margin: 2px 0 12px 0; /* Corrected margin-left from -09px to -9px */
+    margin: 2px 0 16px 0; /* Corrected margin-left from -09px to -9px */
     width: 12px; /* Diameter of the circle */
     height: 12px;
     background-color: black; /* Black circle background */
