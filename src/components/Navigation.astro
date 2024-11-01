@@ -1,36 +1,27 @@
 ---
-import {getCollection} from 'astro:content';
+// src/components/Navigation.astro
+import SketchFolders from './SketchFolders.astro';
 
-const sketches = await getCollection('sketches');
-
-const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
-    const parts = sketch.slug.split('/');
-    return parts[0];
-}))];
+// No need for getCollection here anymore as it's handled in SketchFolders
 ---
 
 <div class="layout-grid">
     <nav class="vertical-nav">
         <button class="expand-button" aria-label="Toggle-Sidebar" aria-expanded="false"></button>
-        <ul>
-            <li><a href={import.meta.env.BASE_URL} data-nav-link><i></i><span class="entry-name">Home</span></a></li>
-            {folders.map(folder => (
-                    <li>
-                        <a href={`${import.meta.env.BASE_URL}/${folder}`} data-nav-link>
-                            <i></i>
-                            <span class="entry-name">{folder}</span>
-                        </a>
-                    </li>
-            ))}
-        </ul>
+        <SketchFolders type="navigation" />
     </nav>
 </div>
+
 <script>
     function setupNavigation() {
         const nav = document.querySelector('.vertical-nav');
         const expandButton = document.querySelector('.expand-button');
         if (nav && expandButton) {
-            expandButton.addEventListener('click', () => nav.classList.toggle('expanded'));
+            expandButton.addEventListener('click', () => {
+                nav.classList.toggle('expanded');
+                const isExpanded = nav.classList.contains('expanded');
+                expandButton.setAttribute('aria-expanded', isExpanded.toString());
+            });
         }
     }
 

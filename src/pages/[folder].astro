@@ -2,36 +2,80 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
+interface SketchEntry {
+    slug: string;
+    render: () => Promise<any>;
+}
+
 export async function getStaticPaths() {
     const sketches = await getCollection('sketches');
 
-    // Get unique folder names
-  const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
-    const parts = sketch.slug.split('/');
-    return parts[0];
+    // Debug logging
+    console.log('Raw sketches slugs:', sketches.map(s => s.slug));
+
+    // Get unique folder names with case preserved
+    const folders = [...new Set(sketches.map((sketch: SketchEntry) => {
+        const parts = sketch.slug.split('/');
+        return parts[0];
     }))];
 
-    return folders.map(folder => {
-    const folderSketches = sketches.filter((sketch: { slug: string; }) =>
-        sketch.slug.startsWith(folder + '/')
+    // Debug logging
+    console.log('Unique folders:', folders);
+
+    const routes = folders.map(folder => {
+        const folderSketches = sketches.filter((sketch: SketchEntry) =>
+            sketch.slug.startsWith(folder + '/')
         );
 
-    return {
-        params: { folder },
-        props: { sketches: folderSketches }
+        // Debug logging
+        console.log('Creating route for folder:', folder);
+        console.log('Matched sketches:', folderSketches.map(s => s.slug));
+
+        return {
+            params: { folder },
+            props: {
+                sketches: folderSketches,
+                originalFolder: folder,
+                debug: {
+                    originalSlug: folder,
+                    paramFolder: folder,
+                }
+            }
         };
     });
-    }
 
-const { sketches } = Astro.props;
+    // Debug logging
+    console.log('Generated routes:', routes.map(r => ({
+        param: r.params.folder,
+        original: r.props.originalFolder
+    })));
+
+    return routes;
+}
+
+const { sketches, originalFolder, debug } = Astro.props;
+
+// Debug output in the rendered page
+const debugInfo = {
+    currentUrl: Astro.url.pathname,
+    params: Astro.params,
+    originalFolder,
+    debug
+};
 
 // Render all MDX content for this folder
 const renderedContent = await Promise.all(
-sketches.map((sketch: { render: () => any; }) => sketch.render())
+    sketches.map((sketch: SketchEntry) => sketch.render())
 );
 ---
 
-<Layout title={Astro.params.folder}>
+<Layout title={originalFolder}>
+    {import.meta.env.DEV && (
+            <pre style="font-size: 12px; background: #f5f5f5; padding: 1rem; margin: 1rem 0;">
+            Debug Info:
+                {JSON.stringify(debugInfo, null, 2)}
+        </pre>
+    )}
     {renderedContent.map(({Content}) => (
             <Content/>
     ))}

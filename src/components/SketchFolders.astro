@@ -1,0 +1,55 @@
+﻿---
+// src/components/SketchFolders.astro
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+    type?: 'navigation' | 'index';
+}
+
+const { type = 'index' } = Astro.props;
+
+const sketches: CollectionEntry<'sketches'>[] = await getCollection('sketches');
+const folders: string[] = [
+    ...new Set(
+        sketches.map((sketch) => {
+            const parts = sketch.slug.split('/');
+            return parts[0];
+        })
+    ),
+];
+
+// Function to format the display name
+const formatDisplayName = (folder: string) => folder.replace(/-/g, ' ');
+
+// Function to get href
+const getHref = (folder: string) =>
+    `${import.meta.env.BASE_URL}/${encodeURIComponent(folder.toLowerCase())}`;
+---
+
+{type === 'navigation' ? (
+<ul>
+    <li>
+        <a href={import.meta.env.BASE_URL} data-nav-link>
+            <i></i>
+            <span class="entry-name">home</span>
+        </a>
+    </li>
+    {folders.map((folder) => (
+            <li>
+                <a href={getHref(folder)} data-nav-link>
+                    <i></i>
+                    <span class="entry-name">{formatDisplayName(folder)}</span>
+                </a>
+            </li>
+    ))}
+</ul>
+    ) : (
+<ul>
+    {folders.map((folder) => (
+            <li>
+                <a href={getHref(folder)}>{formatDisplayName(folder)}</a>
+            </li>
+    ))}
+</ul>
+    )}

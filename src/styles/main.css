@@ -96,7 +96,7 @@ nav.vertical-nav ul li a {
     justify-content: flex-start; /* Aligns items to the left horizontally */
     padding: 0.5rem 0;
     font-size: 0.70rem; /* Increased for better visibility */
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.02em;
     color: var(--color);
     text-decoration: none;
@@ -137,7 +137,7 @@ nav.vertical-nav ul li a .entry-name,
 /* Expand Button */
 .expand-button {
     align-self: flex-start; /* Aligns the button to the left */
-    margin: 2px 0 18px 0; /* Corrected margin-left from -09px to -9px */
+    margin: 2px 0 12px 0; /* Corrected margin-left from -09px to -9px */
     width: 12px; /* Diameter of the circle */
     height: 12px;
     background-color: black; /* Black circle background */

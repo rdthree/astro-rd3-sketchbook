@@ -1,29 +1,38 @@
 ---
-// file: src/pages/index.astro
-
+// src/pages/index.astro
 import Layout from "../layouts/Layout.astro";
-import {getCollection} from 'astro:content';
+import SketchFolders from '../components/SketchFolders.astro';
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
-// Get all sketches
-const sketches = await getCollection('sketches');
+// Keep the debug logging
+const sketches: CollectionEntry<'sketches'>[] = await getCollection('sketches');
+console.log('Raw sketch collection:', sketches.map(s => s.slug));
 
-// Get unique folder names
-const folders = [...new Set(sketches.map((sketch: { slug: string; }) => {
-    const parts = sketch.slug.split('/');
-    return parts[0];
-}))];
+const folders: string[] = [
+    ...new Set(
+        sketches.map((sketch) => {
+            const parts = sketch.slug.split('/');
+            const folder = parts[0];
+            console.log('Processing folder:', folder, 'from slug:', sketch.slug);
+            return folder;
+        })
+    ),
+];
+
+console.log('Final folders list:', folders);
 ---
 
 <Layout title="">
     <div class="body">
         <h2>digital sketchbook</h2>
-        <p>sketches:</p>
-        <ul>
-            {folders.map((folder) => (
-                    <li>
-                        <a href={`${import.meta.env.BASE_URL}/${folder}`}>{folder}</a>
-                    </li>
-            ))}
-        </ul>
+        {import.meta.env.DEV && (
+                <pre style="font-size: 12px; background: #f5f5f5; padding: 1rem; margin: 1rem 0;">
+                Debug Info:
+                Raw Slugs: {JSON.stringify(sketches.map(s => s.slug), null, 2)}
+                    Processed Folders: {JSON.stringify(folders, null, 2)}
+            </pre>
+        )}
+        <SketchFolders type="index" />
     </div>
 </Layout>
