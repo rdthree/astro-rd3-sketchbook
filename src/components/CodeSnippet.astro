@@ -1,6 +1,5 @@
 ---
-import {Code} from 'astro:components';
-import type {BundledLanguage} from 'shiki'  // This is what Astro's Code uses internally
+import { Code } from 'astro:components';
 
 interface Props {
     src: string;
@@ -16,10 +15,10 @@ const files = import.meta.glob<string>("/src/content/sketches/**/*.*", {
 
 const filePath = Object.keys(files).find(path => path.endsWith(`/${src}`));
 const fileContent = filePath ? await files[filePath]() : "";
----
 
+---
 <Code
         code={fileContent}
-        lang={lang as BundledLanguage}
+        lang={lang as any}
         theme="snazzy-light"
 />
