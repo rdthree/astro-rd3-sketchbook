@@ -24,7 +24,7 @@ const formatDisplayName = (folder: string) => folder.replace(/-/g, ' ');
 
 // Function to get href
 const getHref = (folder: string) =>
-    `${import.meta.env.BASE_URL}/${encodeURIComponent(folder.toLowerCase())}`;
+    `${import.meta.env.BASE_URL}/${encodeURIComponent(folder)}`;
 ---
 
 {type === 'navigation' ? (

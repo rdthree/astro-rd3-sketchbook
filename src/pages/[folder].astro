@@ -70,12 +70,12 @@ const renderedContent = await Promise.all(
 ---
 
 <Layout title={originalFolder}>
-    {import.meta.env.DEV && (
-            <pre style="font-size: 12px; background: #f5f5f5; padding: 1rem; margin: 1rem 0;">
-            Debug Info:
-                {JSON.stringify(debugInfo, null, 2)}
-        </pre>
-    )}
+    <!--    {import.meta.env.DEV && (
+              <pre style="font-size: 12px; background: #f5f5f5; padding: 1rem; margin: 1rem 0;">
+               Debug Info:
+                   {JSON.stringify(debugInfo, null, 2)}
+           </pre>
+    )}-->
     {renderedContent.map(({Content}) => (
             <Content/>
     ))}
