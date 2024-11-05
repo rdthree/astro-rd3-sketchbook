@@ -17,8 +17,7 @@ const folders: string[] = [
             return parts[0];
         })
     ),
-];
-
+].sort((a, b) => b.localeCompare(a)); // Sort in descending order (newest first)
 // Function to format the display name
 const formatDisplayName = (folder: string) => folder.replace(/-/g, ' ');
 
