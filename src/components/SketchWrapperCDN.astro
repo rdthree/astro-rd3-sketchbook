@@ -17,11 +17,10 @@ const scriptContent = scriptPath ? await scripts[scriptPath]() : '';
 
 const libraryImports = {
     // TODO: weird error with the jsdelivr esm cdn, but this esm.run thing was in their jsfiddle examples
-    //p5: "https://cdn.jsdelivr.net/npm/p5@1.11.0/+esm?name=p5",
-    p5: "https://esm.run/p5?name=p5",
-    //d3: 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm?name=d3',
-    d3: 'https://esm.run/d3?name=d3',
-    //three: 'https://cdn.jsdelivr.net/npm/three@0.169.0/+esm?name=three',
+    //p5: "https://esm.run/p5?name=p5",
+    p5: 'https://esm.sh/p5?name=p5',
+    //d3: 'https://esm.run/d3?name=d3',
+    d3: 'https://esm.sh/d3?name=d3',
     //three: 'https://esm.run/three?name=three',
     three: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.170.0/three.module.min.js?name=three',
 };
