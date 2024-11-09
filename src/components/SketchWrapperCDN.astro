@@ -16,15 +16,19 @@ const scriptPath = Object.keys(scripts).find(path => path.endsWith(`/${src}`));
 const scriptContent = scriptPath ? await scripts[scriptPath]() : '';
 
 const libraryImports = {
-    p5: "https://cdn.jsdelivr.net/npm/p5@1.11.0/+esm?name=p5",
-    d3: 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm?name=d3',
-    three: 'https://cdn.jsdelivr.net/npm/three@0.169.0/+esm?name=three',
+    // TODO: weird error with the jsdelivr esm cdn, but this esm.run thing was in their jsfiddle examples
+    //p5: "https://cdn.jsdelivr.net/npm/p5@1.11.0/+esm?name=p5",
+    p5: "https://esm.run/p5?name=p5",
+    //d3: 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm?name=d3',
+    d3: 'https://esm.run/d3?name=d3',
+    //three: 'https://cdn.jsdelivr.net/npm/three@0.169.0/+esm?name=three',
+    three: 'https://esm.run/three?name=three',
 };
 ---
 
 <div class={`${type}-container`} id={id}></div>
 
-<script type="module" define:vars={{scriptContent, type, libraryImports}}>
+<script type="module" define:vars={{scriptContent, type, libraryImports}} defer>
     const lib = await import(libraryImports[type]);
     window[type === 'p5' ? 'p5' : type === 'three' ? 'THREE' : 'd3'] = type === 'p5' ? lib.default : lib;
 
