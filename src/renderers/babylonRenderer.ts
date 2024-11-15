@@ -61,7 +61,10 @@ export async function createScene(canvas: HTMLCanvasElement) {
 // Type definitions for sketch creation and initialization
 export type Babylon = Awaited<ReturnType<typeof getBabylon>>;
 export type SketchInitializer = (
-    context: Omit<Babylon, 'Engine' | 'Scene'> & { scene: InstanceType<Babylon['Scene']> }
+    context: Omit<Babylon, 'Engine' | 'Scene'> & { 
+        scene: InstanceType<Babylon['Scene']>,
+        camera: InstanceType<Babylon['ArcRotateCamera']>,
+    }
 ) => void | Promise<void>;
 export type DefinedSketch = ReturnType<typeof defineSketch>;
 

@@ -28,9 +28,6 @@
       "@SketchWrapperCDN": [
         "src/components/SketchWrapperCDN.astro"
       ],
-      "@SketchWrapperBundled": [
-        "src/components/SketchWrapperBundled.jsx"
-      ],
       "@BabylonSketch": [
         "src/components/BabylonSketchLoader.astro"
       ],
