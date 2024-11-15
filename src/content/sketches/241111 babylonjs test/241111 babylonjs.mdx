@@ -11,7 +11,7 @@ Let's break down how these files actually work together to show a spinning spher
 The MDX file is just a content page that says "put a 3D sketch here" using this tag:
 
 ```jsx
-<BabylonSketch sketchId="babylon-test-simple" />
+<BabylonSketch sketchId="babylon-test_241114" />
 ```
 
 The `BabylonSketchLoader.astro` creates a canvas on the page and loads the right sketch file based on that `sketchId`. It has a manager that watches for these canvas elements and sets them up. When it finds one, it looks in the sketches folder for a matching file name.
@@ -30,10 +30,10 @@ So when you view the page:
 
 That's really all there is to it – just files working together to put a 3D scene on a webpage.
 
-<BabylonSketch sketchId="babylon-test-simple" />
+<BabylonSketch sketchId="babylon-test_241114" />
 
 Sketch code:
-<CodeSnippet src="babylon-test-simple.ts" lang="typescript"/>
+<CodeSnippet src="babylon-test_241114.ts" lang="typescript"/>
 
 Renderer setup code:
 <CodeSnippet src="babylonRenderer.ts" lang="typescript"/>

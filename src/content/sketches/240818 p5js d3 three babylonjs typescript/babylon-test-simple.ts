@@ -7,10 +7,10 @@
  * - Camera animation (orbital movement)
  */
 import { defineSketch } from '../../../renderers/babylonRenderer';
-import {HemisphericLight, MeshBuilder } from "@babylonjs/core";
 
-export default defineSketch(({ scene, Vector3, camera }) => {
-
+export default defineSketch(async ({ scene, Vector3, camera }) => {
+    const {HemisphericLight} = await import('@babylonjs/core/Lights/hemisphericLight');
+    const {MeshBuilder} = await import('@babylonjs/core/Meshes/meshBuilder');
     // Add ambient lighting
     const light = new HemisphericLight('light1', new Vector3(1, 1, 0), scene);
 

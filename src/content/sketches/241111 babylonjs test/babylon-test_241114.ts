@@ -8,9 +8,12 @@
  * - Camera animation (orbital movement)
  */
 import { defineSketch } from '../../../renderers/babylonRenderer';
-import {FreeCamera, HemisphericLight, MeshBuilder, StandardMaterial} from "@babylonjs/core";
 
-export default defineSketch(({ scene, Vector3 }) => {
+export default defineSketch(async ({ scene, Vector3 }) => {
+    // dynamic import of Babylon.js modules
+    const { FreeCamera } = await import('@babylonjs/core/Cameras/freeCamera');
+    const { HemisphericLight } = await import('@babylonjs/core/Lights/hemisphericLight');
+    const { MeshBuilder } = await import('@babylonjs/core/Meshes/meshBuilder');
     // Replace default camera with a custom FreeCamera
     scene.cameras[0].dispose();
     const camera = new FreeCamera("myCamera", new Vector3(0, 2, -4), scene);
