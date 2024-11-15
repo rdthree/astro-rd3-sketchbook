@@ -1,4 +1,5 @@
-﻿export async function getBabylon() {
+﻿// boiler plate modules to load for any given babylonjs scene
+export async function getBabylon() {
     const { Engine } = await import('@babylonjs/core/Engines/engine');
     const { Scene } = await import('@babylonjs/core/scene');
     const { ArcRotateCamera } = await import('@babylonjs/core/Cameras/arcRotateCamera');
