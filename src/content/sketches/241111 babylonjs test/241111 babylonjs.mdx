@@ -1,5 +1,6 @@
 ﻿
 import BabylonSketch from '@BabylonSketch';
+import CodeSnippet from '@CodeSnippet';
 
 # Babylon.js Test
 
@@ -7,4 +8,11 @@ This sketch uses an astro component instead of the jsx component that was initia
 
 <BabylonSketch sketchId="babylon-test-simple" />
 
-The sketch should load above this line of text.
+Sketch code:
+<CodeSnippet src="babylon-test-simple.ts" lang="typescript"/>
+
+Renderer setup code:
+<CodeSnippet src="babylonRenderer.ts" lang="typescript"/>
+
+Astro loader component code:
+<CodeSnippet src="BabylonSketchLoader.astro" lang="typescript"/>

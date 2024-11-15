@@ -1,18 +1,35 @@
 ---
+// file: src\renderers\babylonRenderer.ts
+/**
+ * CodeSnippet Component
+ * 
+ * This component renders code snippets with syntax highlighting using Astro's built-in Code component.
+ * It automatically loads file content from the sketches directory and displays it with proper formatting.
+ *
+ * @component
+ * @example
+ * <CodeSnippet src="filename.js" lang="javascript" />
+ * <CodeSnippet src="sketch.ts" lang="typescript" />
+ */
+
 import { Code } from 'astro:components';
 
 interface Props {
+    // The source file name to display (required)
     src: string;
+    // Programming language for syntax highlighting (optional, defaults to javascript)
     lang?: string;
 }
 
 const {src, lang = "javascript"} = Astro.props;
 
+// Import all files from the sketches directory as raw content
 const files = import.meta.glob<string>("/src/content/sketches/**/*.*", {
     query: "?raw",
     import: "default",
 });
 
+// Find the matching file path and load its content
 const filePath = Object.keys(files).find(path => path.endsWith(`/${src}`));
 const fileContent = filePath ? await files[filePath]() : "";
 
