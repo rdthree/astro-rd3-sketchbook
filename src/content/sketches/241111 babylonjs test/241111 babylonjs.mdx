@@ -4,7 +4,31 @@ import CodeSnippet from '@CodeSnippet';
 
 # Babylon.js Test
 
-This sketch uses an astro component instead of the jsx component that was initially used. It consists of a workaround where instead of depending on frontmatter, it uses a 'renderer' typescript file and a 'loader' astro component.
+**Title: Breaking Down a Babylon.js Sketch Setup in Astro**
+
+Let's break down how these files actually work together to show a spinning sphere.
+
+The MDX file is just a content page that says "put a 3D sketch here" using this tag:
+
+```jsx
+<BabylonSketch sketchId="babylon-test-simple" />
+```
+
+The `BabylonSketchLoader.astro` creates a canvas on the page and loads the right sketch file based on that `sketchId`. It has a manager that watches for these canvas elements and sets them up. When it finds one, it looks in the sketches folder for a matching file name.
+
+The `babylonRenderer.ts` file handles the basic Babylon.js setup stuff – it imports the needed Babylon.js parts, creates the scene, and sets up a default camera. Think of it as the basic setup that every 3D sketch needs to work.
+
+Finally, `babylon-test-simple.ts` is where the actual 3D stuff happens. It creates a sphere, adds some lighting, and makes the camera fly around in a circle. It can do this because the renderer already set up all the boring foundation stuff.
+
+So when you view the page:
+
+1. The loader makes a canvas
+2. It finds and loads the sketch file
+3. The renderer sets up the basic 3D scene
+4. The sketch code runs and creates the sphere
+5. The camera starts moving around it
+
+That's really all there is to it – just files working together to put a 3D scene on a webpage.
 
 <BabylonSketch sketchId="babylon-test-simple" />
 
