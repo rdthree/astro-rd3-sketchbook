@@ -31,6 +31,9 @@
       "@SketchWrapperBundled": [
         "src/components/SketchWrapperBundled.jsx"
       ],
+      "@BabylonSketch": [
+        "src/components/BabylonSketchLoader.astro"
+      ],
       "@CodeSnippet": [
         "src/components/CodeSnippet.astro"
       ]

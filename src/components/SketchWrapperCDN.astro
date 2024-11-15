@@ -16,12 +16,9 @@ const scriptPath = Object.keys(scripts).find(path => path.endsWith(`/${src}`));
 const scriptContent = scriptPath ? await scripts[scriptPath]() : '';
 
 const libraryImports = {
-    // TODO: weird error with the jsdelivr esm cdn, but this esm.run thing was in their jsfiddle examples
-    //p5: "https://esm.run/p5?name=p5",
+    // changed form esm.run to esm.sh to avoid errors where the cdn doesn't load
     p5: 'https://esm.sh/p5?name=p5',
-    //d3: 'https://esm.run/d3?name=d3',
     d3: 'https://esm.sh/d3?name=d3',
-    //three: 'https://esm.run/three?name=three',
     three: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.170.0/three.module.min.js?name=three',
 };
 ---
