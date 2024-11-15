@@ -1,7 +1,6 @@
 // @ts-ignore // hopefully this is fixed later by Rider
 import {defineConfig} from "astro/config";
 import mdx from "@astrojs/mdx";
-import react from "@astrojs/react";
 import {visualizer} from "rollup-plugin-visualizer";
 
 export default defineConfig({
@@ -15,7 +14,6 @@ export default defineConfig({
             //include: ['babylonjs', 'babylonjs-loaders', '@babylonjs/gui', 'three', 'd3', 'p5'],
             //exclude: ['@babylonjs/core', '@babylonjs/inspector'],
         },
-        ssr: {},
         build: {
             rollupOptions: {
                 external: [], // Excludes the "fs" and "path" packages from the build so it can deploy to GitHub pages
