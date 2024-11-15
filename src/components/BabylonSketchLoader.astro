@@ -1,5 +1,4 @@
 ﻿---
-// Define what props this component accepts - just needs a sketchId string
 interface Props {
     sketchId: string;
 }
@@ -7,31 +6,20 @@ interface Props {
 const { sketchId } = Astro.props;
 ---
 
-<!-- Create a wrapper div and canvas for the 3D scene -->
 <div class="babylon-sketch" data-sketch-id={sketchId}>
     <canvas style="width: 100%; height: 100%"></canvas>
 </div>
 
 <script>
-    // Import types and helper function to get Babylon.js
-    import type { SketchInitializer, Babylon } from '../renderers/babylonRenderer';
-    import { getBabylon } from '../renderers/babylonRenderer';
+    import type { SketchInitializer } from '../renderers/babylonRenderer';
+    import { createScene } from '../renderers/babylonRenderer';
 
-    // Main class that handles all Babylon.js sketches on the page
     class BabylonSketchManager {
-        private babylon?: Babylon;
-
-        // Main initialization method
         async init() {
-            // Load Babylon.js library
-            this.babylon = await getBabylon();
-            // Set up any sketches already on the page
             await this.initializeExistingSketches();
-            // Watch for any new sketches that might be added later
             this.observeNewSketches();
         }
 
-        // Find and initialize any sketch containers already on the page
         private async initializeExistingSketches() {
             const wrappers = document.querySelectorAll('.babylon-sketch');
             for (const wrapper of Array.from(wrappers)) {
@@ -39,7 +27,6 @@ const { sketchId } = Astro.props;
             }
         }
 
-        // Watch for new sketch containers being added to the page dynamically
         private observeNewSketches() {
             const observer = new MutationObserver(mutations => {
                 mutations.forEach(mutation => {
@@ -57,43 +44,17 @@ const { sketchId } = Astro.props;
             observer.observe(document, { childList: true, subtree: true });
         }
 
-        // Set up an individual sketch with its own canvas, engine, and scene
         private async initializeSketch(wrapper: HTMLElement) {
-            if (!this.babylon) return;
-
             const canvas = wrapper.querySelector('canvas');
             if (!canvas) return;
 
-            // Get the sketch ID from the wrapper's data attribute
             const sketchId = wrapper.dataset.sketchId ?? '';
-            // Load the actual sketch code
             const sketch = await this.loadSketch(sketchId);
 
-            // Create the basic Babylon.js setup
-            const { Engine, Scene, ArcRotateCamera, Vector3 } = this.babylon;
-            const engine = new Engine(canvas as HTMLCanvasElement, true);
-            const scene = new Scene(engine);
-
-            // Set up a default orbital camera
-            const camera = new ArcRotateCamera(
-                'Camera',
-                Math.PI / 2,
-                Math.PI / 2,
-                2,
-                Vector3.Zero(),
-                scene
-            );
-            camera.attachControl(canvas, true);
-
-            // Run the sketch's setup code
-            await sketch?.({ scene, ...this.babylon });
-
-            // Start the render loop and handle window resizing
-            engine.runRenderLoop(() => scene.render());
-            window.addEventListener('resize', () => engine.resize());
+            const babylonSetup = await createScene(canvas as HTMLCanvasElement);
+            await sketch?.(babylonSetup);
         }
 
-        // Dynamic import of sketch files from the content directory
         private async loadSketch(sketchId: string) {
             const sketches = import.meta.glob('../content/sketches/**/*.ts');
             const sketchKey = Object.keys(sketches).find(key => key.endsWith(`/${sketchId}.ts`));
@@ -104,7 +65,6 @@ const { sketchId } = Astro.props;
         }
     }
 
-    // Create and start the manager when the script loads
     const manager = new BabylonSketchManager();
     manager.init().catch(console.error);
 </script>
