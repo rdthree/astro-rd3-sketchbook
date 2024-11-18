@@ -25,6 +25,7 @@ export async function getBabylon() {
         Scene,
         ArcRotateCamera,
         Vector3,
+        //StandardMaterial,
         //HemisphericLight, MeshBuilder, StandardMaterial
     };
 }
