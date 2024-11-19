@@ -1,0 +1,119 @@
+﻿---
+// PROPS
+// sketchId: name of your sketch file (without .ts extension)
+// renderer: which 3D engine to use - 'babylon' or 'three'
+interface Props {
+    sketchId: string;
+    renderer: 'babylon' | 'three';
+}
+
+const { sketchId, renderer } = Astro.props;
+---
+
+<!-- 
+QUICK START:
+1. Create your sketch file (e.g. mySketch.ts)
+2. Drop this into your MDX file:
+
+import SketchLoader from '../components/SketchLoader.astro'
+<SketchLoader sketchId="mySketch" renderer="babylon" />
+
+That's it! The loader handles everything else.
+-->
+
+<!-- Creates canvas container - don't modify this -->
+<div class={`${renderer}-sketch`} data-sketch-id={sketchId}>
+    <canvas style="width: 100%; height: 100%"></canvas>
+</div>
+
+<script>
+    // Imports - these connect your sketch to the 3D engines
+    import type { SketchInitializer as BabylonSketchInitializer } from '../renderers/babylonRenderer';
+    import type { SketchInitializer as ThreeSketchInitializer } from '../renderers/threeRenderer';
+    import { createScene as createBabylonScene } from '../renderers/babylonRenderer';
+    import { createScene as createThreeScene } from '../renderers/threeRenderer';
+
+    // Types that help TypeScript understand our code
+    type RendererType = 'babylon' | 'three';
+    type SketchInitializer = BabylonSketchInitializer | ThreeSketchInitializer;
+
+    // The SketchManager does all the heavy lifting
+    class SketchManager {
+        // Starts everything up
+        async init() {
+            await this.initializeExistingSketches();
+            this.observeNewSketches();
+        }
+
+        // Finds any sketches already on the page
+        private async initializeExistingSketches() {
+            const babylonWrappers = document.querySelectorAll('.babylon-sketch');
+            const threeWrappers = document.querySelectorAll('.three-sketch');
+            
+            for (const wrapper of Array.from(babylonWrappers)) {
+                await this.initializeSketch(wrapper as HTMLElement, 'babylon');
+            }
+            for (const wrapper of Array.from(threeWrappers)) {
+                await this.initializeSketch(wrapper as HTMLElement, 'three');
+            }
+        }
+
+        // Watches for new sketches being added
+        private observeNewSketches() {
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach(node => {
+                            if (node instanceof HTMLElement) {
+                                const babylonSketches = node.querySelectorAll('.babylon-sketch');
+                                const threeSketches = node.querySelectorAll('.three-sketch');
+                                
+                                Array.from(babylonSketches).forEach(sketch => 
+                                    this.initializeSketch(sketch as HTMLElement, 'babylon')
+                                );
+                                Array.from(threeSketches).forEach(sketch => 
+                                    this.initializeSketch(sketch as HTMLElement, 'three')
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+
+            observer.observe(document, { childList: true, subtree: true });
+        }
+
+        // Sets up each individual sketch
+        private async initializeSketch(wrapper: HTMLElement, rendererType: RendererType) {
+            const canvas = wrapper.querySelector('canvas');
+            if (!canvas) return;
+
+            const sketchId = wrapper.dataset.sketchId ?? '';
+            const sketch = await this.loadSketch(sketchId);
+            
+            if (rendererType === 'babylon') {
+                const babylonSetup = await createBabylonScene(canvas as HTMLCanvasElement);
+                await (sketch as BabylonSketchInitializer)?.(babylonSetup);
+            } else {
+                const threeSetup = await createThreeScene(canvas as HTMLCanvasElement);
+                await (sketch as ThreeSketchInitializer)?.(threeSetup);
+            }
+        }
+
+        // Loads your sketch file
+        private async loadSketch(sketchId: string) {
+            const sketches = import.meta.glob('../content/sketches/**/*.ts');
+            const sketchKey = Object.keys(sketches).find(key => 
+                key.endsWith(`/${sketchId}.ts`)
+            );
+            if (!sketchKey) return;
+
+            const module = await sketches[sketchKey]();
+            return (module as { default?: SketchInitializer }).default;
+        }
+    }
+
+    // Fire it up!
+    const manager = new SketchManager();
+    manager.init().catch(console.error);
+</script>

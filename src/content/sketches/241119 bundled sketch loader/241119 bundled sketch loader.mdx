@@ -1,6 +1,45 @@
 ﻿
 import Sketch from '@Sketch';
+import CodeSnippet from '@CodeSnippet';
 
+Sketches are loaded and rendered using the Bundled Sketch Loader.  They are referenced in the MDX files using the following tags:
+
+```jsx
+<Sketch sketchId="babylon-test_241114" renderer="babylon" />
+```
 <Sketch sketchId="babylon-test_241114" renderer="babylon" />
 
+<br/>
+
+```jsx
 <Sketch sketchId="threejs-test_241118" renderer="three"/>
+```
+<Sketch sketchId="threejs-test_241118" renderer="three"/>
+
+<br/>
+
+The Bundled Sketch Loader, renderers, and sketches each handle different parts of getting 3D graphics on screen:
+
+### The Loader:
+- Finds canvas elements on the page.
+- Reads which 3D engine each sketch wants to use.
+- Loads the right renderer and sketch files.
+- Manages when sketches appear or disappear from the page.
+
+### The Renderers (Three.js/Babylon.js):
+- Set up the 3D environment.
+- Create cameras and scenes.
+- Handle window resizing.
+- Run the animation loop.
+- Provide the core 3D engine features.
+
+### The Sketches:
+- Create the actual 3D content.
+- Define what objects appear.
+- Control how things move and animate.
+- Determine how users can interact.
+- Focus purely on the creative aspects.
+
+This separation lets artists and developers focus on making their sketches while the loader and renderers handle all the technical setup automatically.
+
+<CodeSnippet src="SketchLoader.astro" lang="typescript"/>
