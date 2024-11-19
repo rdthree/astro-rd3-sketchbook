@@ -5,21 +5,39 @@ interface Props {
 
 const { sketchId } = Astro.props;
 ---
+<!--file: src\components\ThreeSketchLoader.astro-->
 
+<!-- 
+    Wrapper div for the Three.js sketch with data attribute for identification
+    Contains a canvas element that will be used for WebGL rendering
+-->
 <div class="three-sketch" data-sketch-id={sketchId}>
     <canvas style="width: 100%; height: 100%"></canvas>
 </div>
 
 <script>
+    // Import types and utilities from our Three.js renderer setup
     import type { SketchInitializer } from '../renderers/threeRenderer';
     import { createScene } from '../renderers/threeRenderer';
 
+    /**
+     * ThreeSketchManager class
+     * Handles the lifecycle and initialization of all Three.js sketches on the page
+     * Supports both initial page load and dynamically added sketches
+     */
     class ThreeSketchManager {
+        /**
+         * Main initialization method
+         * Sets up existing sketches and starts observing for new ones
+         */
         async init() {
             await this.initializeExistingSketches();
             this.observeNewSketches();
         }
 
+        /**
+         * Finds and initializes all Three.js sketches present on page load
+         */
         private async initializeExistingSketches() {
             const wrappers = document.querySelectorAll('.three-sketch');
             for (const wrapper of Array.from(wrappers)) {
@@ -27,6 +45,10 @@ const { sketchId } = Astro.props;
             }
         }
 
+        /**
+         * Sets up a MutationObserver to watch for dynamically added sketches
+         * Useful for single-page applications or dynamic content loading
+         */
         private observeNewSketches() {
             const observer = new MutationObserver(mutations => {
                 mutations.forEach(mutation => {
@@ -46,6 +68,10 @@ const { sketchId } = Astro.props;
             observer.observe(document, { childList: true, subtree: true });
         }
 
+        /**
+         * Initializes a single Three.js sketch
+         * @param wrapper - The HTML element containing the sketch canvas
+         */
         private async initializeSketch(wrapper: HTMLElement) {
             const canvas = wrapper.querySelector('canvas');
             if (!canvas) return;
@@ -57,6 +83,11 @@ const { sketchId } = Astro.props;
             await sketch?.(threeSetup);
         }
 
+        /**
+         * Dynamically loads a sketch module based on its ID
+         * Uses Vite's glob import feature to find the correct sketch file
+         * @param sketchId - The unique identifier for the sketch
+         */
         private async loadSketch(sketchId: string) {
             const sketches = import.meta.glob('../content/sketches/**/*.ts');
             const sketchKey = Object.keys(sketches).find(key =>
@@ -69,6 +100,7 @@ const { sketchId } = Astro.props;
         }
     }
 
+    // Create and initialize the sketch manager
     const manager = new ThreeSketchManager();
     manager.init().catch(console.error);
 </script>
