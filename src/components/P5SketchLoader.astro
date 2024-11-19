@@ -1,0 +1,69 @@
+﻿---
+interface Props {
+    sketchId: string;
+}
+
+const { sketchId } = Astro.props;
+---
+
+<div class="p5-sketch" data-sketch-id={sketchId}></div>
+
+<script>
+    import type { SketchInitializer } from '../renderers/p5Renderer';
+    import { createScene } from '../renderers/p5Renderer';
+
+    class P5SketchManager {
+        async init() {
+            await this.initializeExistingSketches();
+            this.observeNewSketches();
+        }
+
+        private async initializeExistingSketches() {
+            const containers = document.querySelectorAll('.p5-sketch');
+            for (const container of Array.from(containers)) {
+                await this.initializeSketch(container as HTMLElement);
+            }
+        }
+
+        private observeNewSketches() {
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach(node => {
+                            if (node instanceof HTMLElement) {
+                                const sketches = node.querySelectorAll('.p5-sketch');
+                                Array.from(sketches).forEach(sketch =>
+                                    this.initializeSketch(sketch as HTMLElement)
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+
+            observer.observe(document, { childList: true, subtree: true });
+        }
+
+        private async initializeSketch(container: HTMLElement) {
+            const sketchId = container.dataset.sketchId ?? '';
+            const sketch = await this.loadSketch(sketchId);
+            if (sketch) {
+                await createScene(container, sketch);
+            }
+        }
+
+        private async loadSketch(sketchId: string) {
+            const sketches = import.meta.glob('../content/sketches/**/*.{js,ts}');
+            const sketchKey = Object.keys(sketches).find(key =>
+                key.includes(`/${sketchId}`)
+            );
+            if (!sketchKey) return;
+
+            const module = await sketches[sketchKey]();
+            return (module as { default?: SketchInitializer }).default;
+        }
+    }
+
+    const manager = new P5SketchManager();
+    manager.init().catch(console.error);
+</script>

@@ -1,24 +1,30 @@
-﻿import type p5 from 'p5';
+﻿/**
+ * Core p5.js setup and utility functions
+ * This file handles all the basic p5.js initialization and provides a clean API for sketches
+ */
 
-export type SketchInitializer = (context: { sketch: p5 }) => void;
+import type p5 from 'p5';
 
-export async function createScene(canvas: HTMLCanvasElement) {
-    console.log('p5Renderer: Creating scene with canvas:', canvas);
-    const p5Module = await import('p5');
-    console.log('p5Renderer: p5 module loaded');
+/**
+ * Type definition for sketch initialization function
+ * This is what each individual sketch will implement
+ */
+export type SketchInitializer = (p: p5) => void;
 
-    let sketchInstance: any;
-    const p5Instance = new p5Module.default((p) => {
-        sketchInstance = p;
-        if (sketchInstance.setup) {
-            sketchInstance.setup();
-        }
-    }, canvas);
-
-    return { sketch: p5Instance };
+/**
+ * Creates and sets up a complete p5.js sketch
+ * @param container - The HTML element where the p5 sketch will be rendered
+ * @param sketch - The sketch initialization function
+ */
+export async function createScene(container: HTMLElement, sketch: SketchInitializer) {
+    const p5 = (await import('p5')).default;
+    new p5(sketch, container);
 }
 
-
-export function defineSketch(initSketch: SketchInitializer) {
-    return initSketch;
+/**
+ * Helper function to define a new sketch
+ * Makes sketch creation more intuitive and provides proper typing
+ */
+export function defineSketch(sketch: SketchInitializer) {
+    return sketch;
 }
