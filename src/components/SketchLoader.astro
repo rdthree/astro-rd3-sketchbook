@@ -1,0 +1,95 @@
+﻿---
+interface Props {
+    sketchId: string;
+    renderer: 'babylon' | 'three';
+}
+
+const { sketchId, renderer } = Astro.props;
+---
+
+<div class={`${renderer}-sketch`} data-sketch-id={sketchId}>
+    <canvas style="width: 100%; height: 100%"></canvas>
+</div>
+
+<script>
+    import type { SketchInitializer as BabylonSketchInitializer } from '../renderers/babylonRenderer';
+    import type { SketchInitializer as ThreeSketchInitializer } from '../renderers/threeRenderer';
+    import { createScene as createBabylonScene } from '../renderers/babylonRenderer';
+    import { createScene as createThreeScene } from '../renderers/threeRenderer';
+
+    type RendererType = 'babylon' | 'three';
+    type SketchInitializer = BabylonSketchInitializer | ThreeSketchInitializer;
+
+    class SketchManager {
+        async init() {
+            await this.initializeExistingSketches();
+            this.observeNewSketches();
+        }
+
+        private async initializeExistingSketches() {
+            const babylonWrappers = document.querySelectorAll('.babylon-sketch');
+            const threeWrappers = document.querySelectorAll('.three-sketch');
+            
+            for (const wrapper of Array.from(babylonWrappers)) {
+                await this.initializeSketch(wrapper as HTMLElement, 'babylon');
+            }
+            for (const wrapper of Array.from(threeWrappers)) {
+                await this.initializeSketch(wrapper as HTMLElement, 'three');
+            }
+        }
+
+        private observeNewSketches() {
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach(node => {
+                            if (node instanceof HTMLElement) {
+                                const babylonSketches = node.querySelectorAll('.babylon-sketch');
+                                const threeSketches = node.querySelectorAll('.three-sketch');
+                                
+                                Array.from(babylonSketches).forEach(sketch => 
+                                    this.initializeSketch(sketch as HTMLElement, 'babylon')
+                                );
+                                Array.from(threeSketches).forEach(sketch => 
+                                    this.initializeSketch(sketch as HTMLElement, 'three')
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+
+            observer.observe(document, { childList: true, subtree: true });
+        }
+
+        private async initializeSketch(wrapper: HTMLElement, rendererType: RendererType) {
+            const canvas = wrapper.querySelector('canvas');
+            if (!canvas) return;
+
+            const sketchId = wrapper.dataset.sketchId ?? '';
+            const sketch = await this.loadSketch(sketchId);
+            
+            if (rendererType === 'babylon') {
+                const babylonSetup = await createBabylonScene(canvas as HTMLCanvasElement);
+                await (sketch as BabylonSketchInitializer)?.(babylonSetup);
+            } else {
+                const threeSetup = await createThreeScene(canvas as HTMLCanvasElement);
+                await (sketch as ThreeSketchInitializer)?.(threeSetup);
+            }
+        }
+
+        private async loadSketch(sketchId: string) {
+            const sketches = import.meta.glob('../content/sketches/**/*.ts');
+            const sketchKey = Object.keys(sketches).find(key => 
+                key.endsWith(`/${sketchId}.ts`)
+            );
+            if (!sketchKey) return;
+
+            const module = await sketches[sketchKey]();
+            return (module as { default?: SketchInitializer }).default;
+        }
+    }
+
+    const manager = new SketchManager();
+    manager.init().catch(console.error);
+</script>
