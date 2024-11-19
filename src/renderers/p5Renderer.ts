@@ -1,17 +1,23 @@
 ﻿import type p5 from 'p5';
 
-export async function getP5() {
-    const p5Module = await import('p5');
-    return { p5: p5Module.default };
-}
+export type SketchInitializer = (context: { sketch: p5 }) => void;
 
 export async function createScene(canvas: HTMLCanvasElement) {
-    const { p5 } = await getP5();
-    let p5Instance = new p5(() => {}, canvas);
+    console.log('p5Renderer: Creating scene with canvas:', canvas);
+    const p5Module = await import('p5');
+    console.log('p5Renderer: p5 module loaded');
+
+    let sketchInstance: any;
+    const p5Instance = new p5Module.default((p) => {
+        sketchInstance = p;
+        if (sketchInstance.setup) {
+            sketchInstance.setup();
+        }
+    }, canvas);
+
     return { sketch: p5Instance };
 }
 
-export type SketchInitializer = (context: { sketch: p5 }) => void | Promise<void>;
 
 export function defineSketch(initSketch: SketchInitializer) {
     return initSketch;
