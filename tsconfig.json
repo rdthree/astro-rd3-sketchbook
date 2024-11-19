@@ -31,6 +31,9 @@
       "@BabylonSketch": [
         "src/components/BabylonSketchLoader.astro"
       ],
+      "@ThreeSketch": [
+        "src/components/ThreeSketchLoader.astro"
+      ],
       "@CodeSnippet": [
         "src/components/CodeSnippet.astro"
       ]

@@ -1,0 +1,74 @@
+﻿---
+interface Props {
+    sketchId: string;
+}
+
+const { sketchId } = Astro.props;
+---
+
+<div class="three-sketch" data-sketch-id={sketchId}>
+    <canvas style="width: 100%; height: 100%"></canvas>
+</div>
+
+<script>
+    import type { SketchInitializer } from '../renderers/threeRenderer';
+    import { createScene } from '../renderers/threeRenderer';
+
+    class ThreeSketchManager {
+        async init() {
+            await this.initializeExistingSketches();
+            this.observeNewSketches();
+        }
+
+        private async initializeExistingSketches() {
+            const wrappers = document.querySelectorAll('.three-sketch');
+            for (const wrapper of Array.from(wrappers)) {
+                await this.initializeSketch(wrapper as HTMLElement);
+            }
+        }
+
+        private observeNewSketches() {
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach(node => {
+                            if (node instanceof HTMLElement) {
+                                const sketches = node.querySelectorAll('.three-sketch');
+                                Array.from(sketches).forEach(sketch =>
+                                    this.initializeSketch(sketch as HTMLElement)
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+
+            observer.observe(document, { childList: true, subtree: true });
+        }
+
+        private async initializeSketch(wrapper: HTMLElement) {
+            const canvas = wrapper.querySelector('canvas');
+            if (!canvas) return;
+
+            const sketchId = wrapper.dataset.sketchId ?? '';
+            const sketch = await this.loadSketch(sketchId);
+
+            const threeSetup = await createScene(canvas as HTMLCanvasElement);
+            await sketch?.(threeSetup);
+        }
+
+        private async loadSketch(sketchId: string) {
+            const sketches = import.meta.glob('../content/sketches/**/*.ts');
+            const sketchKey = Object.keys(sketches).find(key =>
+                key.endsWith(`/${sketchId}.ts`)
+            );
+            if (!sketchKey) return;
+
+            const module = await sketches[sketchKey]();
+            return (module as { default?: SketchInitializer }).default;
+        }
+    }
+
+    const manager = new ThreeSketchManager();
+    manager.init().catch(console.error);
+</script>
