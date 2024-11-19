@@ -28,10 +28,10 @@ That's it! The loader handles everything else.
 
 <script>
     // Imports - these connect your sketch to the 3D engines
-    import type { SketchInitializer as BabylonSketchInitializer } from '../renderers/babylonRenderer';
-    import type { SketchInitializer as ThreeSketchInitializer } from '../renderers/threeRenderer';
-    import { createScene as createBabylonScene } from '../renderers/babylonRenderer';
-    import { createScene as createThreeScene } from '../renderers/threeRenderer';
+    import type { SketchInitializer as BabylonSketchInitializer } from '../../../renderers/babylonRenderer';
+    import type { SketchInitializer as ThreeSketchInitializer } from '../../../renderers/threeRenderer';
+    import { createScene as createBabylonScene } from '../../../renderers/babylonRenderer';
+    import { createScene as createThreeScene } from '../../../renderers/threeRenderer';
 
     // Types that help TypeScript understand our code
     type RendererType = 'babylon' | 'three';
