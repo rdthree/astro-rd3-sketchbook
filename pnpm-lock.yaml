@@ -38,6 +38,9 @@ importers:
       fs:
         specifier: 0.0.1-security
         version: 0.0.1-security
+      p5:
+        specifier: ^1.11.1
+        version: 1.11.1
       path:
         specifier: ^0.12.7
         version: 0.12.7
@@ -1677,6 +1680,9 @@ packages:
   p-try@2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
     engines: {node: '>=6'}
+
+  p5@1.11.1:
+    resolution: {integrity: sha512-JWvOwAgInsuSOjzMwAtaiN8gMLzhR1jcyosytNeftH0vnTkywfIyFfVYFfsLSsh6B+DYuqJYu1SVcfkuvrYi1Q==}
 
   parse-entities@4.0.1:
     resolution: {integrity: sha512-SWzvYcSJh4d/SGLIOQfZ/CoNv6BTlI6YEQ7Nj82oDVnRpwe/Z/F1EMx42x3JAOwGBlCjeCH0BRJQbQ/opHL17w==}
@@ -4182,6 +4188,8 @@ snapshots:
   p-timeout@6.1.3: {}
 
   p-try@2.2.0: {}
+
+  p5@1.11.1: {}
 
   parse-entities@4.0.1:
     dependencies:
