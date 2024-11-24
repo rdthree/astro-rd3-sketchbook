@@ -6,7 +6,7 @@ export default defineSketch(({ svg, d3 }) => {
 
     // Calculate center of SVG
     const width = 600;
-    const height = 400;
+    const height = 600;
     const centerX = width / 2;
     const centerY = height / 2;
 
