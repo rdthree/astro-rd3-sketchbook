@@ -1,0 +1,71 @@
+﻿---
+interface Props {
+    sketchId: string;
+}
+
+const { sketchId } = Astro.props;
+---
+
+<div class="d3-sketch" data-sketch-id={sketchId}>
+    <canvas style="width: 100%; height: 100%"></canvas>
+</div>
+
+<script>
+    import type { SketchInitializer } from '../renderers/d3Renderer';
+    import { createD3Canvas } from '../renderers/d3Renderer';
+
+    class D3SketchManager {
+        async init() {
+            await this.initializeExistingSketches();
+            this.observeNewSketches();
+        }
+
+        private async initializeExistingSketches() {
+            const wrappers = document.querySelectorAll('.d3-sketch');
+            for (const wrapper of Array.from(wrappers)) {
+                await this.initializeSketch(wrapper as HTMLElement);
+            }
+        }
+
+        private observeNewSketches() {
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach(node => {
+                            if (node instanceof HTMLElement) {
+                                const sketches = node.querySelectorAll('.d3-sketch');
+                                Array.from(sketches).forEach(sketch =>
+                                    this.initializeSketch(sketch as HTMLElement)
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+
+            observer.observe(document, { childList: true, subtree: true });
+        }
+
+        private async initializeSketch(wrapper: HTMLElement) {
+            const sketchId = wrapper.dataset.sketchId ?? '';
+            const sketch = await this.loadSketch(sketchId);
+
+            const d3Setup = await createD3Canvas(wrapper);
+            await sketch?.(d3Setup);
+        }
+
+        private async loadSketch(sketchId: string) {
+            const sketches = import.meta.glob('../content/sketches/**/*.ts');
+            const sketchKey = Object.keys(sketches).find(key =>
+                key.endsWith(`/${sketchId}.ts`)
+            );
+            if (!sketchKey) return;
+
+            const module = await sketches[sketchKey]();
+            return (module as { default?: SketchInitializer }).default;
+        }
+    }
+
+    const manager = new D3SketchManager();
+    manager.init().catch(console.error);
+</script>

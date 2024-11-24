@@ -37,6 +37,9 @@
       "@P5Sketch": [
         "src/components/P5SketchLoader.astro"
       ],
+      "@D3Sketch": [
+        "src/components/D3SketchLoader.astro"
+        ],
       "@Sketch": [
         "src/components/SketchLoader.astro"
       ],

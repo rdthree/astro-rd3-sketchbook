@@ -13,14 +13,13 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/mdx": "^4.0.0-beta.3",
+    "@astrojs/mdx": "4.0.0-beta.3",
     "@astrojs/ts-plugin": "^1.10.4",
     "@picocss/pico": "^2.0.6",
-    "@types/d3": "^7.4.3",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/three": "^0.169.0",
-    "astro": "^5.0.0-beta.6",
+    "astro": "5.0.0-beta.10",
     "fs": "0.0.1-security",
     "p5": "^1.11.1",
     "path": "^0.12.7",
@@ -28,16 +27,18 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@babylonjs/core": "^7.31.0",
-    "@babylonjs/gui": "^7.30.0",
-    "@babylonjs/inspector": "^7.31.0",
-    "@types/node": "^22.7.6",
+    "@babylonjs/core": "^7.35.1",
+    "@babylonjs/gui": "^7.35.1",
+    "@babylonjs/inspector": "^7.35.1",
+    "@types/d3": "^7.4.3",
+    "@types/node": "^22.9.3",
     "@types/p5": "^1.7.6",
-    "babylonjs": "^7.30.0",
-    "pnpm": "^9.12.2",
+    "babylonjs": "^7.35.1",
+    "d3": "^7.9.0",
+    "pnpm": "^9.14.2",
     "rollup-plugin-visualizer": "^5.12.0",
     "three": "^0.169.0",
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.2"
   },
   "packageManager": "pnpm@9.0.0"
 }
