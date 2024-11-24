@@ -1,4 +1,4 @@
-﻿import { defineSketch } from '../../renderers/d3Renderer';
+﻿import { defineSketch } from '../../../renderers/d3Renderer';
 
 export default defineSketch(({ svg, d3 }) => {
     const data = [4, 8, 15, 16, 23, 42];
