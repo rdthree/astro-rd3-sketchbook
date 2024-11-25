@@ -4,7 +4,7 @@
 // renderer: which graphics engine to use (babylon.js, three.js, or p5.js)
 interface Props {
     sketchId: string;
-    renderer: 'babylon' | 'three' | 'p5';
+    renderer: 'babylon' | 'three' | 'p5' | 'd3';
 }
 
 const { sketchId, renderer } = Astro.props;
@@ -17,10 +17,12 @@ HOW TO USE THIS COMPONENT:
 3. Create your sketch file in: src/content/sketches/my-sketch-name.ts (or .js)
 -->
 
-<!-- Creates a wrapper div with the appropriate class and data attribute -->
-<div class={`${renderer}-sketch`} data-sketch-id={sketchId}>
-    <!-- Canvas is auto-created for babylon and three.js, p5.js creates its own -->
-    {renderer !== 'p5' && <canvas style="display: block; width: 100%; height: 100%;"></canvas>}
+<div 
+    class={`${renderer}-sketch`} 
+    data-sketch-id={sketchId}
+    style={renderer === 'd3' ? "width: 100%; height: 100vh; position: relative;" : undefined}
+>
+    {renderer !== 'p5' && renderer !== 'd3' && <canvas style="display: block; width: 100%; height: 100%;"></canvas>}
 </div>
 
 <script>
@@ -28,14 +30,15 @@ HOW TO USE THIS COMPONENT:
     import type { SketchInitializer as BabylonSketchInitializer } from '../renderers/babylonRenderer';
     import type { SketchInitializer as ThreeSketchInitializer } from '../renderers/threeRenderer';
     import type { SketchInitializer as P5SketchInitializer } from '../renderers/p5Renderer';
+    import type { SketchInitializer as D3SketchInitializer } from '../renderers/d3Renderer';
     import { createScene as createBabylonScene } from '../renderers/babylonRenderer';
     import { createScene as createThreeScene } from '../renderers/threeRenderer';
     import { createScene as createP5Scene } from '../renderers/p5Renderer';
+    import { createScene as createD3Scene } from '../renderers/d3Renderer';
 
     // Define types for renderer selection and sketch initialization
-    type RendererType = 'babylon' | 'three' | 'p5';
-    type SketchInitializer = BabylonSketchInitializer | ThreeSketchInitializer | P5SketchInitializer;
-
+    type RendererType = 'babylon' | 'three' | 'p5' | 'd3';
+    type SketchInitializer = BabylonSketchInitializer | ThreeSketchInitializer | P5SketchInitializer | D3SketchInitializer;
     // SketchManager handles loading and initializing sketches
     class SketchManager {
         // Start the manager
@@ -43,15 +46,13 @@ HOW TO USE THIS COMPONENT:
             await this.initializeExistingSketches();
             this.observeNewSketches();
         }
-
         // Find and initialize all sketches currently on the page
         private async initializeExistingSketches() {
-            // Query for sketch wrappers of each type
             const babylonWrappers = document.querySelectorAll('.babylon-sketch');
             const threeWrappers = document.querySelectorAll('.three-sketch');
             const p5Wrappers = document.querySelectorAll('.p5-sketch');
+            const d3Wrappers = document.querySelectorAll('.d3-sketch');
 
-            // Initialize each type of sketch
             for (const wrapper of Array.from(babylonWrappers)) {
                 await this.initializeSketch(wrapper as HTMLElement, 'babylon');
             }
@@ -61,8 +62,10 @@ HOW TO USE THIS COMPONENT:
             for (const wrapper of Array.from(p5Wrappers)) {
                 await this.initializeSketch(wrapper as HTMLElement, 'p5');
             }
+            for (const wrapper of Array.from(d3Wrappers)) {
+                await this.initializeSketch(wrapper as HTMLElement, 'd3');
+            }
         }
-
         // Watch for new sketches added to the page dynamically
         private observeNewSketches() {
             const observer = new MutationObserver(mutations => {
@@ -74,6 +77,7 @@ HOW TO USE THIS COMPONENT:
                                 const babylonSketches = node.querySelectorAll('.babylon-sketch');
                                 const threeSketches = node.querySelectorAll('.three-sketch');
                                 const p5Sketches = node.querySelectorAll('.p5-sketch');
+                                const d3Sketches = node.querySelectorAll('.d3-sketch');
 
                                 // Initialize any new sketches found
                                 Array.from(babylonSketches).forEach(sketch =>
@@ -84,6 +88,9 @@ HOW TO USE THIS COMPONENT:
                                 );
                                 Array.from(p5Sketches).forEach(sketch =>
                                     this.initializeSketch(sketch as HTMLElement, 'p5')
+                                );
+                                Array.from(d3Sketches).forEach(sketch =>
+                                    this.initializeSketch(sketch as HTMLElement, 'd3')
                                 );
                             }
                         });
@@ -119,9 +126,13 @@ HOW TO USE THIS COMPONENT:
                         await (sketch as ThreeSketchInitializer)?.(threeSetup);
                         break;
                     case 'p5':
-                        await createP5Scene(wrapper, sketch as P5SketchInitializer);
-                        break;
-                }
+                                            await createP5Scene(wrapper, sketch as P5SketchInitializer);
+                                            break;
+                                        case 'd3':
+                                            const d3Setup = await createD3Scene(wrapper);
+                                            await (sketch as D3SketchInitializer)?.(d3Setup);
+                                            break;
+                                    }
             } catch (error) {
                 console.error(`Error initializing sketch ${sketchId}:`, error);
             }
