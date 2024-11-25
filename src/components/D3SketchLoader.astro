@@ -6,12 +6,12 @@ interface Props {
 const { sketchId } = Astro.props;
 ---
 
-<div class="d3-sketch" data-sketch-id={sketchId} style="width: 100%; height: 100%">
+<div class="d3-sketch" data-sketch-id={sketchId} style="width: 100%; height: 100vh; position: relative;">
 </div>
 
 <script>
     import type { SketchInitializer } from '../renderers/d3Renderer';
-    import { createD3Canvas } from '../renderers/d3Renderer';
+    import { createScene } from '../renderers/d3Renderer';
 
     class D3SketchManager {
         async init() {
@@ -49,7 +49,7 @@ const { sketchId } = Astro.props;
             const sketchId = wrapper.dataset.sketchId ?? '';
             const sketch = await this.loadSketch(sketchId);
 
-            const d3Setup = await createD3Canvas(wrapper);
+            const d3Setup = await createScene(wrapper);
             await sketch?.(d3Setup);
         }
 
