@@ -1,0 +1,45 @@
+﻿---
+Title
+---
+
+import SketchCDN from '@SketchWrapperCDN';
+import Babylon from '@BabylonSketch';
+import Three from '@ThreeSketch';
+import P5 from '@P5Sketch';
+import D3 from '@D3Sketch';
+
+import Sketch from '@Sketch';
+
+import Code from '@CodeSnippet';
+
+# {frontmatter.title}
+
+Imports go at the top of the file, underneath the frontmatter:
+`import Sketch from '@Sketch';`
+`import Babylon from '@BabylonSketch';`
+
+Snippets can be embedded using the `<CodeSnippet>` component: 
+`<Code src="template_p5_241125.ts" lang="typescript" />`
+
+The general sketch component allows for several different renderers:
+`<Sketch sketchId="template_p5_241125" renderer="p5" />`
+
+## P5.js View
+<P5 sketchId="template_p5_241125" />
+<Sketch sketchId="template_p5_241125" renderer="p5" />
+<Code src="template_p5_241125.ts" lang="typescript" />
+
+## Three.js View
+<Three sketchId="template_three_241125" />
+<Sketch sketchId="template_three_241125" renderer="three" />
+<Code src="template_three_241125.ts" lang="typescript" />
+
+## Babylon.js View
+<Babylon sketchId="template_babylon_241125" />
+<Sketch sketchId="template_babylon_241125" renderer="babylon" />
+<Code src="template_babylon_241125.ts" lang="typescript" />
+
+## D3.js View
+<D3 sketchId="template_d3_241125" />
+<Sketch sketchId="template_d3_241125" renderer="d3" />
+<Code src="template_d3_241125.ts" lang="typescript" />
