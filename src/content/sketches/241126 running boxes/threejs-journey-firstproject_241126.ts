@@ -1,6 +1,5 @@
 ﻿import { defineSketch } from '../../../renderers/threeRenderer';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'; // Import OrbitControls
 
 export default defineSketch(({ scene, renderer }) => {
 
@@ -16,12 +15,11 @@ export default defineSketch(({ scene, renderer }) => {
     directionalLight.position.set(1, 1, 1);
     scene.add(directionalLight);
 
-    // Axes helper (optional)
-    // const axesHelper = new THREE.AxesHelper(1.2);
-    // scene.add(axesHelper);
-
-    // Sizes
-    const sizes = { width: window.innerWidth, height: window.innerHeight };
+    // Sizes based on current window size
+    const sizes = {
+        width: window.innerWidth,
+        height: window.innerHeight
+    };
 
     // Group setup
     const boxGroup = new THREE.Group();
@@ -47,16 +45,18 @@ export default defineSketch(({ scene, renderer }) => {
     boxGroup.add(cube3);
 
     // Camera
-    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
+    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
     camera.position.z = 5.5;
+    camera.lookAt(boxGroup.position);
     scene.add(camera);
 
-    // Initialize OrbitControls
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; // Optional: Enable damping for smoother experience
-    controls.dampingFactor = 0.05;
-    controls.minDistance = 2; // Optional: Set minimum zoom distance
-    controls.maxDistance = 10; // Optional: Set maximum zoom distance
+    // Renderer setup
+    // Assuming defineSketch handles attaching the renderer's DOM element to the document
+    // Ensure the renderer's canvas fills the window by setting its style
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     // Resize Handler
     const handleResize = () => {
@@ -71,19 +71,17 @@ export default defineSketch(({ scene, renderer }) => {
         // Update renderer
         renderer.setSize(sizes.width, sizes.height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Ensure the renderer's canvas still fills the window
+        renderer.domElement.style.width = '100%';
+        renderer.domElement.style.height = '100%';
     };
 
     // Add event listener for resize
     window.addEventListener('resize', handleResize);
 
-    // Initial resize
+    // Initial resize to set sizes correctly
     handleResize();
-
-    // Camera looks at the group
-    camera.lookAt(boxGroup.position);
-
-    // Renderer size setup (redundant due to handleResize, can be removed)
-    // renderer.setSize(sizes.width, sizes.height);
 
     // Animation
     const clock = new THREE.Clock();
@@ -101,9 +99,6 @@ export default defineSketch(({ scene, renderer }) => {
         cube1.scale.x = 1 + Math.cos(elapsedTime * 0.8) * 0.5;
         cube2.scale.z = 1 + Math.sin(elapsedTime * 0.8) * 0.5;
         cube3.scale.y = 1 + Math.sin(elapsedTime * 0.8) * 0.5;
-
-        // Update controls
-        controls.update();
 
         // Render the scene
         renderer.render(scene, camera);
