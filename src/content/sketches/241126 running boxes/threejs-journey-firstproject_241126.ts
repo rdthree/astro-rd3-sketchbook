@@ -1,64 +1,64 @@
 ﻿import { defineSketch } from '../../../renderers/threeRenderer';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'; // Import OrbitControls
 
 export default defineSketch(({ scene, renderer }) => {
-    
-    // scene already included in renderer import
+
+    // Scene setup
     scene.background = new THREE.Color('ghostwhite');
-    
-    // soft lighting
+
+    // Soft lighting
     const ambientLight = new THREE.AmbientLight('skyblue', 0.5);
     scene.add(ambientLight);
-    
-    // directional light
+
+    // Directional light
     const directionalLight = new THREE.DirectionalLight('orange', 2.5);
     directionalLight.position.set(1, 1, 1);
     scene.add(directionalLight);
-    
-    // axes helper
-    const axesHelper = new THREE.AxesHelper(1.2);
-    //scene.add(axesHelper);
-    
-    // sizes
-    const sizes = { width: 800, height: 600 };
-    
-    // groups
+
+    // Axes helper (optional)
+    // const axesHelper = new THREE.AxesHelper(1.2);
+    // scene.add(axesHelper);
+
+    // Sizes
+    const sizes = { width: window.innerWidth, height: window.innerHeight };
+
+    // Group setup
     const boxGroup = new THREE.Group();
     boxGroup.scale.set(1.0, 2.0, 1.0);
     boxGroup.rotation.set(0.0, 0.2, 0.0);
-    
+
     directionalLight.lookAt(boxGroup.position);
     scene.add(boxGroup);
 
-    // objects
-    const cube1 = new THREE.Mesh(
-        new THREE.BoxGeometry(1, 1, 1),
-        new THREE.MeshStandardMaterial({ color: 'ghostwhite' })
-    );
+    // Objects
+    const cubeMaterial = new THREE.MeshStandardMaterial({ color: 'ghostwhite' });
+
+    const cube1 = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), cubeMaterial);
     cube1.position.set(-2.0, 0.0, 0.0);
     boxGroup.add(cube1);
-    
-    const cube2 = new THREE.Mesh(
-        new THREE.BoxGeometry(1, 1, 1),
-        new THREE.MeshStandardMaterial({ color: 'ghostwhite' })
-    );
+
+    const cube2 = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), cubeMaterial);
     cube2.position.set(0.0, 0.0, 0.0);
     boxGroup.add(cube2);
-    
-    const cube3 = new THREE.Mesh(
-        new THREE.BoxGeometry(1, 1, 1),
-        new THREE.MeshStandardMaterial({ color: 'ghostwhite' })
-    );
+
+    const cube3 = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), cubeMaterial);
     cube3.position.set(2.0, 0.0, 0.0);
     boxGroup.add(cube3);
-    
 
-    // camera
+    // Camera
     const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-    camera.position.z = 5.5; 
+    camera.position.z = 5.5;
     scene.add(camera);
 
-    // Add this resize handler after camera setup
+    // Initialize OrbitControls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; // Optional: Enable damping for smoother experience
+    controls.dampingFactor = 0.05;
+    controls.minDistance = 2; // Optional: Set minimum zoom distance
+    controls.maxDistance = 10; // Optional: Set maximum zoom distance
+
+    // Resize Handler
     const handleResize = () => {
         // Update sizes
         sizes.width = window.innerWidth;
@@ -73,49 +73,44 @@ export default defineSketch(({ scene, renderer }) => {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     };
 
-// Add event listener
+    // Add event listener for resize
     window.addEventListener('resize', handleResize);
 
-// Call once to set initial size
+    // Initial resize
     handleResize();
 
-
-    // mess with the camera
+    // Camera looks at the group
     camera.lookAt(boxGroup.position);
-    
-    // render is already included in renderer import
-    renderer.setSize(sizes.width, sizes.height);
-    
-    // animation
+
+    // Renderer size setup (redundant due to handleResize, can be removed)
+    // renderer.setSize(sizes.width, sizes.height);
+
+    // Animation
     const clock = new THREE.Clock();
-    const tick = () =>
-    {
-        console.log('tick');
-        // time
+    const tick = () => {
+        // Time
         const elapsedTime = clock.getElapsedTime();
-        
-        // update objects
+
+        // Update objects
         boxGroup.rotation.y = 0.65 * elapsedTime;
         directionalLight.rotation.y = 2.5 * elapsedTime;
         cube1.position.y = Math.sin(elapsedTime);
-        cube2.position.y = Math.cos(elapsedTime)
+        cube2.position.y = Math.cos(elapsedTime);
         cube3.position.z = Math.tan(elapsedTime);
 
         cube1.scale.x = 1 + Math.cos(elapsedTime * 0.8) * 0.5;
         cube2.scale.z = 1 + Math.sin(elapsedTime * 0.8) * 0.5;
         cube3.scale.y = 1 + Math.sin(elapsedTime * 0.8) * 0.5;
 
+        // Update controls
+        controls.update();
 
-
-        // render
+        // Render the scene
         renderer.render(scene, camera);
 
-        // call tick again on the next frame
+        // Call tick again on the next frame
         window.requestAnimationFrame(tick);
-    }
+    };
 
     tick();
-
-
 });
-
