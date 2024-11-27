@@ -27,7 +27,7 @@ export default defineConfig({
             }
         },
         optimizeDeps: {
-            include: ['@babylonjs/core', 'babylonjs', 'babylonjs-loaders'],
+            include: ['@babylonjs/core', 'babylonjs', 'babylonjs-loaders', 'three', 'd3', 'p5'],
             esbuildOptions: {
                 target: 'esnext',
                 treeShaking: true,

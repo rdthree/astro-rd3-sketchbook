@@ -20,19 +20,11 @@ const folders: string[] = [
     ),
 ];
 
-// console.log('Final folders list:', folders);
 ---
 
 <Layout title="">
     <div class="body">
         <h2>digital sketchbook</h2>
-        {import.meta.env.DEV && (
-                <!--<pre style="font-size: 12px; background: #f5f5f5; padding: 1rem; margin: 1rem 0;">
-                Debug Info:
-                Raw Slugs: {JSON.stringify(sketches.map(s => s.slug), null, 2)}
-                    Processed Folders: {JSON.stringify(folders, null, 2)}
-            </pre>-->
-        )}
         <SketchFolders type="index" />
     </div>
 </Layout>

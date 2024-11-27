@@ -1,11 +1,30 @@
 ﻿import { defineSketch } from '../../../renderers/threeRenderer';
-import { Vector3 } from 'three';
+import {
+    Scene,
+    PerspectiveCamera,
+    Vector3,
+    BoxGeometry,
+    Mesh,
+    MeshStandardMaterial,
+    BufferGeometry,
+    LineBasicMaterial,
+    Line,
+    Color,
+    DirectionalLight,
+    AmbientLight,
+    PointLight
+} from 'three';
 
-export default defineSketch(async ({ scene, camera }) => {
-    const {
-        BoxGeometry, Mesh, MeshStandardMaterial, BufferGeometry, LineBasicMaterial,
-        Line, Color, DirectionalLight, AmbientLight, PointLight
-    } = await import('three');
+export default defineSketch(({ scene, renderer }) => {
+    // Create a custom camera for this sketch
+    const camera = new PerspectiveCamera(
+        75,
+        renderer.domElement.clientWidth / renderer.domElement.clientHeight,
+        0.1,
+        1000
+    );
+    camera.position.set(20, 20, 20);
+    camera.lookAt(0, 0, 0);
 
     // Setup scene
     scene.background = new Color(0xf8f8f8);
@@ -53,10 +72,6 @@ export default defineSketch(async ({ scene, camera }) => {
         trailLine.geometry.setFromPoints(trail);
     };
 
-    // Camera setup
-    camera.position.set(20, 20, 20);
-    camera.lookAt(0, 0, 0);
-
     // Animation loop
     const animate = () => {
         for (let i = 0; i < 3; i++) step();
@@ -69,7 +84,17 @@ export default defineSketch(async ({ scene, camera }) => {
         );
         camera.lookAt(0, 0, 0);
         requestAnimationFrame(animate);
+        renderer.render(scene, camera);
     };
 
     animate();
+
+    // Handle resizing for both renderer and camera
+    const handleResize = () => {
+        camera.aspect = renderer.domElement.clientWidth / renderer.domElement.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(renderer.domElement.clientWidth, renderer.domElement.clientHeight, false);
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
 });
