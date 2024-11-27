@@ -1,9 +1,12 @@
 ﻿import { defineSketch } from '../../../renderers/threeRenderer';
 import type { Vector3 } from 'three';
 
-export default defineSketch(async ({ scene, camera }) => {
-    const { BoxGeometry, Mesh, MeshStandardMaterial, Vector3, BufferGeometry, LineBasicMaterial, Line, Color } = await import('three');
+export default defineSketch(async ({ scene }) => {
+    const { PerspectiveCamera, BoxGeometry, Mesh, MeshStandardMaterial, Vector3, BufferGeometry, LineBasicMaterial, Line, Color } = await import('three');
     const { DirectionalLight, AmbientLight, PointLight } = await import('three');
+    
+    // camera setup
+    const camera = new PerspectiveCamera(75, 1, 0.1, 1000);
 
     // Smooth movement utilities
     function lerp(start: number, end: number, factor: number): number {

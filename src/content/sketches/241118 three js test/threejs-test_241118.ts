@@ -11,11 +11,14 @@
 // Import our sketch definition utility
 import { defineSketch } from '../../../renderers/threeRenderer';
 
-export default defineSketch(async ({ scene, camera }) => {
+export default defineSketch(async ({ scene }) => {
     // Dynamic imports for Three.js modules
     // Only loads the specific features we need, improving performance
-    const { SphereGeometry, Mesh, MeshStandardMaterial } = await import('three');
+    const { PerspectiveCamera, SphereGeometry, Mesh, MeshStandardMaterial } = await import('three');
     const { DirectionalLight, AmbientLight } = await import('three');
+    
+    // Camera Setup
+    const camera = new PerspectiveCamera(75, 1, 0.1, 1000);     // 75° field of view, 1:1 aspect ratio, near/far clipping planes
 
     // Lighting Setup
     // DirectionalLight simulates sun-like lighting from a specific direction
