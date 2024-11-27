@@ -57,7 +57,29 @@ export default defineSketch(({ scene, renderer }) => {
     const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
     camera.position.z = 5.5; 
     scene.add(camera);
-    
+
+    // Add this resize handler after camera setup
+    const handleResize = () => {
+        // Update sizes
+        sizes.width = window.innerWidth;
+        sizes.height = window.innerHeight;
+
+        // Update camera
+        camera.aspect = sizes.width / sizes.height;
+        camera.updateProjectionMatrix();
+
+        // Update renderer
+        renderer.setSize(sizes.width, sizes.height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    };
+
+// Add event listener
+    window.addEventListener('resize', handleResize);
+
+// Call once to set initial size
+    handleResize();
+
+
     // mess with the camera
     camera.lookAt(boxGroup.position);
     
@@ -96,3 +118,4 @@ export default defineSketch(({ scene, renderer }) => {
 
 
 });
+
