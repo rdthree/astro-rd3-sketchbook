@@ -35,6 +35,7 @@
     "@types/p5": "^1.7.6",
     "babylonjs": "^7.35.2",
     "d3": "^7.9.0",
+    "gsap": "^3.12.5",
     "pnpm": "^9.14.2",
     "rollup-plugin-visualizer": "^5.12.0",
     "three": "^0.169.0",

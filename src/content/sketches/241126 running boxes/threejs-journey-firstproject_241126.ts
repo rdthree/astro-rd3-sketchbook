@@ -1,5 +1,6 @@
 ﻿import { defineSketch } from '../../../renderers/threeRenderer';
 import * as THREE from 'three';
+import gsap from 'gsap';
 
 export default defineSketch(({ scene, renderer }) => {
     
@@ -68,6 +69,15 @@ export default defineSketch(({ scene, renderer }) => {
     
     // animation
     const clock = new THREE.Clock();
+    
+    // GSAP rotation animation
+    gsap.to(boxGroup.rotation, {
+        z: Math.PI * 4, // 45 degrees
+        duration: 20,
+        repeat: -1, // infinite loop
+        yoyo: true, // bounce back and forth
+        ease: 'power1.inOut' // easing function
+    })
     const tick = () =>
     {
         console.log('tick');
