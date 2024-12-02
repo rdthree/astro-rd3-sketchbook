@@ -74,14 +74,21 @@ export default defineSketch(({ scene, renderer }) => {
     // Add after your existing canvas and cursor setup
     const stats = document.createElement('div');
     stats.style.cssText = `
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: black;
-    font-family: monospace;
-    font-size: 12px;
-    pointer-events: none;
+    position: absolute !important;
+    top: 10px !important;
+    left: 10px !important;
+    color: black !important;
+    background-color: white !important;
+    padding: 10px !important;
+    font-family: monospace !important;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    pointer-events: none !important;
+    z-index: 9999 !important;
+    border: 2px solid red !important;
 `;
+
+
     //canvas.parentElement.appendChild(stats);
     if (canvas.parentElement) {
         canvas.parentElement.appendChild(stats);
@@ -128,7 +135,8 @@ export default defineSketch(({ scene, renderer }) => {
         stats.textContent =
             `Cursor: (${cursor.x.toFixed(2)}, ${cursor.y.toFixed(2)})\n` +
             `Camera: (${camera.position.x.toFixed(2)}, ${camera.position.y.toFixed(2)}, ${camera.position.z.toFixed(2)})`;
-
+        console.log('Stats updated:', stats.textContent);
+        
         // render
         renderer.render(scene, camera);
 
