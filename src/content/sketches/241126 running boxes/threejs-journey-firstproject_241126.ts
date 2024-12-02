@@ -22,6 +22,7 @@ export default defineSketch(({ scene, renderer }) => {
     
     // sizes
     const sizes = { width: 800, height: 600 };
+    const aspectRatio = sizes.width / sizes.height;
     
     // groups
     const boxGroup = new THREE.Group();
@@ -55,15 +56,37 @@ export default defineSketch(({ scene, renderer }) => {
     
 
     // camera
-    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-    camera.position.z = 5.5; 
+    const camera = new THREE.PerspectiveCamera(75, aspectRatio);
+    camera.position.z = 5.5;
+    camera.lookAt(boxGroup.position);
     scene.add(camera);
     
-    
-    
-    // mess with the camera
-    camera.lookAt(boxGroup.position);
-    
+    // cursor
+    const canvas = renderer.domElement;
+    const cursor = { x: 0, y: 0 };
+    canvas.addEventListener('mousemove', (event) =>
+    {
+        const rect = canvas.getBoundingClientRect();
+        cursor.x = ((event.clientX - rect.left) / canvas.width) * 0.5;
+        cursor.y = -((event.clientY - rect.top) / canvas.height) * 0.5;
+    });
+
+    // Add after your existing canvas and cursor setup
+    const stats = document.createElement('div');
+    stats.style.cssText = `
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: black;
+    font-family: monospace;
+    font-size: 12px;
+    pointer-events: none;
+`;
+    //canvas.parentElement.appendChild(stats);
+    if (canvas.parentElement) {
+        canvas.parentElement.appendChild(stats);
+    }
+
     // render is already included in renderer import
     renderer.setSize(sizes.width, sizes.height);
     
@@ -94,8 +117,17 @@ export default defineSketch(({ scene, renderer }) => {
         cube1.scale.x = 1 + Math.cos(elapsedTime * 0.8) * 0.5;
         cube2.scale.z = 1 + Math.sin(elapsedTime * 0.8) * 0.5;
         cube3.scale.y = 1 + Math.sin(elapsedTime * 0.8) * 0.5;
+        
+        // update camera
+        camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 2 ;
+        camera.position.y = Math.cos(cursor.y * Math.PI * 2) * 2 ;
+        camera.position.z = cursor.y * 3;
+        camera.lookAt(boxGroup.position);
 
-
+        // Inside your tick function, add this before the renderer.render call:
+        stats.textContent =
+            `Cursor: (${cursor.x.toFixed(2)}, ${cursor.y.toFixed(2)})\n` +
+            `Camera: (${camera.position.x.toFixed(2)}, ${camera.position.y.toFixed(2)}, ${camera.position.z.toFixed(2)})`;
 
         // render
         renderer.render(scene, camera);
@@ -106,6 +138,6 @@ export default defineSketch(({ scene, renderer }) => {
 
     tick();
 
-
 });
+
 
