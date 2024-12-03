@@ -1,6 +1,6 @@
 ﻿// Import necessary modules and types
-import { defineSketch } from '../../../renderers/threeRenderer';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import {defineSketch} from '../../../renderers/threeRenderer';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import GUI from 'lil-gui';
@@ -30,7 +30,7 @@ const createCube = (
     color: string = 'ghostwhite'
 ): THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial> => {
     const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshStandardMaterial({ color });
+    const material = new THREE.MeshStandardMaterial({color});
     const cube = new THREE.Mesh(geometry, material);
     cube.position.copy(position);
     return cube;
@@ -121,7 +121,7 @@ const setupGUI = (
 };
 
 // Main sketch function
-export default defineSketch(({ scene, renderer }) => {
+export default defineSketch(({scene, renderer}) => {
     // **Initialize parameters**
     const parameters: Parameters = {
         boxRotationSpeed: 0.65,
@@ -132,7 +132,7 @@ export default defineSketch(({ scene, renderer }) => {
     };
 
     // **Set renderer size and aspect ratio**
-    const sizes = { width: 800, height: 600 };
+    const sizes = {width: 800, height: 600};
     renderer.setSize(sizes.width, sizes.height);
     const aspectRatio: number = sizes.width / sizes.height;
 
@@ -181,7 +181,7 @@ export default defineSketch(({ scene, renderer }) => {
     camera.lookAt(boxGroup.position);
 
     // **Initialize cursor tracking**
-    const cursor: Cursor = { x: 0, y: 0 };
+    const cursor: Cursor = {x: 0, y: 0};
 
     // **Event handler for mouse movement**
     const onMouseMove = (event: MouseEvent): void => {
@@ -242,7 +242,9 @@ export default defineSketch(({ scene, renderer }) => {
         // Update HUD content with cursor and camera positions
         hud.innerHTML = `
             <div>Cursor: (${cursor.x.toFixed(2)}, ${cursor.y.toFixed(2)})</div>
-            <div>Camera: (${camera.position.x.toFixed(2)}, ${camera.position.y.toFixed(2)}, ${camera.position.z.toFixed(2)})</div>
+            <div>Camera: (${camera.position.x.toFixed(2)},
+             ${camera.position.y.toFixed(2)},
+             ${camera.position.z.toFixed(2)})</div>
         `;
 
         // Request the next animation frame

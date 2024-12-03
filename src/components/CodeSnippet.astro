@@ -34,8 +34,10 @@ const filePath = Object.keys(files).find(path => path.endsWith(`/${src}`));
 const fileContent = filePath ? await files[filePath]() : "";
 
 ---
+<div style="max-width: 90ch; overflow-x: auto; padding:0;">
 <Code
         code={fileContent}
         lang={lang as any}
         theme="snazzy-light"
 />
+</div>
