@@ -1,4 +1,4 @@
-﻿// Import necessary modules and types 
+﻿// Import necessary modules and types
 import { defineSketch } from '../../../renderers/threeRenderer';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as THREE from 'three';
@@ -84,7 +84,7 @@ const setupGUI = (
     cubes: THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>[],
     directionalLight: THREE.DirectionalLight,
     parentElement: HTMLElement | null
-): void => { // Changed return type to void
+): void => {
     const gui = new GUI().close();
 
     // Set GUI styles
@@ -120,9 +120,9 @@ const setupGUI = (
     });
 };
 
-// Export the default sketch
+// Main sketch function
 export default defineSketch(({ scene, renderer }) => {
-    // Initialize parameters with type annotations
+    // **Initialize parameters**
     const parameters: Parameters = {
         boxRotationSpeed: 0.65,
         lightRotationSpeed: 2.5,
@@ -131,60 +131,59 @@ export default defineSketch(({ scene, renderer }) => {
         boxScale: 1.0,
     };
 
-    // Set scene background
+    // **Set renderer size and aspect ratio**
+    const sizes = { width: 800, height: 600 };
+    renderer.setSize(sizes.width, sizes.height);
+    const aspectRatio: number = sizes.width / sizes.height;
+
+    // **Set scene background**
     scene.background = new THREE.Color('ghostwhite');
 
-    // Add ambient light
+    // **Initialize camera**
+    const camera = new THREE.PerspectiveCamera(75, aspectRatio);
+    camera.position.z = 5.5;
+    scene.add(camera);
+
+    // **Initialize OrbitControls**
+    const canvas = renderer.domElement;
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+
+    // **Add lights**
     const ambientLight = new THREE.AmbientLight('skyblue', 0.5);
     scene.add(ambientLight);
 
-    // Add directional light
-    const directionalLight = new THREE.DirectionalLight('orange', 2.5);
+    const directionalLight = new THREE.DirectionalLight(parameters.lightColor, 2.5);
     directionalLight.position.set(1, 1, 1);
     directionalLight.lookAt(new THREE.Vector3(0, 0, 0));
     scene.add(directionalLight);
 
-    // (Optional) Add axes helper
-    const axesHelper = new THREE.AxesHelper(1.2);
+    // **Add axes helper (optional)**
+    const axesHelper = new THREE.AxesHelper(0.5);
     scene.add(axesHelper);
 
-    // Define sizes and aspect ratio
-    const sizes = { width: 800, height: 600 };
-    const aspectRatio: number = sizes.width / sizes.height;
-
-    // Initialize camera
-    const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspectRatio);
-    camera.position.z = 5.5;
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
-    scene.add(camera);
-
-    // Initialize OrbitControls
-    const canvas: HTMLCanvasElement = renderer.domElement;
-    const controls = new OrbitControls(camera, canvas);
-    controls.enableDamping = true;
-
-    // Create a group for boxes
-    const boxGroup: THREE.Group = new THREE.Group();
-    boxGroup.scale.set(1.0, 2.0, 1.0);
+    // **Create a group for boxes**
+    const boxGroup = new THREE.Group();
+    boxGroup.scale.set(parameters.boxScale, parameters.boxScale * 2, parameters.boxScale);
     boxGroup.rotation.set(0.0, 0.2, 0.0);
     scene.add(boxGroup);
 
-    // Create cubes and add them to the boxGroup
+    // **Create cubes and add them to the boxGroup**
     const cubePositions = [
         new THREE.Vector3(-2.0, 0.0, 0.0),
         new THREE.Vector3(0.0, 0.0, 0.0),
         new THREE.Vector3(2.0, 0.0, 0.0),
     ];
-    const cubes = cubePositions.map((position) => createCube(position));
+    const cubes = cubePositions.map((position) => createCube(position, parameters.boxColor));
     cubes.forEach((cube) => boxGroup.add(cube));
 
-    // Initialize cursor tracking
+    // **Set camera to look at the boxGroup**
+    camera.lookAt(boxGroup.position);
+
+    // **Initialize cursor tracking**
     const cursor: Cursor = { x: 0, y: 0 };
 
-    /**
-     * Event handler for mouse movement to track cursor position.
-     * @param event - The mousemove event.
-     */
+    // **Event handler for mouse movement**
     const onMouseMove = (event: MouseEvent): void => {
         const rect: DOMRect = canvas.getBoundingClientRect();
         // Normalize cursor.x to [-0.5, 0.5]
@@ -192,23 +191,19 @@ export default defineSketch(({ scene, renderer }) => {
         // Normalize cursor.y to [-0.5, 0.5] and reverse Y-axis for intuitive control
         cursor.y = 0.5 - (event.clientY - rect.top) / canvas.height;
     };
-
     canvas.addEventListener('mousemove', onMouseMove);
 
-    // Setup HUD using HTML overlay
-    const hud: HTMLDivElement = setupHUD(canvas);
+    // **Setup HUD**
+    const hud = setupHUD(canvas);
 
-    // Setup GUI
-    const parentElement: HTMLElement | null = canvas.parentElement;
-    setupGUI(parameters, boxGroup, cubes, directionalLight, parentElement); // Removed variable assignment
+    // **Setup GUI**
+    const parentElement = canvas.parentElement;
+    setupGUI(parameters, boxGroup, cubes, directionalLight, parentElement);
 
-    // Set renderer size
-    renderer.setSize(sizes.width, sizes.height);
+    // **Initialize clock for animations**
+    const clock = new THREE.Clock();
 
-    // Initialize clock for animations
-    const clock: THREE.Clock = new THREE.Clock();
-
-    // GSAP rotation animation for boxGroup
+    // **GSAP rotation animation for boxGroup**
     gsap.to(boxGroup.rotation, {
         z: Math.PI * 4, // 720 degrees
         duration: 20,
@@ -217,17 +212,10 @@ export default defineSketch(({ scene, renderer }) => {
         ease: 'power1.inOut',
     });
 
-    // Define variables for smooth camera movement (optional)
-    //let currentTheta: number = 0;
-    //let currentPhi: number = Math.PI / 2; // Start at the equator
-    //const damping: number = 0.1; // Adjust for smoothness
-
-    /**
-     * The animation loop that updates and renders the scene.
-     */
+    // **Animation loop**
     const tick = (): void => {
         // Get elapsed time
-        const elapsedTime: number = clock.getElapsedTime();
+        const elapsedTime = clock.getElapsedTime();
 
         // Update box group rotation based on elapsed time and GUI parameters
         boxGroup.rotation.y = parameters.boxRotationSpeed * elapsedTime;
@@ -245,29 +233,6 @@ export default defineSketch(({ scene, renderer }) => {
         cubes[1].scale.z = 1 + Math.sin(elapsedTime * 0.8) * 0.5;
         cubes[2].scale.y = 1 + Math.sin(elapsedTime * 0.8) * 0.5;
 
-        // Map cursor.x to azimuthal angle (theta) [0, 2π]
-        //const targetTheta: number = (cursor.x + 0.5) * Math.PI * 2; // [0, 2π]
-
-        // Map cursor.y to polar angle (phi) [0, π] and reverse Y-axis
-        //let targetPhi: number = (cursor.y + 0.5) * Math.PI; // [0, π]
-
-        // Clamp phi to prevent camera flipping
-        //const epsilon: number = 0.1;
-        //targetPhi = THREE.MathUtils.clamp(targetPhi, epsilon, Math.PI - epsilon);
-
-        // Smoothly interpolate current angles towards target angles
-        //currentTheta += (targetTheta - currentTheta) * damping;
-        //currentPhi += (targetPhi - currentPhi) * damping;
-
-        // Calculate camera position using spherical coordinates
-        //const radius: number = 5.5;
-        //camera.position.x = Math.sin(currentPhi) * Math.cos(currentTheta) * radius;
-        //camera.position.y = Math.cos(currentPhi) * radius;
-        //camera.position.z = Math.sin(currentPhi) * Math.sin(currentTheta) * radius;
-
-        // Make the camera look at the center of the scene
-        camera.lookAt(boxGroup.position);
-
         // Update controls
         controls.update();
 
@@ -284,6 +249,6 @@ export default defineSketch(({ scene, renderer }) => {
         window.requestAnimationFrame(tick);
     };
 
-    // Start the animation loop
+    // **Start the animation loop**
     tick();
 });
