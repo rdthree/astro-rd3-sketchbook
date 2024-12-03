@@ -91,7 +91,7 @@ const setupGUI = (
     Object.assign(gui.domElement.style, {
         position: 'absolute',
         top: '0px',
-        right: '40px',
+        right: '0px',
         zIndex: '100', // Ensure GUI is above other elements
     });
 
@@ -132,7 +132,7 @@ export default defineSketch(({scene, renderer}) => {
     };
 
     // **Set renderer size and aspect ratio**
-    const sizes = {width: 800, height: 600};
+    const sizes = {width: 840, height: 630};
     renderer.setSize(sizes.width, sizes.height);
     const aspectRatio: number = sizes.width / sizes.height;
 
@@ -199,6 +199,21 @@ export default defineSketch(({scene, renderer}) => {
     // **Setup GUI**
     const parentElement = canvas.parentElement;
     setupGUI(parameters, boxGroup, cubes, directionalLight, parentElement);
+    
+    // **Setup Fullscreen Toggle**
+    window.addEventListener('dblclick', (): void => {
+        const fullscreenElement: Element | null = document.fullscreenElement;
+
+        if (!fullscreenElement) {
+            if (canvas.requestFullscreen) {
+                canvas.requestFullscreen()
+            }
+        } else if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    });
+
+
 
     // **Initialize clock for animations**
     const clock = new THREE.Clock();
