@@ -220,9 +220,10 @@ nav.vertical-nav ul li a .entry-name,
         padding: 0 1rem; /* Add horizontal padding on smaller screens */
     }
 
-    .layout-grid {
+    /* removed this because it was causing content to pop underneath the nav */
+    /*.layout-grid {
         flex-direction: column;
-    }
+    }*/
 
     .vertical-nav {
         width: 60px; /* Collapsed width for mobile */
