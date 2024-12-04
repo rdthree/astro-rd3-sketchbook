@@ -5,120 +5,103 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import GUI from 'lil-gui';
 
-// Define interfaces for structured data
-interface Parameters {
+// Define types for parameters and cursor location
+type Parameters = {
     boxRotationSpeed: number;
     lightRotationSpeed: number;
     boxColor: string;
     lightColor: string;
     boxScale: number;
-}
+};
 
-interface Cursor {
+type Cursor = {
     x: number;
     y: number;
-}
+};
 
 /**
- * Utility function to set up the Graphical User Interface (GUI).
- * @param parameters - The parameters object to be manipulated via GUI.
- * @param boxGroup - The THREE.Group containing all cubes.
- * @param cubes - An array of THREE.Mesh representing the cubes.
- * @param directionalLight - The directional light in the scene.
- * @param parentElement - The parent HTML element to which the GUI will be appended.
- * @returns The GUI instance or null if parentElement is unavailable.
+ * Sets up the Graphical User Interface (GUI).
  */
 const setupGUI = (
-    parameters: Parameters,
+    params: Parameters,
     boxGroup: THREE.Group,
     cubes: THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>[],
-    directionalLight: THREE.DirectionalLight,
-    parentElement: HTMLElement | null,
-): GUI | null => { // Return the GUI instance for future reference
-    if (!parentElement) {
-        console.warn('Canvas has no parent element. GUI will not be displayed within the canvas.');
-        return null;
-    }
+    light: THREE.DirectionalLight,
+    container: HTMLElement
+): GUI => {
+    const gui = new GUI({ container }).close();
 
-    const gui = new GUI({ container: parentElement }).close();
+    gui.add(params, 'boxRotationSpeed', 0, 5, 0.1).name('Box Rotation');
+    gui.add(params, 'lightRotationSpeed', 0, 5, 0.1).name('Light Rotation');
+    gui.add(params, 'boxScale', 0.1, 3, 0.1)
+        .name('Box Scale')
+        .onChange((value: number) => { // Added type annotation
+            boxGroup.scale.set(value, value * 2, value);
+        });
+    gui.addColor(params, 'boxColor')
+        .name('Box Color')
+        .onChange((color: string) => { // Added type annotation
+            cubes.forEach(cube => cube.material.color.set(color));
+        });
+    gui.addColor(params, 'lightColor').name('Light Color').onChange((color: string) => { // Added type annotation
+        light.color.set(color);
+    });
 
-    // Set GUI styles to position it in the top-left corner
     Object.assign(gui.domElement.style, {
         position: 'absolute',
-        top: '10px',    // 10px from the top
-        left: '10px',   // 10px from the left
-        zIndex: '100',  // Ensure GUI is above other elements
-    });
-
-    // Add GUI controls
-    gui.add(parameters, 'boxRotationSpeed', 0, 5, 0.1).name('Box Rotation');
-    gui.add(parameters, 'lightRotationSpeed', 0, 5, 0.1).name('Light Rotation');
-    gui.add(parameters, 'boxScale', 0.1, 3.0, 0.1)
-        .name('Box Scale')
-        .onChange(() => {
-            boxGroup.scale.set(parameters.boxScale, parameters.boxScale * 2, parameters.boxScale);
-        });
-    gui.addColor(parameters, 'boxColor').name('Box Color').onChange(() => {
-        cubes.forEach((cube) => {
-            cube.material.color.set(parameters.boxColor);
-        });
-    });
-    gui.addColor(parameters, 'lightColor').name('Light Color').onChange(() => {
-        directionalLight.color.set(parameters.lightColor);
+        top: '10px',
+        left: '10px',
+        zIndex: '100',
     });
 
     return gui;
 };
 
 /**
- * Utility function to create a cube mesh.
- * @param position - The position where the cube will be placed.
- * @param color - The color of the cube.
- * @returns A THREE.Mesh representing the cube.
+ * Creates a cube mesh.
  */
 const createCube = (
     position: THREE.Vector3,
     color: string = 'ghostwhite'
-): THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial> => {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshStandardMaterial({ color });
-    const cube = new THREE.Mesh(geometry, material);
+): THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial> => { // Specified generic types
+    const cube = new THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>(
+        new THREE.BoxGeometry(1, 1, 1),
+        new THREE.MeshStandardMaterial({ color })
+    );
     cube.position.copy(position);
     return cube;
 };
 
 /**
- * Utility function to set up the Heads-Up Display (HUD).
- * @param canvas - The HTML canvas element where the scene is rendered.
- * @returns The HUD HTMLDivElement.
+ * Sets up the Heads-Up Display (HUD).
  */
 const setupHUD = (canvas: HTMLCanvasElement): HTMLDivElement => {
     const hud = document.createElement('div');
     Object.assign(hud.style, {
         position: 'absolute',
-        bottom: '10px',               // 10px from the bottom
-        right: '10px',                // 10px from the right
+        bottom: '10px',
+        right: '10px',
         color: 'black',
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         padding: '5px 10px',
         fontFamily: 'monospace',
         fontSize: '14px',
-        textAlign: 'right',           // Right-aligned text
-        pointerEvents: 'none',        // Allows clicks to pass through to the canvas
-        zIndex: '100',                // Ensure it's on top
-        maxWidth: 'calc(100% - 20px)',// Prevent overflow on small screens
-        boxSizing: 'border-box',      // Include padding in width
-        borderRadius: '4px',          // Slight rounding
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', // Subtle shadow
+        textAlign: 'right',
+        pointerEvents: 'none',
+        zIndex: '100',
+        maxWidth: 'calc(100% - 20px)',
+        boxSizing: 'border-box',
+        borderRadius: '4px',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
     });
 
-    const parentElement = canvas.parentElement;
-    if (parentElement) {
-        const computedStyle = getComputedStyle(parentElement);
+    const parent = canvas.parentElement;
+    if (parent) {
+        const computedStyle = getComputedStyle(parent);
         if (computedStyle.position === 'static') {
-            parentElement.style.position = 'relative'; // Set parent to relative if it's static
+            parent.style.position = 'relative';
         }
-        parentElement.appendChild(hud);
+        parent.appendChild(hud);
     } else {
         console.warn('Canvas has no parent element. HUD will not be displayed.');
     }
@@ -128,8 +111,8 @@ const setupHUD = (canvas: HTMLCanvasElement): HTMLDivElement => {
 
 // Main sketch function
 export default defineSketch(({ scene, renderer }) => {
-    // **Initialize parameters**
-    const parameters: Parameters = {
+    // Initialize parameters
+    const params: Parameters = {
         boxRotationSpeed: 0.65,
         lightRotationSpeed: 2.5,
         boxColor: '#ffffff',
@@ -137,177 +120,147 @@ export default defineSketch(({ scene, renderer }) => {
         boxScale: 1.0,
     };
 
-    // **Set renderer size and aspect ratio**
+    // Set renderer size
     const sizes = { width: 840, height: 630 };
     renderer.setSize(sizes.width, sizes.height);
-    let aspectRatio: number = sizes.width / sizes.height;
+    const aspectRatio = sizes.width / sizes.height;
 
-    // **Set scene background**
+    // Set scene background
     scene.background = new THREE.Color('ghostwhite');
 
-    // **Initialize camera**
-    const camera = new THREE.PerspectiveCamera(75, aspectRatio);
-    camera.position.z = 5.5;
+    // Initialize camera
+    const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 100);
+    camera.position.set(0, 0, 5.5);
     scene.add(camera);
 
-    // **Initialize OrbitControls**
-    const canvas = renderer.domElement;
-    const controls = new OrbitControls(camera, canvas);
+    // Initialize OrbitControls
+    const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // **Add lights**
+    // Add lights
     const ambientLight = new THREE.AmbientLight('skyblue', 0.5);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(parameters.lightColor, 2.5);
+    const directionalLight = new THREE.DirectionalLight(params.lightColor, 2.5);
     directionalLight.position.set(1, 1, 1);
-    directionalLight.lookAt(new THREE.Vector3(0, 0, 0));
     scene.add(directionalLight);
 
-    // **Add axes helper (optional)**
-    const axesHelper = new THREE.AxesHelper(0.5);
-    scene.add(axesHelper);
+    // Optional: Add axes helper
+    scene.add(new THREE.AxesHelper(0.5));
 
-    // **Create a group for boxes**
+    // Create a group for boxes
     const boxGroup = new THREE.Group();
-    boxGroup.scale.set(parameters.boxScale, parameters.boxScale * 2, parameters.boxScale);
-    boxGroup.rotation.set(0.0, 0.2, 0.0);
+    boxGroup.scale.set(params.boxScale, params.boxScale * 2, params.boxScale);
+    boxGroup.rotation.set(0, 0.2, 0);
     scene.add(boxGroup);
 
-    // **Create cubes and add them to the boxGroup**
+    // Create and add cubes to the group
     const cubePositions = [
-        new THREE.Vector3(-2.0, 0.0, 0.0),
-        new THREE.Vector3(0.0, 0.0, 0.0),
-        new THREE.Vector3(2.0, 0.0, 0.0),
+        new THREE.Vector3(-2, 0, 0),
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(2, 0, 0),
     ];
-    const cubes = cubePositions.map((position) => createCube(position, parameters.boxColor));
-    cubes.forEach((cube) => boxGroup.add(cube));
+    const cubes: THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>[] = cubePositions.map(pos => createCube(pos, params.boxColor));
+    cubes.forEach(cube => boxGroup.add(cube));
 
-    // **Set camera to look at the boxGroup**
-    camera.lookAt(boxGroup.position);
-
-    // **Initialize cursor tracking**
+    // Initialize cursor tracking
     const cursor: Cursor = { x: 0, y: 0 };
+    renderer.domElement.addEventListener('mousemove', (event: MouseEvent) => {
+        const rect = renderer.domElement.getBoundingClientRect();
+        cursor.x = (event.clientX - rect.left) / rect.width - 0.5;
+        cursor.y = 0.5 - (event.clientY - rect.top) / rect.height;
+    });
 
-    // **Event handler for mouse movement**
-    const onMouseMove = (event: MouseEvent): void => {
-        const rect: DOMRect = canvas.getBoundingClientRect();
-        // Normalize cursor.x to [-0.5, 0.5]
-        cursor.x = (event.clientX - rect.left) / canvas.width - 0.5;
-        // Normalize cursor.y to [-0.5, 0.5] and reverse Y-axis for intuitive control
-        cursor.y = 0.5 - (event.clientY - rect.top) / canvas.height;
-    };
-    canvas.addEventListener('mousemove', onMouseMove);
-
-    // **Ensure the parent element has position: relative and matches renderer size**
-    const parentElement = canvas.parentElement;
-    if (parentElement) {
-        const computedStyle = getComputedStyle(parentElement);
+    // Ensure parent element styling
+    const parent = renderer.domElement.parentElement;
+    if (parent) {
+        const computedStyle = getComputedStyle(parent);
         if (computedStyle.position === 'static') {
-            parentElement.style.position = 'relative'; // Set to relative if static
+            parent.style.position = 'relative';
         }
-        // Initialize parent element's size to match renderer's initial size
-        parentElement.style.width = `${sizes.width}px`;
-        parentElement.style.height = `${sizes.height}px`;
-        parentElement.style.overflow = 'hidden'; // Optional: hides any overflow
+        parent.style.width = `${sizes.width}px`;
+        parent.style.height = `${sizes.height}px`;
+        parent.style.overflow = 'hidden';
     } else {
         console.warn('Canvas has no parent element.');
     }
 
-    // **Setup HUD**
-    const hud = setupHUD(canvas);
+    // Setup HUD and GUI
+    const hud = setupHUD(renderer.domElement);
+    setupGUI(params, boxGroup, cubes, directionalLight, parent!);
 
-    // **Setup GUI, doesn't need to be stored in a variable**
-    setupGUI(parameters, boxGroup, cubes, directionalLight, parentElement);
-
-    // **Setup Window Resize & Pixel Ratio**
+    // Handle window resize
     window.addEventListener('resize', () => {
-        // Update sizes based on window dimensions
         sizes.width = window.innerWidth * 0.75;
         sizes.height = window.innerHeight * 0.75;
-        aspectRatio = sizes.width / sizes.height;
+        const newAspect = sizes.width / sizes.height;
 
-        // Update parent element's size to match renderer's new size
-        if (parentElement) {
-            parentElement.style.width = `${sizes.width}px`;
-            parentElement.style.height = `${sizes.height}px`;
-        }
-
-        // Update camera
-        camera.aspect = aspectRatio;
-        camera.updateProjectionMatrix();
-
-        // Update renderer
+        // Update renderer and camera
         renderer.setSize(sizes.width, sizes.height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        camera.aspect = newAspect;
+        camera.updateProjectionMatrix();
 
-        // No need to update GUI or HUD positions since they're fixed via CSS
-    });
-
-    // **Setup Fullscreen Toggle**
-    window.addEventListener('dblclick', (): void => {
-        const fullscreenElement: Element | null = document.fullscreenElement;
-
-        if (!fullscreenElement) {
-            if (canvas.requestFullscreen) {
-                canvas.requestFullscreen().catch(e => console.error(e));
-            }
-        } else if (document.exitFullscreen) {
-            document.exitFullscreen().catch(e => console.error(e));
+        // Update parent size
+        if (parent) {
+            parent.style.width = `${sizes.width}px`;
+            parent.style.height = `${sizes.height}px`;
         }
     });
 
-    // **Initialize clock for animations**
-    const clock = new THREE.Clock();
+    // Toggle fullscreen on double click
+    window.addEventListener('dblclick', () => {
+        if (!document.fullscreenElement) {
+            renderer.domElement.requestFullscreen().catch(console.error);
+        } else {
+            document.exitFullscreen().catch(console.error);
+        }
+    });
 
-    // **GSAP rotation animation for boxGroup**
+    // Initialize GSAP animation
     gsap.to(boxGroup.rotation, {
         z: Math.PI * 4, // 720 degrees
         duration: 20,
-        repeat: -1, // infinite loop
-        yoyo: true, // bounce back and forth
+        repeat: -1,
+        yoyo: true,
         ease: 'power1.inOut',
     });
 
-    // **Animation loop**
-    const tick = (): void => {
-        // Get elapsed time
-        const elapsedTime = clock.getElapsedTime();
+    // Initialize clock for additional animations
+    const clock = new THREE.Clock();
 
-        // Update box group rotation based on elapsed time and GUI parameters
-        boxGroup.rotation.y = parameters.boxRotationSpeed * elapsedTime;
+    // Animation loop
+    const animate = () => {
+        const elapsed = clock.getElapsedTime();
 
-        // Update directional light rotation based on elapsed time and GUI parameters
-        directionalLight.rotation.y = parameters.lightRotationSpeed * elapsedTime;
+        // Update rotations based on parameters
+        boxGroup.rotation.y = params.boxRotationSpeed * elapsed;
+        directionalLight.rotation.y = params.lightRotationSpeed * elapsed;
 
-        // Animate cube positions
-        cubes[0].position.y = Math.sin(elapsedTime);
-        cubes[1].position.y = Math.cos(elapsedTime);
-        cubes[2].position.z = Math.tan(elapsedTime);
+        // Animate cube positions and scales
+        cubes[0].position.y = Math.sin(elapsed);
+        cubes[1].position.y = Math.cos(elapsed);
+        cubes[2].position.z = Math.tan(elapsed);
 
-        // Animate cube scales
-        cubes[0].scale.x = 1 + Math.cos(elapsedTime * 0.8) * 0.5;
-        cubes[1].scale.z = 1 + Math.sin(elapsedTime * 0.8) * 0.5;
-        cubes[2].scale.y = 1 + Math.sin(elapsedTime * 0.8) * 0.5;
+        cubes[0].scale.x = 1 + Math.cos(elapsed * 0.8) * 0.5;
+        cubes[1].scale.z = 1 + Math.sin(elapsed * 0.8) * 0.5;
+        cubes[2].scale.y = 1 + Math.sin(elapsed * 0.8) * 0.5;
 
-        // Update controls
+        // Update controls and render
         controls.update();
-
-        // Render the scene
         renderer.render(scene, camera);
 
-        // Update HUD content with cursor and camera positions
+        // Update HUD
         hud.innerHTML = `
             <div>Cursor: (${cursor.x.toFixed(2)}, ${cursor.y.toFixed(2)})</div>
             <div>Camera: (${camera.position.x.toFixed(2)},
-             ${camera.position.y.toFixed(2)},
-             ${camera.position.z.toFixed(2)})</div>
+            ${camera.position.y.toFixed(2)},
+            ${camera.position.z.toFixed(2)})</div>
         `;
 
-        // Request the next animation frame
-        window.requestAnimationFrame(tick);
+        requestAnimationFrame(animate);
     };
 
-    // **Start the animation loop**
-    tick();
+    // Start animation
+    animate();
 });
