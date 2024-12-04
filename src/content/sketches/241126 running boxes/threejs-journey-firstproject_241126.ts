@@ -1,61 +1,11 @@
 ﻿// Import necessary modules and types
-import { defineSketch } from '../../../renderers/threeRenderer';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import {defineSketch} from '../../../renderers/threeRenderer';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
+import {setupGUI} from './setupGUI_241203';
+import {setupHUD} from './setupHUD_241203';
+import type {Parameters, Cursor} from './setupTypes_241203';
 import * as THREE from 'three';
 import gsap from 'gsap';
-import GUI from 'lil-gui';
-
-// Define types for parameters and cursor location
-type Parameters = {
-    boxRotationSpeed: number;
-    lightRotationSpeed: number;
-    boxColor: string;
-    lightColor: string;
-    boxScale: number;
-};
-
-type Cursor = {
-    x: number;
-    y: number;
-};
-
-/**
- * Sets up the Graphical User Interface (GUI).
- */
-const setupGUI = (
-    params: Parameters,
-    boxGroup: THREE.Group,
-    cubes: THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>[],
-    light: THREE.DirectionalLight,
-    container: HTMLElement
-): GUI => {
-    const gui = new GUI({ container }).close();
-
-    gui.add(params, 'boxRotationSpeed', 0, 5, 0.1).name('Box Rotation');
-    gui.add(params, 'lightRotationSpeed', 0, 5, 0.1).name('Light Rotation');
-    gui.add(params, 'boxScale', 0.1, 3, 0.1)
-        .name('Box Scale')
-        .onChange((value: number) => { // Added type annotation
-            boxGroup.scale.set(value, value * 2, value);
-        });
-    gui.addColor(params, 'boxColor')
-        .name('Box Color')
-        .onChange((color: string) => { // Added type annotation
-            cubes.forEach(cube => cube.material.color.set(color));
-        });
-    gui.addColor(params, 'lightColor').name('Light Color').onChange((color: string) => { // Added type annotation
-        light.color.set(color);
-    });
-
-    Object.assign(gui.domElement.style, {
-        position: 'absolute',
-        top: '10px',
-        left: '10px',
-        zIndex: '100',
-    });
-
-    return gui;
-};
 
 /**
  * Creates a cube mesh.
@@ -66,51 +16,14 @@ const createCube = (
 ): THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial> => { // Specified generic types
     const cube = new THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>(
         new THREE.BoxGeometry(1, 1, 1),
-        new THREE.MeshStandardMaterial({ color })
+        new THREE.MeshStandardMaterial({color})
     );
     cube.position.copy(position);
     return cube;
 };
 
-/**
- * Sets up the Heads-Up Display (HUD).
- */
-const setupHUD = (canvas: HTMLCanvasElement): HTMLDivElement => {
-    const hud = document.createElement('div');
-    Object.assign(hud.style, {
-        position: 'absolute',
-        bottom: '10px',
-        right: '10px',
-        color: 'black',
-        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-        padding: '5px 10px',
-        fontFamily: 'monospace',
-        fontSize: '14px',
-        textAlign: 'right',
-        pointerEvents: 'none',
-        zIndex: '100',
-        maxWidth: 'calc(100% - 20px)',
-        boxSizing: 'border-box',
-        borderRadius: '4px',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-    });
-
-    const parent = canvas.parentElement;
-    if (parent) {
-        const computedStyle = getComputedStyle(parent);
-        if (computedStyle.position === 'static') {
-            parent.style.position = 'relative';
-        }
-        parent.appendChild(hud);
-    } else {
-        console.warn('Canvas has no parent element. HUD will not be displayed.');
-    }
-
-    return hud;
-};
-
 // Main sketch function
-export default defineSketch(({ scene, renderer }) => {
+export default defineSketch(({scene, renderer}) => {
     // Initialize parameters
     const params: Parameters = {
         boxRotationSpeed: 0.65,
@@ -121,7 +34,7 @@ export default defineSketch(({ scene, renderer }) => {
     };
 
     // Set renderer size
-    const sizes = { width: 840, height: 630 };
+    const sizes = {width: 840, height: 630};
     renderer.setSize(sizes.width, sizes.height);
     const aspectRatio = sizes.width / sizes.height;
 
@@ -160,11 +73,13 @@ export default defineSketch(({ scene, renderer }) => {
         new THREE.Vector3(0, 0, 0),
         new THREE.Vector3(2, 0, 0),
     ];
-    const cubes: THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>[] = cubePositions.map(pos => createCube(pos, params.boxColor));
+    // Define a type alias for better readability, and use it in the declaration with an alias
+    type CubeMesh = THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>;
+    const cubes: CubeMesh[] = cubePositions.map((pos) => createCube(pos, params.boxColor));
     cubes.forEach(cube => boxGroup.add(cube));
 
     // Initialize cursor tracking
-    const cursor: Cursor = { x: 0, y: 0 };
+    const cursor: Cursor = {x: 0, y: 0};
     renderer.domElement.addEventListener('mousemove', (event: MouseEvent) => {
         const rect = renderer.domElement.getBoundingClientRect();
         cursor.x = (event.clientX - rect.left) / rect.width - 0.5;
