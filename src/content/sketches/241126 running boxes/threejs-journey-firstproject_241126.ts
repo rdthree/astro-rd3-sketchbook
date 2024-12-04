@@ -26,7 +26,6 @@ interface Cursor {
  * @param cubes - An array of THREE.Mesh representing the cubes.
  * @param directionalLight - The directional light in the scene.
  * @param parentElement - The parent HTML element to which the GUI will be appended.
- * @param sizes - The sizes object containing width and height of the canvas.
  * @returns The GUI instance or null if parentElement is unavailable.
  */
 const setupGUI = (
@@ -35,7 +34,6 @@ const setupGUI = (
     cubes: THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>[],
     directionalLight: THREE.DirectionalLight,
     parentElement: HTMLElement | null,
-    sizes: { width: number, height: number }
 ): GUI | null => { // Return the GUI instance for future reference
     if (!parentElement) {
         console.warn('Canvas has no parent element. GUI will not be displayed within the canvas.');
@@ -44,7 +42,7 @@ const setupGUI = (
 
     const gui = new GUI({ container: parentElement }).close();
 
-    // Set GUI styles to position it at the top-left corner
+    // Set GUI styles to position it in the top-left corner
     Object.assign(gui.domElement.style, {
         position: 'absolute',
         top: '10px',    // 10px from the top
@@ -219,8 +217,8 @@ export default defineSketch(({ scene, renderer }) => {
     // **Setup HUD**
     const hud = setupHUD(canvas);
 
-    // **Setup GUI**
-    const gui = setupGUI(parameters, boxGroup, cubes, directionalLight, parentElement, sizes);
+    // **Setup GUI, doesn't need to be stored in a variable**
+    setupGUI(parameters, boxGroup, cubes, directionalLight, parentElement);
 
     // **Setup Window Resize & Pixel Ratio**
     window.addEventListener('resize', () => {
@@ -252,10 +250,10 @@ export default defineSketch(({ scene, renderer }) => {
 
         if (!fullscreenElement) {
             if (canvas.requestFullscreen) {
-                canvas.requestFullscreen();
+                canvas.requestFullscreen().catch(e => console.error(e));
             }
         } else if (document.exitFullscreen) {
-            document.exitFullscreen();
+            document.exitFullscreen().catch(e => console.error(e));
         }
     });
 
