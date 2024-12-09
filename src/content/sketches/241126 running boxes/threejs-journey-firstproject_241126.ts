@@ -58,8 +58,10 @@ export default defineSketch(({scene, renderer}) => {
     directionalLight.position.set(1, 1, 1);
     scene.add(directionalLight);
 
-    // Optional: Add axes helper
-    scene.add(new THREE.AxesHelper(0.5));
+    // Optional: Add axes helper, give it a color of white
+    const axesHelper = new THREE.AxesHelper(20);
+    axesHelper.material = new THREE.LineBasicMaterial({color: 'white', opacity: 0.9, transparent: true});
+    scene.add(axesHelper);
 
     // Create a group for boxes
     const boxGroup = new THREE.Group();
@@ -77,6 +79,38 @@ export default defineSketch(({scene, renderer}) => {
     type CubeMesh = THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>;
     const cubes: CubeMesh[] = cubePositions.map((pos) => createCube(pos, params.boxColor));
     cubes.forEach(cube => boxGroup.add(cube));
+    
+    // create some buffer geometry
+    const geometry = new THREE.BufferGeometry();
+    // create a triangle, this take 3 vertices, or 9 values in the array
+    const positionsArray = new Float32Array([
+        0,0,0, // vertex 1 x,y,z
+        0,1,0, // vertex 2 x,y,z
+        1,0,0, // vertex 3 x,y,z
+    ]);
+    // even though we have a positions array, we still need to set the position attribute
+    // this tells how many values to read from the array for each vertex
+    const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3);
+    // 'position' is the name of the attribute in the buffer geometry
+    // other attribute names are: normal, color, uv, uv2, skinIndex, skinWeight
+    geometry.setAttribute('position', positionsAttribute);
+    
+    // lots of triangles now
+    const fiftyTriangleGeometry = new THREE.BufferGeometry();
+    const count = 2500;
+    const manyTrianglesArray = new Float32Array(count * 3 * 3); // 3 verts * 3 values per vert
+    // set the attribute values FIRST
+    fiftyTriangleGeometry.setAttribute('position', new THREE.BufferAttribute(manyTrianglesArray, 3));
+   
+    // wireframe material
+    // color black is 0x000000
+    // color white is 0xffffff
+    const wireMat = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true});
+    scene.add(
+        new THREE.Mesh(geometry, wireMat), 
+        new THREE.Mesh(fiftyTriangleGeometry, wireMat)
+    );
+
 
     // Initialize cursor tracking
     const cursor: Cursor = {x: 0, y: 0};
@@ -143,6 +177,18 @@ export default defineSketch(({scene, renderer}) => {
 
     // Initialize clock for additional animations
     const clock = new THREE.Clock();
+
+    // triangle randomization, a sort of loop independent of the animation loop
+    // better to find a way to do this in the animation loop in order to avoid
+    // weird stuff like race conditions 
+    const randomizeTriangles = () => {
+        for (let i = 0; i < count; i++) {
+            manyTrianglesArray[i] = (Math.random() - 0.5) * 9; // random between -2 and 2
+        }
+        fiftyTriangleGeometry.attributes.position.needsUpdate = true;
+    };
+    randomizeTriangles();
+    setInterval(randomizeTriangles, 70);
 
     // Animation loop
     const animate = () => {
