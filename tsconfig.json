@@ -67,7 +67,6 @@
     "**/*.astro",
     "src/content/**/*.ts",
     "src/types/*.d.ts",
-    "src/content/config.ts"
   ],
   "exclude": ["dist"]
 }

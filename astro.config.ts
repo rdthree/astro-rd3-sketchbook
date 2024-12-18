@@ -1,5 +1,6 @@
 // @ts-ignore // hopefully this is fixed later by Rider
 import {defineConfig} from "astro/config";
+
 import mdx from "@astrojs/mdx";
 import {visualizer} from "rollup-plugin-visualizer";
 export default defineConfig({
